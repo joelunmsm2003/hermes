@@ -1,15 +1,17 @@
 Cotizacion
 ==========
 
-#### Backend
+#### Backend 
+
+### Installation
 
 Django
 
-### Arrancar
+Run python manage.py runserver 0.0.0.0:8000&
 
-python manage.py runserver 0.0.0.0:8000&
+Launch http://localhost:8000
 
-##### Base de Datos
+##### Database
 
 cotizador.hermes.pe:800/phpmyadmin
 
