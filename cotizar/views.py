@@ -2527,11 +2527,17 @@ def addservice(request):
 
 		data =  json.loads(request.body)
 
+		print data
+
 		aseguradora = data['aseguradora']['id_asegurad']
 		value = data['valor']
 		servicio = data['servicio']['id_serv']
 
-		ServicAsegur(id_aseg_id=aseguradora,id_serv_id=servicio,valor=value).save()
+
+		uso = data['uso']['id_uso']
+		programa = data['programa']['id_program']
+
+		ServicAsegur(id_aseg_id=aseguradora,id_serv_id=servicio,valor=value,id_uso_id=uso,id_program_id=programa).save()
 
 		return HttpResponse(json.dumps(request.body), content_type="application/json")
 
@@ -2934,7 +2940,7 @@ def man_cob(request):
 	
 def man_serv(request):
 
-	servicios = ServicAsegur.objects.all().values('id','id_serv','id_aseg','id_serv__services','id_aseg__name_asegurad','valor').order_by('-id')
+	servicios = ServicAsegur.objects.all().values('id','id_serv','id_aseg','id_serv__services','id_aseg__name_asegurad','valor','id_uso__uso','id_program__program').order_by('-id')
 
 	data_dict = ValuesQuerySetToDict(servicios)	
 

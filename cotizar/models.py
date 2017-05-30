@@ -371,6 +371,9 @@ class Riesgo(models.Model):
 class ServicAsegur(models.Model):
     id_serv = models.ForeignKey('Servicios', models.DO_NOTHING, db_column='id_serv')
     id_aseg = models.ForeignKey(Aseguradora, models.DO_NOTHING, db_column='id_aseg')
+    id_uso = models.ForeignKey('Uso', models.DO_NOTHING, db_column='uso')
+    id_program = models.ForeignKey('Programa', models.DO_NOTHING, db_column='programa')
+
     valor = models.CharField(max_length=500)
 
     class Meta:

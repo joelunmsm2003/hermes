@@ -14,14 +14,9 @@
 	</head>
 	<body class="bg-orange">
 
-			<ng-include src="'menu.html'"></ng-include>
-     
+	<ng-include src="'menu.html'"></ng-include>
 
-
-        
-
-
-    	<div class="container">	
+    <div class="container">	
 
 
      <h2>Servicios</h2>
@@ -33,7 +28,7 @@
 
 			<div class='row'>
 
-						<div class="col-md-2">
+			<div class="col-md-2">
 
 				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#servicio"><i class="fa fa-plus"></i></button>
 				Servicio:
@@ -47,6 +42,19 @@
 				Aseguradora :<select  ng-options="item as item.name_asegurad for item in aseguradoras track by item.id_asegurad" type="text" class="form-control" ng-model="model.aseguradora" required =""  ></select>
 
 			</div>
+
+            <div class="col-md-2">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#uso"><i class="fa fa-plus"></i></button>
+            Uso:<select   ng-options="item as item.uso for item in uso track by item.id_uso"   type="text" class="form-control" ng-model="model.uso"  required =""  ></select>
+            </div>
+
+         <div class="col-md-2">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#programa"><i class="fa fa-plus"></i></button>
+            Programa:<select  ng-options="item as item.program for item in programas track by item.id_program"  type="text" class="form-control" ng-model="model.programa"  required =""  ></select>
+            </div>
+
+            <br></br>
+
 
             <div class="col-md-2">
 
