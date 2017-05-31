@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^api-token-auth/', 'jwt_auth.views.obtain_jwt_token'),
 
     url(r'^perfil/$', Perfil.as_view()),
+    url(r'^prueba/', 'cotizar.views.prueba'),
     url(r'^marca/', 'cotizar.views.marca'),
     url(r'^anio/', 'cotizar.views.anio'),
     url(r'^uso/', 'cotizar.views.uso'),

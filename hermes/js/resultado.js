@@ -46,7 +46,7 @@ function Resultado($scope,$http,$filter,$routeParams,$location,$localStorage) {
                 $scope.pacificototal = data[2]['pacificototal']
                 $scope.rimactotal = data[4]['rimactotal']
 
-                        /*Pdf Genera*/
+                /*Pdf Genera*/
 
                 $scope.pdf = {}
 

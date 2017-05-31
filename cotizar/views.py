@@ -402,6 +402,35 @@ def recibeservicios(request):
 
 
 @csrf_exempt
+def prueba(request):
+
+	# cax = CobertAsegur.objects.filter(modalidad__name_modalidad='Todo Riesgo')[:10]
+
+	# for ca in cax:
+
+	# 	print ca.modalidad.name_modalidad,ca.modalidad.id_modalidad,ca.riesg_auto.tipo_riesgo
+
+	ri = RiesgAseg.objects.filter(aseguradora_id=5)[:10]
+
+	response = HttpResponse(content_type='text/csv')
+
+	response['Content-Disposition'] = 'attachment; filename="Riesgos.csv"'
+
+	writer = csv.writer(response)
+
+	for r in ri:
+
+		if AutoValor.objects.filter(id=r.id_model_id).count()>0:
+
+			datos = str(r.id_model.id_modelo.name_model).replace("u","").replace("(","").replace("'","").replace('"',''),str(r.id_model.id_marca.name_marca).replace("u'","").replace("'",""),str(r.id_riesg.tipo_riesgo).replace("u","").replace(")","").replace("'","").replace('"','')
+
+			# datos = x['id'],x['tipo__clase'],x['antigued'],x['programa__program'],x['id_cob__descripcion'],x['id_aseg__name_asegurad'],x['id_uso__uso'],x['modalidad__name_modalidad'],x['value']
+			
+			writer.writerow([datos])
+
+	return response
+
+@csrf_exempt
 def recibecoberturas(request):
 
 	data = json.loads(request.body)
@@ -621,7 +650,6 @@ def tasaadmin(request):
 			data = json.loads(request.body)['data']
 
 
-			print '::::::::::::',data
 
 			tasahdi = data['tasahdi']
 			tasarimac = data['tasarimac']
@@ -693,6 +721,10 @@ def tasaadmin(request):
 
 						
 						aseguradora[i]['tasarimac'] = round(float(tasarimac),2)
+
+						# Bajo Riesgo
+
+
 
 						aseguradora[i]['rimac'] = round(float(tasarimac)/100*float(monto),2)
 

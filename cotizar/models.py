@@ -13,6 +13,7 @@ class Anio(models.Model):
         db_table = 'anio'
 
 
+
 class Aseguradora(models.Model):
     id_asegurad = models.AutoField(primary_key=True)
     name_asegurad = models.CharField(max_length=20)
@@ -115,6 +116,15 @@ class Clase(models.Model):
     class Meta:
         managed = False
         db_table = 'clase'
+
+
+class Riesgo(models.Model):
+    id_riesgo = models.AutoField(primary_key=True)
+    tipo_riesgo = models.CharField(max_length=20)
+
+    class Meta:
+        managed = False
+        db_table = 'riesgo'
 
 
 class Clientes(models.Model):
@@ -359,13 +369,6 @@ class RiesgAseg(models.Model):
         db_table = 'riesg_aseg'
 
 
-class Riesgo(models.Model):
-    id_riesgo = models.AutoField(primary_key=True)
-    tipo_riesgo = models.CharField(max_length=20)
-
-    class Meta:
-        managed = False
-        db_table = 'riesgo'
 
 
 class ServicAsegur(models.Model):
