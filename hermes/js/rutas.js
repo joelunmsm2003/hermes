@@ -2,7 +2,7 @@
 
   
 
-    host ='http://104.236.232.222:8000'
+    host ='http://localhost:8000'
 
 
 

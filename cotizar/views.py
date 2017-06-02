@@ -404,13 +404,7 @@ def recibeservicios(request):
 @csrf_exempt
 def prueba(request):
 
-	# cax = CobertAsegur.objects.filter(modalidad__name_modalidad='Todo Riesgo')[:10]
-
-	# for ca in cax:
-
-	# 	print ca.modalidad.name_modalidad,ca.modalidad.id_modalidad,ca.riesg_auto.tipo_riesgo
-
-	ri = RiesgAseg.objects.filter(aseguradora_id=5)[:10]
+	ri = RiesgAseg.objects.filter(aseguradora_id=5,id_riesg=7).values('id_model_id','id_model__id_modelo__name_model','id_model__id_marca__name_marca','id_riesg__tipo_riesgo')
 
 	response = HttpResponse(content_type='text/csv')
 
@@ -420,15 +414,85 @@ def prueba(request):
 
 	for r in ri:
 
-		if AutoValor.objects.filter(id=r.id_model_id).count()>0:
+		print r
 
-			datos = str(r.id_model.id_modelo.name_model).replace("u","").replace("(","").replace("'","").replace('"',''),str(r.id_model.id_marca.name_marca).replace("u'","").replace("'",""),str(r.id_riesg.tipo_riesgo).replace("u","").replace(")","").replace("'","").replace('"','')
+		if AutoValor.objects.filter(id=r['id_model_id']).count()>0:
+
+
+			datos = r['id_model__id_modelo__name_model'],r['id_model__id_marca__name_marca'],r['id_riesg__tipo_riesgo']
+
+
+			print datos
+
 
 			# datos = x['id'],x['tipo__clase'],x['antigued'],x['programa__program'],x['id_cob__descripcion'],x['id_aseg__name_asegurad'],x['id_uso__uso'],x['modalidad__name_modalidad'],x['value']
 			
-			writer.writerow([datos])
+			writer.writerow(datos)
 
 	return response
+
+@csrf_exempt
+def tasascsv(request):
+
+	ri = TasaAsegur.objects.filter(id_aseg_id=5).values('riesgo__tipo_riesgo','value','programa__program','anio')
+
+	response = HttpResponse(content_type='text/csv')
+
+	response['Content-Disposition'] = 'attachment; filename="Riesgos.csv"'
+
+	writer = csv.writer(response)
+
+	for r in ri:
+
+		datos = r['riesgo__tipo_riesgo'],r['programa__program'],r['value'],r['anio']
+
+		print datos
+
+		writer.writerow(datos)
+
+	return response
+
+
+@csrf_exempt
+def modeloscsv(request):
+
+	ri = AutoValor.objects.all().values('id_modelo__name_model','id_marca__name_marca','id_tipo__clase')
+
+	response = HttpResponse(content_type='text/csv')
+
+	response['Content-Disposition'] = 'attachment; filename="Riesgos.csv"'
+
+	writer = csv.writer(response)
+
+	for r in ri:
+
+		datos = r['id_modelo__name_model'],r['id_marca__name_marca'],r['id_tipo__clase']
+
+		print datos
+
+		# datos = x['id'],x['tipo__clase'],x['antigued'],x['programa__program'],x['id_cob__descripcion'],x['id_aseg__name_asegurad'],x['id_uso__uso'],x['modalidad__name_modalidad'],x['value']
+			
+		writer.writerow(datos)
+
+	return response
+
+@csrf_exempt
+def corrige(request):
+
+	mo=Clase.objects.all()
+
+	for m in mo:
+
+		m.clase = m.clase.encode('ascii','ignore')
+
+		m.clase = m.clase.encode('ascii','replace')
+
+		m.clase
+
+		m.save()
+
+	return HttpResponse('nologeado', content_type="application/json")
+
 
 @csrf_exempt
 def recibecoberturas(request):
@@ -639,6 +703,7 @@ def exportardeducible(request,data):
 @csrf_exempt
 def tasaadmin(request):
 
+
 		if request.method == 'POST':
 
 
@@ -648,6 +713,8 @@ def tasaadmin(request):
 
 			monto = json.loads(request.body)['monto']['precio']
 			data = json.loads(request.body)['data']
+
+			print 'tasaadmin...',data
 
 
 
@@ -1478,18 +1545,25 @@ def primaneta(request):
 
 	print 'PrimaNeta',data
 
+	#PrimaNeta {u'orderId': u'596', u'anio': u'29', u'uso': u'1', u'precio': u'2154', u'modelo': u'5506', u'programa': u'3', u'modalidad': u'1'}
+
+
+
 	monto = data['precio']
 
-
 	orderId = data['orderId']
+
 	uso = data['uso']
+
 	modelo = data['modelo']
 
-	a = AutoValor.objects.filter(id_modelo_id=modelo)
+	a = AutoValor.objects.get(id_modelo_id=modelo)
 
-	for m in a:
+	id_auto_valor = a.id
 
-		tipo = m.id_tipo.id_clase
+	# for m in a:
+
+	# 	tipo = m.id_tipo.id_clase
 
 	print 'monto',monto
 
@@ -1497,32 +1571,35 @@ def primaneta(request):
 
 	anio = data['anio']
 
-
 	print 'ANIO.........',anio
 
 	programa = data['programa']
-
-	if RiesgAseg.objects.filter(aseguradora_id=1,id_model_id=modelo):
-
-		riesgopositiva = RiesgAseg.objects.get(aseguradora_id=1,id_model_id=modelo).id_riesg__tipo_riesgo
-	
-	if RiesgAseg.objects.filter(aseguradora_id=2,id_model_id=modelo):
-
-		riesgopacifico = RiesgAseg.objects.get(aseguradora_id=2,id_model_id=modelo).id_riesg__tipo_riesgo
-	
-	if RiesgAseg.objects.filter(aseguradora_id=4,id_model_id=modelo):
-	
-		riesgomapfre = RiesgAseg.objects.get(aseguradora_id=4,id_model_id=modelo).id_riesg__tipo_riesgo
-	
-	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=modelo):
-
-		riesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=modelo).id_riesg__tipo_riesgo
 
 	riesgohdi = 3
 	riesgorimac= 3
 	riesgopositiva = 3
 	riesgomapfre = 3
 	riesgopacifico = 3
+
+	# if RiesgAseg.objects.filter(aseguradora_id=1,id_model_id=id_auto_valor):
+
+	# 	riesgopositiva = RiesgAseg.objects.get(aseguradora_id=1,id_model_id=modelo).id_riesg__tipo_riesgo
+	
+	# if RiesgAseg.objects.filter(aseguradora_id=2,id_model_id=id_auto_valor):
+
+	# 	riesgopacifico = RiesgAseg.objects.get(aseguradora_id=2,id_model_id=modelo).id_riesg__tipo_riesgo
+	
+	# if RiesgAseg.objects.filter(aseguradora_id=4,id_model_id=id_auto_valor):
+	
+	# 	riesgomapfre = RiesgAseg.objects.get(aseguradora_id=4,id_model_id=modelo).id_riesg__tipo_riesgo
+	
+	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=id_auto_valor):
+
+		print RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
+
+
+
+
 
 	print 'riesgopacifico,riesgohdi,riesgopacifico,riesgorimac,riesgopositiva,riesgomapfre',riesgopacifico,riesgohdi,riesgopacifico,riesgorimac,riesgopositiva,riesgomapfre
 
@@ -1629,7 +1706,7 @@ def primaneta(request):
 
 		if aseguradora[i]['id_asegurad'] == 5:
 
-			r = TasaAsegur.objects.filter(id_aseg_id=5,anio=int(anio),id_uso_id=uso,riesgo_id=riesgorimac)
+			r = TasaAsegur.objects.filter(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2)
 
 			if r.count()==1:
 
@@ -1676,187 +1753,6 @@ def riesgomodelo(request,modelo):
 	return HttpResponse(data, content_type="application/json")
 
 
-
-@csrf_exempt
-def primaneta(request):
-
-	data = json.loads(request.body)
-
-	print 'PrimaNeta',data
-
-	monto = data['precio']
-
-
-	orderId = data['orderId']
-	uso = data['uso']
-	modelo = data['modelo']
-
-	a = AutoValor.objects.filter(id_modelo_id=modelo)
-
-	for m in a:
-
-		tipo = m.id_tipo.id_clase
-
-	print 'monto',monto
-
-	modalidad = data['modalidad']
-
-	anio = data['anio']
-
-
-	print 'ANIO.........',anio
-
-	programa = data['programa']
-
-	if RiesgAseg.objects.filter(aseguradora_id=1,id_model_id=modelo):
-
-		riesgopositiva = RiesgAseg.objects.get(aseguradora_id=1,id_model_id=modelo).id_riesg__tipo_riesgo
-	
-	if RiesgAseg.objects.filter(aseguradora_id=2,id_model_id=modelo):
-
-		riesgopacifico = RiesgAseg.objects.get(aseguradora_id=2,id_model_id=modelo).id_riesg__tipo_riesgo
-	
-	if RiesgAseg.objects.filter(aseguradora_id=4,id_model_id=modelo):
-	
-		riesgomapfre = RiesgAseg.objects.get(aseguradora_id=4,id_model_id=modelo).id_riesg__tipo_riesgo
-	
-	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=modelo):
-
-		riesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=modelo).id_riesg__tipo_riesgo
-
-	riesgohdi = 3
-	riesgorimac= 3
-	riesgopositiva = 3
-	riesgomapfre = 3
-	riesgopacifico = 3
-
-	print 'riesgopacifico,riesgohdi,riesgopacifico,riesgorimac,riesgopositiva,riesgomapfre',riesgopacifico,riesgohdi,riesgopacifico,riesgorimac,riesgopositiva,riesgomapfre
-
-	anio = int(Anio.objects.get(id_anio=anio).anio_antig)
-
-	anioact = int(datetime.datetime.now().year)
-
-	anio = anioact - anio
-
-	demision = Parametros.objects.get(id=1).d_emision
-
-	igv = Parametros.objects.get(id=1).igv
-
-	aseguradora = Aseguradora.objects.all().values('id_asegurad','name_asegurad').order_by('name_asegurad')
-
-	for i in range(len(aseguradora)):
-
-		if aseguradora[i]['id_asegurad'] == 3:
-
-			h = TasaAsegur.objects.filter(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio)
-
-			print 'Tasa PHDI', h.count() ,riesgohdi,anio
-
-			if h.count() == 1:
-
-				aseguradora[i]['tasahdi'] = round(float(TasaAsegur.objects.get(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio).value),2)
-				
-				print 'Value',aseguradora[i]['tasahdi']
-
-				aseguradora[i]['hdi'] = round(float(TasaAsegur.objects.get(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio).value)/100*float(monto),2)
-				
-				aseguradora[i]['phdisubtotal'] = round((100+float(demision))*float(aseguradora[i]['hdi'])/100,2)
-
-				aseguradora[i]['phditotal'] = round((100+float(igv))*aseguradora[i]['phdisubtotal']/100,2)
-
-
-		if aseguradora[i]['id_asegurad'] == 1:
-
-			p= TasaAsegur.objects.filter(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,tipo_id=tipo)
-
-			print 'Tasa Positiva', p.count() ,'Riesgo' ,riesgopositiva,'Anio', anio,'Tipo',tipo
-
-			if p.count()==1:
-
-				aseguradora[i]['tasapositiva'] = round(float(TasaAsegur.objects.get(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo).value),2)
-
-				print 'Tasa Positiva', p.count() ,riesgopositiva,anio,tipo,aseguradora[i]['tasapositiva'] 
-
-				aseguradora[i]['positiva'] = round(float(TasaAsegur.objects.get(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo).value)/100*float(monto),2)
-
-				aseguradora[i]['positivasubtotal'] = round((100+float(demision))*aseguradora[i]['positiva']/100,2)
-
-				aseguradora[i]['positivatotal'] = round((100+float(igv))*aseguradora[i]['positivasubtotal']/100,2)
-		
-		if aseguradora[i]['id_asegurad'] == 2:
-
-			if int(uso) == 1:
-
-
-				t = TasaAsegur.objects.filter(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico)
-
-				print 'Tasa Pacifico',t.count(),riesgopacifico,tipo,anio
-
-				if t.count()==1:
-
-					aseguradora[i]['tasapacifico'] = round(float(TasaAsegur.objects.get(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico).value),2)
-
-					print aseguradora[i]['tasapacifico'] 
-
-					aseguradora[i]['pacifico'] = round(float(TasaAsegur.objects.get(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico).value)/100*float(monto),2)
-
-					aseguradora[i]['pacificosubtotal'] = round((100+float(demision))*aseguradora[i]['pacifico']/100,2)
-
-					aseguradora[i]['pacificototal'] = round((100+int(igv))*aseguradora[i]['pacificosubtotal']/100,2)
-			
-
-
-			else:
-
-				aseguradora[i]['pacifico'] = 'Consultar en la URL:'
-
-				aseguradora[i]['pacificosubtotal'] = 'http://pacifico.com'
-
-				aseguradora[i]['pacificototal'] = ''
-
-
-		if aseguradora[i]['id_asegurad'] == 4:
-
-			m = TasaAsegur.objects.filter(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1)
-
-			print 'Tasa Mapfre', m.count(),riesgomapfre,anio,tipo
-
-			if m.count()==1:
-
-				aseguradora[i]['tasamapfre'] = round(float(TasaAsegur.objects.get(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1).value),2)
-
-				aseguradora[i]['mapfre'] = round(float(TasaAsegur.objects.get(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1).value)/100*float(monto),2)
-
-				aseguradora[i]['mapfresubtotal'] = round((100+float(demision))*aseguradora[i]['mapfre']/100,2)
-
-				aseguradora[i]['mapfretotal'] = round((100+float(igv))*aseguradora[i]['mapfresubtotal']/100,2)
-
-
-
-		if aseguradora[i]['id_asegurad'] == 5:
-
-			r = TasaAsegur.objects.filter(id_aseg_id=5,anio=int(anio),id_uso_id=uso,riesgo_id=riesgorimac)
-
-			if r.count()==1:
-
-				print 'Tasa Rimac',r.count(),anio,uso
-				
-				aseguradora[i]['tasarimac'] = round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=anio,id_uso_id=uso,riesgo_id=riesgorimac).value),2)
-
-				aseguradora[i]['rimac'] = round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=anio,id_uso_id=uso,riesgo_id=riesgorimac).value)/100*float(monto),2)
-
-				aseguradora[i]['rimacsubtotal'] = round((100+float(demision))*aseguradora[i]['rimac']/100,2)
-
-				aseguradora[i]['rimactotal'] = round((100+float(igv))*aseguradora[i]['rimacsubtotal']/100,2)
-
-
-
-	data_dict = ValuesQuerySetToDict(aseguradora)
-
-	data = json.dumps(data_dict)
-
-
-	return HttpResponse(data, content_type="application/json")
 
 
 

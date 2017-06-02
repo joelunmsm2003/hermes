@@ -32,7 +32,7 @@ function Resultado($scope,$http,$filter,$routeParams,$location,$localStorage) {
                 $scope.positiva = data[3]['positiva']
                 $scope.mapfre = data[1]['mapfre']
                 $scope.pacifico = data[2]['pacifico']
-                $scope.rimac = data[4]['rimac']
+                $scope.rimac = 77777777
 
                 $scope.phdisubtotal = data[0]['phdisubtotal']
                 $scope.positivasubtotal = data[3]['positivasubtotal']

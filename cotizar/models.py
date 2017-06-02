@@ -401,7 +401,7 @@ class TasaAsegur(models.Model):
     modalidad = models.ForeignKey('Modalidad', models.DO_NOTHING, db_column='modalidad')
     riesgo = models.ForeignKey('Riesgo', models.DO_NOTHING, db_column='riesgo')
     programa = models.ForeignKey('Programa', models.DO_NOTHING, db_column='programa')
-    anio = models.ForeignKey('Anio', models.DO_NOTHING, db_column='anio')
+    anio = models.CharField(max_length=500)
     ubicacion = models.IntegerField(blank=True, null=True)
 
 
