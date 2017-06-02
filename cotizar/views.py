@@ -1673,7 +1673,7 @@ def fiiiii(request):
 
 
 @csrf_exempt
-def primaneta(request):
+def primaneta(request,descuento):
 
 	data = json.loads(request.body)
 
@@ -1730,6 +1730,8 @@ def primaneta(request):
 	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=id_auto_valor):
 
 		riesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.id_riesgo
+
+		nameriesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
 
 
 	print 'riesgorimac',riesgorimac
@@ -1832,15 +1834,20 @@ def primaneta(request):
 			ri = TasaAsegur.objects.filter(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2)
 
 
+
+
 			if ri.count()==1:
 
-				print round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2).value),2)
 				
-				aseguradora[i]['tasarimac'] = round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2).value),2)
-
+				aseguradora[i]['tasarimac'] = round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2).value)*int(descuento)/100,2)
+				
 				aseguradora[i]['rimac'] = round(aseguradora[i]['tasarimac']*float(monto)/100,2)
 
 				aseguradora[i]['rimacsubtotal'] = round(aseguradora[i]['rimac']*1.2154,2)
+
+				aseguradora[i]['riesgo'] = nameriesgorimac
+
+				aseguradora[i]['idriesgo'] = riesgorimac
 
 				# aseguradora[i]['rimactotal'] = round((100+float(igv))*aseguradora[i]['rimacsubtotal']/100,2)
 

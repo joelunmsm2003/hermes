@@ -2,6 +2,86 @@
 function Resultado($scope,$http,$filter,$routeParams,$location,$localStorage) {
 
 
+$scope.items5 = [
+{
+  id: 0,
+  label: '0%',
+  value:'100'
+},{
+  id: 1,
+  label: '1%',
+  value:'99'
+}, {
+  id: 2,
+  label: '2%',
+  value:'98'
+}, {
+  id: 3,
+  label: '3%',
+  value:'97'
+}, {
+  id: 4,
+  label: '4%',
+  value:'96'
+}, {
+  id: 5,
+  label: '5%',
+  value:'95'
+}];
+
+
+$scope.items8 = [
+{
+  id: 0,
+  label: '0%',
+  value:'100'
+},{
+  id: 1,
+  label: '1%',
+  value:'99'
+}, {
+  id: 2,
+  label: '2%',
+  value:'98'
+}, {
+  id: 3,
+  label: '3%',
+  value:'97'
+}, {
+  id: 4,
+  label: '4%',
+  value:'96'
+}, {
+  id: 5,
+  label: '5%',
+  value:'95'
+}, {
+  id: 5,
+  label: '6%',
+  value:'94'
+},
+ {
+  id: 5,
+  label: '7%',
+  value:'93'
+},
+{
+  id: 5,
+  label: '8%',
+  value:'92'
+}
+];
+
+
+
+    $scope.descuento = function(descuento){
+
+        console.log('tasas...',descuento)
+
+         $scope.traeprima(descuento.value)
+    }
+
+
     $scope.calculo = function (data) {
 
 
@@ -75,6 +155,8 @@ function Resultado($scope,$http,$filter,$routeParams,$location,$localStorage) {
                 $scope.pdf.mapfretotal = data[1]['mapfretotal']
                 $scope.pdf.pacificototal = data[2]['pacificototal']
                 $scope.pdf.rimactotal = data[4]['rimactotal']
+
+                $scope.riesgorimac = data[4]['riesgorimac']
 
                 $http({
 
@@ -467,11 +549,12 @@ function Resultado($scope,$http,$filter,$routeParams,$location,$localStorage) {
 
     $scope.model = {}
 
+    $scope.traeprima = function(descuento){
 
 
-    $http({
+            $http({
 
-        url: host+"/primaneta/",
+        url: host+"/primaneta/"+descuento,
         data: $routeParams,
         method: 'POST',
 
@@ -503,6 +586,18 @@ function Resultado($scope,$http,$filter,$routeParams,$location,$localStorage) {
         $scope.mapfretotal = data[1]['mapfretotal']
         $scope.pacificototal = data[2]['pacificototal']
         $scope.rimactotal = data[4]['rimactotal']
+        $scope.riesgorimac =data[4]['riesgo']
+        $scope.idriesgo =data[4]['idriesgo']
+
+        if($scope.idriesgo == 5 || $scope.idriesgo==6){
+
+            $scope.items = $scope.items5
+        }
+         if($scope.idriesgo == 4 || $scope.idriesgo==7){
+
+            $scope.items = $scope.items8
+        }
+
 
                 /*Pdf Genera*/
 
@@ -542,12 +637,14 @@ function Resultado($scope,$http,$filter,$routeParams,$location,$localStorage) {
 
             })
 
-
-
-
-
-
     })
+
+
+    }
+
+
+    $scope.traeprima(100)
+
 
        
 

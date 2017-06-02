@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Cotizador Web</title>
-
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
 		
 	
@@ -85,7 +85,7 @@
               <th width='20%' class="commercial_name">Aseguradoras <a ng-click="sort_by('commercial_name',currentPage)"></a></th>
                
                 <th width='16%' class="legal_id">MAPFRE <a ng-click="sort_by('legal_id',currentPage)"></a></th>
-                <th width='16%' class="legal_id">RÍMAC <a ng-click="sort_by('legal_id',currentPage)"></a></th>
+                <th width='16%' class="legal_id">RÍMAC <small>{{riesgorimac}}</small><a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' class="legal_id">LA POSITIVA <a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' class="legal_id">PACÍFICO <a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' >HDI<a ng-click="sort_by('legal_id',currentPage)"></a></th>
@@ -123,14 +123,18 @@
 
             <th style='background-color:#FF6601; color=#000'><strong>Primas</strong></th>
             <th style='background-color:#FF6601;'></th>
-            <th style='background-color:#FF6601;'>Tasa : {{model.tasarimac}}%</th>
+            <th style='background-color:#FF6601;' >Tasa : <span class="animated bounceIn">{{model.tasarimac}}% </span> 
+
+            <select ng-change='descuento(item)' ng-options="item as item.label for item in items track by item.id" ng-model="item"></select></th>
+
+
             <th style='background-color:#FF6601;'></th>
             <th style='background-color:#FF6601;'></th>
             <th style='background-color:#FF6601;'></th>
 
             <tr>
 
-            Perfil: {{perfil}}
+            Perfil: {{perfil}} 
 
             <td ng-if="perfil==1">Tasa</td>
             <td ng-if="perfil==1"><input ng-change="calculo(model)" ng-model='model.tasamapfre' type="number" class='form-control'></td>
@@ -140,10 +144,10 @@
             <td ng-if="perfil==1"><input ng-change="calculo(model)" ng-model='model.tasahdi' type="number" class='form-control'></td>
             </tr>
 
-            <tr>
+            <tr >
             <td>Prima Neta</td>
             <td>{{mapfre}}</td>
-            <td>{{rimac}}</td>
+            <td >{{rimac}}</td>
             <td>{{positiva}}</td>
             <td>{{pacifico}}</td>
             <td>{{hdi}}</td>
@@ -152,7 +156,7 @@
             <tr>
             <td>Prima Comercial</td>
             <td>{{mapfresubtotal}}</td>
-            <td>{{rimacsubtotal}}</td>
+            <td >{{rimacsubtotal}}</td>
             <td>{{positivasubtotal}}</td>
             <td>{{pacificosubtotal}}</td>
             <td>{{phdisubtotal}}</td>
