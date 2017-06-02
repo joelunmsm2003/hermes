@@ -76,6 +76,184 @@ from reportlab.lib.units import inch
 from django.http import HttpResponse
 
 
+def uploadfile(request):
+
+	if request.method == 'POST':
+
+		process_file = request.FILES['file']
+
+		Lote(file=process_file).save()
+
+		id_lote = Lote.objects.all().values('id').order_by('-id')[0]['id']
+
+		process_file = Lote.objects.get(id=id_lote).file
+
+		xls_name = '/var/www/html/'+str(process_file)
+
+		print xls_name
+
+		book = xlrd.open_workbook(xls_name)
+
+		sh = book.sheet_by_index(0)
+
+		for rx in range(sh.nrows):
+
+			for col in range(sh.ncols):
+
+				if rx>4:
+
+					if col==0:
+
+						ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
+
+					if col==1:
+
+						valor= str(sh.row(rx)[col]).split('number:')[1]
+
+						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=6,anio=ant,programa_id=2).save()
+
+					if col==2:
+
+						valor= str(sh.row(rx)[col]).split('number:')[1]
+
+						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=2).save()
+
+					if col==3:
+
+						valor= str(sh.row(rx)[col]).split('number:')[1]
+
+						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=4,anio=ant,programa_id=2).save()
+
+					if col==4:
+
+						valor= str(sh.row(rx)[col]).split('number:')[1]
+
+						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=5,anio=ant,programa_id=2).save()
+
+					if col==5:
+
+						valor= str(sh.row(rx)[col]).split('number:')[1]
+
+						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=161,anio=ant,programa_id=2).save()
+
+
+					# if col==6:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=161,anio=ant).save()
+
+					# if col==7:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==8:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==9:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==10:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+
+					# if col==11:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+
+					# if col==12:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==13:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==14:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==15:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==16:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==17:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+
+					# if col==18:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==19:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==20:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+					# if col==21:
+
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+
+
+
+
+			
+			print '.....'
+
+		data_json = simplejson.dumps('nn')
+
+		return HttpResponse(data_json, content_type="application/json")
+
+
+def subirtasas(request):
+
+
+
+	return render(request, 'subirtasas.html',{})
+
+
 class Perfil(JSONWebTokenAuthMixin, View):
 
 	def get(self, request):
@@ -402,9 +580,9 @@ def recibeservicios(request):
 
 
 @csrf_exempt
-def prueba(request):
+def riesgocsv(request,riesgo):
 
-	ri = RiesgAseg.objects.filter(aseguradora_id=5,id_riesg=7).values('id_model_id','id_model__id_modelo__name_model','id_model__id_marca__name_marca','id_riesg__tipo_riesgo')
+	ri = RiesgAseg.objects.filter(aseguradora_id=5,id_riesg=riesgo).values('id_model_id','id_model__id_modelo__name_model','id_model__id_marca__name_marca','id_riesg__tipo_riesgo')
 
 	response = HttpResponse(content_type='text/csv')
 
@@ -438,7 +616,7 @@ def tasascsv(request):
 
 	response = HttpResponse(content_type='text/csv')
 
-	response['Content-Disposition'] = 'attachment; filename="Riesgos.csv"'
+	response['Content-Disposition'] = 'attachment; filename="Tasas.csv"'
 
 	writer = csv.writer(response)
 
@@ -595,7 +773,6 @@ def exportarcobertura(request,data):
 
 			aseguradora = str(data).split('a')[1].split('x')
 
-			print cobertura,aseguradora,type(cobertura),type([2])
 
 			#['1'] ['1', '1'] <type 'list'> <type 'list'>
 
@@ -641,7 +818,6 @@ def exportarriesgo(request,data):
 
 				auto[i]['aseguradora'] = RiesgAseg.objects.filter(aseguradora_id=data).values('aseguradora__name_asegurad')[0]['aseguradora__name_asegurad']
 
-				print auto[i]['riesgo']
 
 
 		response = HttpResponse(content_type='text/csv')
@@ -713,8 +889,6 @@ def tasaadmin(request):
 
 			monto = json.loads(request.body)['monto']['precio']
 			data = json.loads(request.body)['data']
-
-			print 'tasaadmin...',data
 
 
 
@@ -1152,7 +1326,6 @@ def generate_pdf_view(request):
 @csrf_exempt
 def fiiiii(request):
 
-	print 'Financiamiento......',json.loads(request.body)
 
 	data = json.loads(request.body)
 
@@ -1161,7 +1334,6 @@ def fiiiii(request):
 
 	financiamiento = Financiamiento.objects.all().values('id_financ','financiamiento').order_by('id_financ')
 
-	print type(financiamiento)
 
 	lista = []
 
@@ -1181,7 +1353,6 @@ def fiiiii(request):
 
 		tipo = m.id_tipo.id_clase
 
-	print 'monto',monto
 
 	if RiesgAseg.objects.filter(aseguradora_id=1,id_model_id=modelo):
 
@@ -1205,7 +1376,6 @@ def fiiiii(request):
 	riesgomapfre = 3
 	riesgopacifico = 3
 
-	print 'riesgopacifico,riesgohdi,riesgopacifico,riesgorimac,riesgopositiva,riesgomapfre',riesgopacifico,riesgohdi,riesgopacifico,riesgorimac,riesgopositiva,riesgomapfre
 
 	anio = int(Anio.objects.get(id_anio=anio).anio_antig)
 
@@ -1227,7 +1397,6 @@ def fiiiii(request):
 
 			h = TasaAsegur.objects.filter(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio)
 
-			print 'Tasa PHDI.............', h.count() ,riesgohdi,anio
 
 			if h.count() == 1:
 
@@ -1248,7 +1417,6 @@ def fiiiii(request):
 
 					fact=round(float(PT)/4,2)
 
-					print 'fact 4' , fact
 
 				elif int(FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=3).cuota)==11:
 
@@ -1256,8 +1424,6 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part1)/11,2)
 
-					print 'part1 11' , part1
-					print 'fact 11' , fact
 
 				else:
 
@@ -1265,35 +1431,24 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part2)/12,2)
 
-					print 'part1 12' , part2
-					print 'fact 12' , fact
+
 
 			financiamiento[i]['hdi'] = FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=3).cuota+str(" CUOTAS de  ")+str(fact)
 
-		
-		print 'sdfgsdfgsdfg',FinanAsegu.objects.filter(id_finan=financiamiento[i]['id_financ'],id_aseg=1).count()
-
-
-		
 
 		if FinanAsegu.objects.filter(id_finan=financiamiento[i]['id_financ'],id_aseg=1).count()==1:
 			
 
 			h = TasaAsegur.objects.filter(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo)
 
-
-			print 'Tasa POSITIVAAAAAAAAAA.............', h.count() ,riesgopositiva,anio
-
-
 			if h.count() == 1:
 
 				tasa = round(float(TasaAsegur.objects.get(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo).value),2)
 
-				print 'TASA POSITIVAAAAAAAAAA ......' ,tasa
 
 				PN= round(float(tasa)*float(monto)/100,2)
 
-				print 'POSTIVIA PRIMA NETAAAAAAAAAA ......' ,PN
+
 
 				m1 = round(float(igv)/100+1,2)
 
@@ -1303,13 +1458,13 @@ def fiiiii(request):
 
 				PT = round(float(m3)*float(m2),2)
 
-				print 'POSTIVIA PRIMA TOTAL ......' ,PT
+
 
 				if int(FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=1).cuota)==5:
 
 					fact=round(float(PT)/5,4)
 
-					print 'fact 4' , fact
+
 
 				elif int(FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=1).cuota)==10:
 
@@ -1317,17 +1472,12 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part1)/10,2)
 
-					print 'part1 11' , part1
-					print 'fact 11' , fact
-
 				else:
 
 					part2= round(float(FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=1).tea)+1,4)
 
 					fact=round((float(PT)*part2)/12,2)
 
-					print 'part1 12' , part2
-					print 'fact 12' , fact
 
 			financiamiento[i]['positiva'] = FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=1).cuota+str(" CUOTAS de  ")+str(fact)
 
@@ -1337,7 +1487,7 @@ def fiiiii(request):
 
 			h = TasaAsegur.objects.filter(id_aseg_id=2,riesgo_id=riesgopacifico,anio=anio)
 
-			print 'Tasa PACIFICO.............', h.count() ,riesgopacifico,anio
+
 
 			if h.count() == 1:
 
@@ -1358,7 +1508,7 @@ def fiiiii(request):
 
 					fact=round(float(PT)/4,2)
 
-					print 'fact 4' , fact
+
 
 				elif int(FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=2).tea)==0.082:
 
@@ -1366,8 +1516,7 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part1)/10,2)
 
-					print 'part1 11' , part1
-					print 'fact 11' , fact
+
 
 				else:
 
@@ -1375,8 +1524,7 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part2)/10,2)
 
-					print 'part1 12' , part2
-					print 'fact 12' , fact
+
 
 			financiamiento[i]['pacifico'] = FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=2).cuota+str(" CUOTAS de  ")+str(fact)
 
@@ -1388,7 +1536,6 @@ def fiiiii(request):
 
 			h = TasaAsegur.objects.filter(id_aseg_id=5,riesgo_id=riesgorimac,anio=anio,tipo_id=tipo,ubicacion=1,id_uso_id=uso)
 
-			print 'Tasa RIMAC.............', h.count() ,riesgorimac,anio
 
 			if h.count() == 1:
 
@@ -1409,7 +1556,7 @@ def fiiiii(request):
 
 					fact=round(float(PT)/5,2)
 
-					print 'fact 4' , fact
+
 
 				elif int(FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=5).cuota)==10:
 
@@ -1417,8 +1564,6 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part1)/10,2)
 
-					print 'part1 11' , part1
-					print 'fact 11' , fact
 
 				else:
 
@@ -1426,8 +1571,6 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part2)/12,2)
 
-					print 'part1 12' , part2
-					print 'fact 12' , fact
 
 			financiamiento[i]['rimac'] = FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=5).cuota+str(" CUOTAS de  ")+str(fact)
 
@@ -1437,7 +1580,7 @@ def fiiiii(request):
 
 			h = TasaAsegur.objects.filter(id_aseg_id=5,riesgo_id=riesgorimac,anio=anio,tipo_id=tipo,ubicacion=1,id_uso_id=uso)
 
-			print 'Tasa RIMAC.............', h.count() ,riesgorimac,anio
+
 
 			if h.count() == 1:
 
@@ -1458,7 +1601,7 @@ def fiiiii(request):
 
 					fact=round(float(PT)/5,2)
 
-					print 'fact 4' , fact
+
 
 				elif int(FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=5).cuota)==10:
 
@@ -1466,8 +1609,7 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part1)/10,2)
 
-					print 'part1 11' , part1
-					print 'fact 11' , fact
+
 
 				else:
 
@@ -1475,8 +1617,7 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part2)/12,2)
 
-					print 'part1 12' , part2
-					print 'fact 12' , fact
+
 
 			financiamiento[i]['rimac'] = FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=5).cuota+str(" CUOTAS de  ")+str(fact)
 
@@ -1487,7 +1628,6 @@ def fiiiii(request):
 
 			h = TasaAsegur.objects.filter(id_aseg_id=4,anio=anio,id_uso_id=uso,riesgo_id=riesgomapfre,tipo_id=tipo)
 
-			print 'Tasa MAPFRE.............', h.count() ,riesgomapfre,anio,uso
 
 			if h.count() == 1:
 
@@ -1508,7 +1648,6 @@ def fiiiii(request):
 
 					fact=round(float(PT)/4,2)
 
-					print 'fact 4' , fact
 
 				elif int(FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=4).cuota)==10:
 
@@ -1516,17 +1655,12 @@ def fiiiii(request):
 
 					fact=round((float(PT)*part1)/10,2)
 
-					print 'part1 11' , part1
-					print 'fact 11' , fact
-
 				else:
 
 					part2= round(float(FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=4).tea)+1,4)
 
 					fact=round((float(PT)*part2)/12,2)
 
-					print 'part1 12' , part2
-					print 'fact 12' , fact
 
 			financiamiento[i]['mapfre'] = FinanAsegu.objects.get(id_finan=financiamiento[i]['id_financ'],id_aseg=4).cuota+str(" CUOTAS de  ")+str(fact)
 
@@ -1565,13 +1699,13 @@ def primaneta(request):
 
 	# 	tipo = m.id_tipo.id_clase
 
-	print 'monto',monto
+
 
 	modalidad = data['modalidad']
 
 	anio = data['anio']
 
-	print 'ANIO.........',anio
+
 
 	programa = data['programa']
 
@@ -1595,13 +1729,10 @@ def primaneta(request):
 	
 	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=id_auto_valor):
 
-		print RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
+		riesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.id_riesgo
 
 
-
-
-
-	print 'riesgopacifico,riesgohdi,riesgopacifico,riesgorimac,riesgopositiva,riesgomapfre',riesgopacifico,riesgohdi,riesgopacifico,riesgorimac,riesgopositiva,riesgomapfre
+	print 'riesgorimac',riesgorimac
 
 	anio = int(Anio.objects.get(id_anio=anio).anio_antig)
 
@@ -1617,108 +1748,101 @@ def primaneta(request):
 
 	for i in range(len(aseguradora)):
 
-		if aseguradora[i]['id_asegurad'] == 3:
+		# if aseguradora[i]['id_asegurad'] == 3:
 
-			h = TasaAsegur.objects.filter(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio)
+		# 	h = TasaAsegur.objects.filter(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio)
 
-			print 'Tasa PHDI', h.count() ,riesgohdi,anio
+		# 	print 'Tasa PHDI', h.count() ,riesgohdi,anio
 
-			if h.count() == 1:
+		# 	if h.count() == 1:
 
-				aseguradora[i]['tasahdi'] = round(float(TasaAsegur.objects.get(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio).value),2)
+		# 		aseguradora[i]['tasahdi'] = round(float(TasaAsegur.objects.get(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio).value),2)
 				
-				print 'Value',aseguradora[i]['tasahdi']
 
-				aseguradora[i]['hdi'] = round(float(TasaAsegur.objects.get(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio).value)/100*float(monto),2)
+		# 		aseguradora[i]['hdi'] = round(float(TasaAsegur.objects.get(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio).value)/100*float(monto),2)
 				
-				aseguradora[i]['phdisubtotal'] = round((100+float(demision))*float(aseguradora[i]['hdi'])/100,2)
+		# 		aseguradora[i]['phdisubtotal'] = round((100+float(demision))*float(aseguradora[i]['hdi'])/100,2)
 
-				aseguradora[i]['phditotal'] = round((100+float(igv))*aseguradora[i]['phdisubtotal']/100,2)
+		# 		aseguradora[i]['phditotal'] = round((100+float(igv))*aseguradora[i]['phdisubtotal']/100,2)
 
 
-		if aseguradora[i]['id_asegurad'] == 1:
+		# if aseguradora[i]['id_asegurad'] == 1:
 
-			p= TasaAsegur.objects.filter(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,tipo_id=tipo)
+		# 	p= TasaAsegur.objects.filter(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,tipo_id=tipo)
 
-			print 'Tasa Positiva', p.count() ,'Riesgo' ,riesgopositiva,'Anio', anio,'Tipo',tipo
 
-			if p.count()==1:
+		# 	if p.count()==1:
 
-				aseguradora[i]['tasapositiva'] = round(float(TasaAsegur.objects.get(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo).value),2)
+		# 		aseguradora[i]['tasapositiva'] = round(float(TasaAsegur.objects.get(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo).value),2)
 
-				print 'Tasa Positiva', p.count() ,riesgopositiva,anio,tipo,aseguradora[i]['tasapositiva'] 
 
-				aseguradora[i]['positiva'] = round(float(TasaAsegur.objects.get(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo).value)/100*float(monto),2)
+		# 		aseguradora[i]['positiva'] = round(float(TasaAsegur.objects.get(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo).value)/100*float(monto),2)
 
-				aseguradora[i]['positivasubtotal'] = round((100+float(demision))*aseguradora[i]['positiva']/100,2)
+		# 		aseguradora[i]['positivasubtotal'] = round((100+float(demision))*aseguradora[i]['positiva']/100,2)
 
-				aseguradora[i]['positivatotal'] = round((100+float(igv))*aseguradora[i]['positivasubtotal']/100,2)
+		# 		aseguradora[i]['positivatotal'] = round((100+float(igv))*aseguradora[i]['positivasubtotal']/100,2)
 		
-		if aseguradora[i]['id_asegurad'] == 2:
+		# if aseguradora[i]['id_asegurad'] == 2:
 
-			if int(uso) == 1:
+		# 	if int(uso) == 1:
 
 
-				t = TasaAsegur.objects.filter(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico)
+		# 		t = TasaAsegur.objects.filter(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico)
 
-				print 'Tasa Pacifico',t.count(),riesgopacifico,tipo,anio
+		# 		if t.count()==1:
 
-				if t.count()==1:
+		# 			aseguradora[i]['tasapacifico'] = round(float(TasaAsegur.objects.get(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico).value),2)
 
-					aseguradora[i]['tasapacifico'] = round(float(TasaAsegur.objects.get(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico).value),2)
+		# 			aseguradora[i]['pacifico'] = round(float(TasaAsegur.objects.get(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico).value)/100*float(monto),2)
 
-					print aseguradora[i]['tasapacifico'] 
+		# 			aseguradora[i]['pacificosubtotal'] = round((100+float(demision))*aseguradora[i]['pacifico']/100,2)
 
-					aseguradora[i]['pacifico'] = round(float(TasaAsegur.objects.get(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico).value)/100*float(monto),2)
-
-					aseguradora[i]['pacificosubtotal'] = round((100+float(demision))*aseguradora[i]['pacifico']/100,2)
-
-					aseguradora[i]['pacificototal'] = round((100+int(igv))*aseguradora[i]['pacificosubtotal']/100,2)
+		# 			aseguradora[i]['pacificototal'] = round((100+int(igv))*aseguradora[i]['pacificosubtotal']/100,2)
 			
 
 
-			else:
+		# 	else:
 
-				aseguradora[i]['pacifico'] = 'Consultar en la URL:'
+		# 		aseguradora[i]['pacifico'] = 'Consultar en la URL:'
 
-				aseguradora[i]['pacificosubtotal'] = 'http://pacifico.com'
+		# 		aseguradora[i]['pacificosubtotal'] = 'http://pacifico.com'
 
-				aseguradora[i]['pacificototal'] = ''
+		# 		aseguradora[i]['pacificototal'] = ''
 
 
-		if aseguradora[i]['id_asegurad'] == 4:
+		# if aseguradora[i]['id_asegurad'] == 4:
 
-			m = TasaAsegur.objects.filter(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1)
+		# 	m = TasaAsegur.objects.filter(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1)
 
-			print 'Tasa Mapfre', m.count(),riesgomapfre,anio,tipo
 
-			if m.count()==1:
+		# 	if m.count()==1:
 
-				aseguradora[i]['tasamapfre'] = round(float(TasaAsegur.objects.get(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1).value),2)
+		# 		aseguradora[i]['tasamapfre'] = round(float(TasaAsegur.objects.get(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1).value),2)
 
-				aseguradora[i]['mapfre'] = round(float(TasaAsegur.objects.get(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1).value)/100*float(monto),2)
+		# 		aseguradora[i]['mapfre'] = round(float(TasaAsegur.objects.get(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1).value)/100*float(monto),2)
 
-				aseguradora[i]['mapfresubtotal'] = round((100+float(demision))*aseguradora[i]['mapfre']/100,2)
+		# 		aseguradora[i]['mapfresubtotal'] = round((100+float(demision))*aseguradora[i]['mapfre']/100,2)
 
-				aseguradora[i]['mapfretotal'] = round((100+float(igv))*aseguradora[i]['mapfresubtotal']/100,2)
+		# 		aseguradora[i]['mapfretotal'] = round((100+float(igv))*aseguradora[i]['mapfresubtotal']/100,2)
 
 
 
 		if aseguradora[i]['id_asegurad'] == 5:
 
-			r = TasaAsegur.objects.filter(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2)
+			ri = TasaAsegur.objects.filter(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2)
 
-			if r.count()==1:
 
-				print 'Tasa Rimac',r.count(),anio,uso
+			if ri.count()==1:
+
+				print round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2).value),2)
 				
-				aseguradora[i]['tasarimac'] = round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=anio,id_uso_id=uso,riesgo_id=riesgorimac).value),2)
+				aseguradora[i]['tasarimac'] = round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2).value),2)
 
-				aseguradora[i]['rimac'] = round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=anio,id_uso_id=uso,riesgo_id=riesgorimac).value)/100*float(monto),2)
+				aseguradora[i]['rimac'] = round(aseguradora[i]['tasarimac']*float(monto),2)
 
 				aseguradora[i]['rimacsubtotal'] = round((100+float(demision))*aseguradora[i]['rimac']/100,2)
 
-				aseguradora[i]['rimactotal'] = round((100+float(igv))*aseguradora[i]['rimacsubtotal']/100,2)
+				# aseguradora[i]['rimactotal'] = round((100+float(igv))*aseguradora[i]['rimacsubtotal']/100,2)
 
 
 
@@ -1728,19 +1852,8 @@ def primaneta(request):
 
 
 	return HttpResponse(data, content_type="application/json")
-'''
-@csrf_exempt
-def riesgos(request):
 
-	d=Riesgo.objects.all().values('id_riesgo','tipo_riesgo').order_by('tipo_riesgo');
 
-	data_dict = ValuesQuerySetToDict(d)
-
-	data = json.dumps(data_dict)
-
-	return HttpResponse(data, content_type="application/json")
-
-'''
 @csrf_exempt
 def riesgomodelo(request,modelo):
 
@@ -3265,7 +3378,6 @@ def enviaemail(request):
 			tipo = m.id_tipo.clase
 			modelo = m.id_modelo.name_model
 
-		print 'Mensaje..............'
 		msj = 'Estimado cliente '+ str(name) +' , el siguiente link detalla la cotizacion del auto ' + str(marca) +' '+ str(modelo)+ ' valorizado en ' +str(precio)+'. Adjunto el link: '+ str('http://cotizador.hermes.pe:800/html/pdfout.pdf')
 
 		
@@ -3281,7 +3393,7 @@ def enviaemail(request):
 			f.write(str(email)+'\n')
 			f.close()
 
-			send_mail('Hermes',msj,'cotiza@hermes.pe', [email], fail_silently=False)
+			#send_mail('Hermes',msj,'cotiza@hermes.pe', [email], fail_silently=False)
 
 		
 	return HttpResponse(json.dumps('id_cliente'), content_type="application/json")

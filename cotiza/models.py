@@ -12,6 +12,10 @@ from __future__ import unicode_literals
 from django.db import models
 
 
+
+
+
+
 class Anio(models.Model):
     id_anio = models.IntegerField(primary_key=True)
     anio_antig = models.IntegerField()
@@ -398,3 +402,12 @@ class Uso(models.Model):
     class Meta:
         managed = False
         db_table = 'uso'
+
+
+
+class Lote(models.Model):
+    file =models.FileField(upload_to='static')
+
+    class Meta:
+        managed = False
+        db_table = 'lote'

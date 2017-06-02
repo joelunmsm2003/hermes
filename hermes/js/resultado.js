@@ -478,7 +478,7 @@ function Resultado($scope,$http,$filter,$routeParams,$location,$localStorage) {
     }).
     success(function(data) {
 
-        console.log(data)
+        console.log('Prima Neta',data)
 
         $scope.model.tasahdi = data[0]['tasahdi']
         $scope.model.tasapositiva = data[3]['tasapositiva']

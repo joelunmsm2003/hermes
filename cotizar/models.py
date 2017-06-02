@@ -426,3 +426,10 @@ class Uso(models.Model):
     class Meta:
         managed = False
         db_table = 'uso'
+        
+class Lote(models.Model):
+    file =models.FileField(upload_to='static')
+
+    class Meta:
+        managed = False
+        db_table = 'lote'
