@@ -1838,9 +1838,9 @@ def primaneta(request):
 				
 				aseguradora[i]['tasarimac'] = round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2).value),2)
 
-				aseguradora[i]['rimac'] = round(aseguradora[i]['tasarimac']*float(monto),2)
+				aseguradora[i]['rimac'] = round(aseguradora[i]['tasarimac']*float(monto)/100,2)
 
-				aseguradora[i]['rimacsubtotal'] = round((100+float(demision))*aseguradora[i]['rimac']/100,2)
+				aseguradora[i]['rimacsubtotal'] = round(aseguradora[i]['rimac']*1.2154,2)
 
 				# aseguradora[i]['rimactotal'] = round((100+float(igv))*aseguradora[i]['rimacsubtotal']/100,2)
 
