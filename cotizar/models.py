@@ -292,6 +292,7 @@ class Gps(models.Model):
 class Marca(models.Model):
     id_marca = models.AutoField(primary_key=True)
     name_marca = models.CharField(max_length=20)
+    origen = models.CharField(max_length=2000)
 
     class Meta:
         managed = False
@@ -402,7 +403,11 @@ class TasaAsegur(models.Model):
     riesgo = models.ForeignKey('Riesgo', models.DO_NOTHING, db_column='riesgo')
     programa = models.ForeignKey('Programa', models.DO_NOTHING, db_column='programa')
     anio = models.CharField(max_length=500)
-    ubicacion = models.IntegerField(blank=True, null=True)
+    ubicacion = models.CharField(max_length=500)
+    modelo = models.ForeignKey('AutoValor', models.DO_NOTHING, db_column='modelo')
+    origen = models.CharField(max_length=500)
+    categoria = models.ForeignKey('Categorias', models.DO_NOTHING, db_column='categoria')
+    timon = models.CharField(max_length=500)
 
 
     class Meta:
