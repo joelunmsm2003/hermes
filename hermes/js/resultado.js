@@ -201,13 +201,17 @@ $scope.items8 = [
 
     $scope.categoria = $routeParams.categoria
 
-    $scope.programa = $routeParams.programa
-
     $scope.ubicacion = $routeParams.ubicacion
 
     $scope.categoria = $routeParams.categoria
 
     $scope.modelo = $routeParams.modelo
+
+    $scope.parametros = $routeParams
+
+
+
+    console.log('parametros',$scope.parametros)
 
     $scope.absUrl = $location.absUrl();
 
@@ -244,7 +248,7 @@ $scope.items8 = [
   });
   $http.get(host+"/asegprogram/"+5+"/").success(function(response) {$scope.programasrimac = response;
 
-    $scope.model.programar = $scope.programasrimac[4]
+    $scope.model.programar = $scope.programasrimac[0]
 
   });
 
@@ -290,20 +294,17 @@ $scope.items8 = [
 
     });
 
-    $scope.mafe = 4
-    $scope.posi = 25
-    $scope.ri = 18
-    $scope.pa = ''
+    // $scope.mafe = 4
+    // $scope.posi = 25
+    // $scope.ri = 18
+    // $scope.pa = ''
 
-    $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
+    // $scope.parametros.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
     $scope.programamapfre = function (data) {
 
         $scope.mafe = data.programam.id_prog 
 
-        console.log($scope.mafe)
-
-        console.log($scope.posi)
 
         $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
@@ -340,14 +341,12 @@ $scope.items8 = [
     $scope.programarimac = function (data) {
 
         $scope.ri = data.programar.id_prog
-        console.log($scope.ri)
-
-
-        console.log($scope.posi)
 
         $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
-        console.log('programa',$scope.programa)
+        $scope.parametros.programa = $scope.programa
+
+        console.log('parametros',$scope.parametros)
 
         $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
@@ -362,7 +361,10 @@ $scope.items8 = [
 
         });
 
-         $http.get(host+"/deducible/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
+
+        $scope.traeprima(100)
+
+        $http.get(host+"/deducible/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
         $scope.deducible = response;
 
@@ -545,17 +547,14 @@ $scope.items8 = [
         });
 
 
-    console.log('Data...',$routeParams)
-
     $scope.model = {}
 
     $scope.traeprima = function(descuento){
 
-
-            $http({
+    $http({
 
         url: host+"/primaneta/"+descuento,
-        data: $routeParams,
+        data: $scope.parametros,
         method: 'POST',
 
     }).

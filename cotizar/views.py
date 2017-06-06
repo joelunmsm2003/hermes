@@ -130,12 +130,11 @@ def uploadfile(request):
 
 						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=5,anio=ant,programa_id=2).save()
 
-					if col==5:
+					# if col==5:
 
-						valor= str(sh.row(rx)[col]).split('number:')[1]
+					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
 
-						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=161,anio=ant,programa_id=2).save()
-
+					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=161,anio=ant,programa_id=2).save()
 
 					# if col==6:
 
@@ -1679,8 +1678,7 @@ def primaneta(request,descuento):
 
 	print 'PrimaNeta',data
 
-	#PrimaNeta {u'orderId': u'596', u'anio': u'29', u'uso': u'1', u'precio': u'2154', u'modelo': u'5506', u'programa': u'3', u'modalidad': u'1'}
-
+	#PrimaNeta {u'orderId': u'618', u'anio': u'29', u'uso': u'1', u'precio': u'212', u'modelo': u'5506', u'programa': u'4z13z25z', u'modalidad': u'1'}
 
 
 	monto = data['precio']
@@ -1707,7 +1705,9 @@ def primaneta(request,descuento):
 
 
 
-	programa = data['programa']
+	programa = data['programa'].split('z')
+
+	programarimac= programa[1]
 
 	riesgohdi = 3
 	riesgorimac= 3
@@ -1815,8 +1815,7 @@ def primaneta(request,descuento):
 		# if aseguradora[i]['id_asegurad'] == 4:
 
 		# 	m = TasaAsegur.objects.filter(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1)
-
-
+ 
 		# 	if m.count()==1:
 
 		# 		aseguradora[i]['tasamapfre'] = round(float(TasaAsegur.objects.get(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1).value),2)
@@ -1831,25 +1830,28 @@ def primaneta(request,descuento):
 
 		if aseguradora[i]['id_asegurad'] == 5:
 
-			ri = TasaAsegur.objects.filter(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2)
+			if programarimac == 2: # Corporativa Rimac
 
+				ri = TasaAsegur.objects.filter(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=programarimac)
 
+				if ri.count()==1:
 
+					aseguradora[i]['tasarimac'] = round(round(TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2).value,2)*int(descuento)/100,2)
+					
+					aseguradora[i]['rimac'] = round(aseguradora[i]['tasarimac']*float(monto)/100,2)
 
-			if ri.count()==1:
+					aseguradora[i]['rimacsubtotal'] = round(aseguradora[i]['rimac']*1.2154,2)
 
-				
-				aseguradora[i]['tasarimac'] = round(float(TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=2).value)*int(descuento)/100,2)
-				
-				aseguradora[i]['rimac'] = round(aseguradora[i]['tasarimac']*float(monto)/100,2)
+					aseguradora[i]['riesgo'] = nameriesgorimac
 
-				aseguradora[i]['rimacsubtotal'] = round(aseguradora[i]['rimac']*1.2154,2)
+					aseguradora[i]['idriesgo'] = riesgorimac
 
-				aseguradora[i]['riesgo'] = nameriesgorimac
+					# aseguradora[i]['rimactotal'] = round((100+float(igv))*aseguradora[i]['rimacsubtotal']/100,2)
 
-				aseguradora[i]['idriesgo'] = riesgorimac
+			# if programarimac == 7: # Programa 4x4
 
-				# aseguradora[i]['rimactotal'] = round((100+float(igv))*aseguradora[i]['rimacsubtotal']/100,2)
+			# 		print programarimac
+
 
 
 

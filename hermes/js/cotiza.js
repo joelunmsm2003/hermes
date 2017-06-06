@@ -368,13 +368,8 @@ $scope.selected = $scope.items[0];
         }).
         success(function(data) {
 
-        ///resultado/:orderId/:uso/:tipo/:modalidad/:anio/:monto/:categoria
 
-        console.log('cotizando%%%%%%%%%%%%%%%%%%%%%%')
-       
-        console.log('/resultado/'+data+'/'+model.uso.id_uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/'+$scope.programa+'/'+model.modelo.id_modelo)
-
-        $location.url('/resultado/'+data+'/'+model.uso.id_uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/'+$scope.programa+'/'+model.modelo.id_modelo+'/'+$scope.precio)
+        $location.url('/resultado/'+data+'/'+model.uso.id_uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/4z2z25z/'+model.modelo.id_modelo+'/'+$scope.precio)
        
 
         })
