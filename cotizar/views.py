@@ -96,6 +96,8 @@ def uploadfile(request):
 
 		sh = book.sheet_by_index(0)
 
+		TasaAsegur.objects.filter(id_aseg_id=5).delete()
+
 		for rx in range(sh.nrows):
 
 			for col in range(sh.ncols):
@@ -106,141 +108,429 @@ def uploadfile(request):
 
 						ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
 
-					if col==1:
+					if col > 0:
 
-						valor= str(sh.row(rx)[col]).split('number:')[1]
+						print rx
 
-						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=6,anio=ant,programa_id=2).save()
+						if str(sh.row(rx)[col])!="text:u'No aplica'":
 
-					if col==2:
+							valor= str(sh.row(rx)[col]).split('number:')[1]
+						
+							# Corporativo Rimac
 
-						valor= str(sh.row(rx)[col]).split('number:')[1]
+							if col==1:
 
-						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=2).save()
+								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=6,anio=ant,programa_id=2).save()
 
-					if col==3:
+							if col==2:
 
-						valor= str(sh.row(rx)[col]).split('number:')[1]
 
-						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=4,anio=ant,programa_id=2).save()
+								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=2).save()
 
-					if col==4:
+							if col==3:
 
-						valor= str(sh.row(rx)[col]).split('number:')[1]
+								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=4,anio=ant,programa_id=2).save()
 
-						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=5,anio=ant,programa_id=2).save()
+							if col==4:
 
-					if col==5:
+								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=5,anio=ant,programa_id=2).save()
 
-						valor= str(sh.row(rx)[col]).split('number:')[1]
+							if col==5:
 
-						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=161,anio=ant,programa_id=2).save()
+								TasaAsegur(id_aseg_id=5,value=valor,tipo_id=6,anio=ant,programa_id=2).save()
 
+							# Rimac 4x4
 
-					# if col==6:
+							if col==6:
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,tipo_id=6,programa_id=7).save() # Rural
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=161,anio=ant).save()
+							if col==7:
 
-					# if col==7:
+								print 'col7'
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+								#TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=7).save()
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+							# Rimac Vehicular Pick Up
 
-					# if col==8:
+							if col==8:
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=6,id_uso_id=1).save()
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+							if col==9:
 
-					# if col==9:
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=6,id_uso_id=6).save()
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+							if col==10:
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=6,id_uso_id=2).save()
 
-					# if col==10:
+							# Rimac Chinos e Indios
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+							if col==11:
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=10,tipo_id=1).save()
 
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=10,tipo_id=3).save()
 
-					# if col==11:
+							if col==12:
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=10,tipo_id=6).save()
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+							# Rimac Taxi Urbano
 
+							if col==13:
 
-					# if col==12:
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=11,tipo_id=1).save()
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+							if col==14:
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+								mo = AutoValor.objects.filter(id_modelo__name_model__contains=['Yaris','Sail'])
 
-					# if col==13:
+								for m in mo:
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+									TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=11,modelo_id=m.id).save()
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+							if col==15:
 
-					# if col==14:
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,origen='Chino',programa_id=11).save()
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+							# Rimac Transporte Personal, Escolar, Turismo y Paneles
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+							if col==16:
 
-					# if col==15:
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=12,ubicacion='Lima').save()
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+							if col==17:
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+								mo = AutoValor.objects.filter(id_modelo__name_model__contains='H1')
 
-					# if col==16:
+								for m in mo:
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+									TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=12,modelo_id=m.id).save()
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+							if col==18:
 
-					# if col==17:
+								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=12,tipo_id=7,id_uso_id=2,origen='No Chinas').save()
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+							# Rimac pesados
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+							if col==19:
 
+								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=13,tipo_id=2).save()
 
-					# if col==18:
+								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=13,tipo_id=21).save()
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
+							if col==20:
 
-					# if col==19:
+								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=13,tipo_id=20).save()
 
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
+							if col==21:
 
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
-
-					# if col==20:
-
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
-
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
-
-					# if col==21:
-
-					# 	valor= str(sh.row(rx)[col]).split('number:')[1]
-
-					# 	TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant).save()
-
-
-
+								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=13,tipo_id=24).save()
 
 			
-			print '.....'
+		TasaAsegur.objects.filter(id_aseg_id=4).delete()
+
+		sh = book.sheet_by_index(1)
+
+		for rx in range(sh.nrows):
+
+			for col in range(sh.ncols):
+
+				if rx>4:
+
+					if col==0:
+
+						ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
+
+					if col > 0:
+
+						print rx
+
+						if str(sh.row(rx)[col])!="text:u'No aplica'":
+
+							valor= str(sh.row(rx)[col]).split('number:')[1]
+
+							# Corporativo Mapfre
+
+							if col==1:
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=3,anio=ant,programa_id=1).save()
+
+							if col==2:
+
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=2,anio=ant,programa_id=1).save()
+
+							if col==3:
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=1,anio=ant,programa_id=1).save()
+
+							if col==4:
+
+								TasaAsegur(id_aseg_id=4,value=valor,origen='Chino',anio=ant,programa_id=1).save()
+
+							# MAPFRE Dorada Pick Up
+
+							if col==5:
+
+								TasaAsegur(id_aseg_id=4,value=valor,id_uso_id=1,anio=ant,programa_id=22).save()
+
+							if col==6:
+
+								TasaAsegur(id_aseg_id=4,value=valor,id_uso_id=2,anio=ant,programa_id=22).save()
+
+							if col==7:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,id_uso_id=6,programa_id=22).save() # Rural
+
+							if col==8:
+
+								TasaAsegur(id_aseg_id=5,value=valor,origen='Chino',id_uso_id=1,anio=ant,programa_id=22).save()
+
+							if col==9:
+
+								TasaAsegur(id_aseg_id=4,value=valor,origen='Chino',anio=ant,id_uso_id=2,programa_id=22).save()
+
+							if col==10:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,origen='Chino',id_uso_id=6,programa_id=22).save()
+
+							# Mapfre Dorada Economica
+
+							if col==10:
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=3,anio=ant,programa_id=5).save()
+
+							if col==11:
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=2,anio=ant,programa_id=5).save()
+
+							if col==12:
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=1,anio=ant,programa_id=5).save()
+
+							if col==13:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,origen='Chino',programa_id=5).save()
+
+							if col==14:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=6,programa_id=5).save()
+
+							# Mapfre 0 KM x 2
+
+							if col==15:
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=3,anio=ant,programa_id=14).save()
+
+							if col==16:
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=2,anio=ant,programa_id=14).save()
+
+							if col==17:
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=1,anio=ant,programa_id=14).save()
+
+							if col==18:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=6,programa_id=14).save()
+
+							#Mapfre Camiones A
+
+							if col==19:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=2,programa_id=15).save()
+
+							if col==20:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=8,programa_id=15).save()
+
+							if col==21:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=22,programa_id=15).save()
+
+							# Mapfre Camiones menores A
+
+							if col==22:
+
+								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=7,anio=ant,programa_id=16,tipo_id=2).save()
+
+							# MAPFRE Perdida Total Livianos
+
+							if col==23:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=17).save()
+
+							# MAPFRE Plateada
+
+							if col==21:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=18).save()
+
+							if col==22:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=18).save()
+
+							# MAPFRE Serv. Turistico/Personal
+
+							if col==23:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,ubicacion='Lima',programa_id=19).save()
+
+							# MAPFRE VIP Mujer
+
+							if col==24:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=3,programa_id=21).save()
+
+
+							if col==25:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=2,programa_id=21).save()
+
+
+							if col==26:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=1,programa_id=21).save()
+
+							# Mapfre Taxi
+
+							if col==27:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=3,programa_id=21).save()
+
+
+							if col==28:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=1,programa_id=21).save()
+
+
+							if col==29:
+
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,origen='Chino',programa_id=21).save()
+
+
+		TasaAsegur.objects.filter(id_aseg_id=3).delete()
+
+		sh = book.sheet_by_index(2)
+
+		for rx in range(sh.nrows):
+
+			for col in range(sh.ncols):
+
+				if rx>4:
+
+					if col==0:
+
+						ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
+
+
+					if col > 0:
+
+						print rx
+
+						if str(sh.row(rx)[col])!="text:u'No aplica'":
+
+							valor= str(sh.row(rx)[col]).split('number:')[1]
+
+							if col==1:
+
+								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=5,anio=ant,programa_id=3).save()
+
+							if col==2:
+
+
+								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=6,anio=ant,programa_id=3).save()
+
+							if col==3:
+
+								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=7,anio=ant,programa_id=3).save()
+
+							if col==4:
+
+								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=8,anio=ant,programa_id=3).save()
+
+							if col==5:
+
+								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=9,anio=ant,programa_id=3).save()
+
+							if col==6:
+
+								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=10,anio=ant,programa_id=3).save()
+
+							if col==7:
+
+								TasaAsegur(id_aseg_id=3,value=valor,anio=ant,categoria_id=11,programa_id=3).save() # Rural
+
+							if col==8:
+
+								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=12,anio=ant,programa_id=3).save()
+
+							if col==9:
+
+								TasaAsegur(id_aseg_id=3,value=valor,anio=ant,categoria_id=13,programa_id=3).save()
+
+							if col==10:
+
+								TasaAsegur(id_aseg_id=3,value=valor,anio=ant,categoria_id=14,programa_id=3).save()
+
+							if col==11:
+
+								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=15,anio=ant,programa_id=3).save()
+
+							if col==12:
+
+								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=16,anio=ant,programa_id=3).save()
+
+
+		TasaAsegur.objects.filter(id_aseg_id=1).delete()
+		
+		sh = book.sheet_by_index(3)
+
+		for rx in range(sh.nrows):
+
+			for col in range(sh.ncols):
+
+				if rx>4:
+
+					if col==0:
+
+						ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
+
+					if col > 0:
+
+						print rx
+
+						if str(sh.row(rx)[col])!="text:u'No aplica'":
+
+							valor= str(sh.row(rx)[col]).split('number:')[1]
+
+
+							if col==1:
+
+								TasaAsegur(id_aseg_id=1,value=valor,riesgo_id=3,anio=ant).save()
+
+							if col==2:
+
+								TasaAsegur(id_aseg_id=1,value=valor,riesgo_id=2,anio=ant).save()
+
+							if col==3:
+
+								TasaAsegur(id_aseg_id=1,value=valor,riesgo_id=1,anio=ant).save()
+
+							if col==4:
+
+								TasaAsegur(id_aseg_id=1,value=valor,origen='Chino',anio=ant).save()
+
+							if col==5:
+
+								TasaAsegur(id_aseg_id=1,value=valor,timon='Cambiado',anio=ant).save()
+
+
+
 
 		data_json = simplejson.dumps('nn')
 
