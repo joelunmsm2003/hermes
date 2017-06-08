@@ -944,7 +944,11 @@ def tasascsv(request):
 
 			modelo=t.modelo.id_modelo.name_model
 
-		writer.writerow([t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,modelo,t.value])
+		if t.categoria_id:
+
+			categoria=t.categoria.categoria
+
+		writer.writerow([t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,modelo,categoria,t.value])
 
 	return response
 
