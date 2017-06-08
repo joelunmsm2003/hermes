@@ -2077,105 +2077,87 @@ def primaneta(request,descuento):
 
 	for i in range(len(aseguradora)):
 
-		# if aseguradora[i]['id_asegurad'] == 3:
+		if aseguradora[i]['id_asegurad'] == 2:
 
-		# 	h = TasaAsegur.objects.filter(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio)
+			tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgopositiva,programa_id=programapostiva)
 
-		# 	print 'Tasa PHDI', h.count() ,riesgohdi,anio
+			if origenname == 'Chino':
 
-		# 	if h.count() == 1:
-
-		# 		aseguradora[i]['tasahdi'] = round(float(TasaAsegur.objects.get(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio).value),2)
-				
-
-		# 		aseguradora[i]['hdi'] = round(float(TasaAsegur.objects.get(id_aseg_id=3,riesgo_id=riesgohdi,anio=anio).value)/100*float(monto),2)
-				
-		# 		aseguradora[i]['phdisubtotal'] = round((100+float(demision))*float(aseguradora[i]['hdi'])/100,2)
-
-		# 		aseguradora[i]['phditotal'] = round((100+float(igv))*aseguradora[i]['phdisubtotal']/100,2)
-
-
-		# if aseguradora[i]['id_asegurad'] == 1:
-
-		# 	p= TasaAsegur.objects.filter(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,tipo_id=tipo)
-
-
-		# 	if p.count()==1:
-
-		# 		aseguradora[i]['tasapositiva'] = round(float(TasaAsegur.objects.get(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo).value),2)
-
-
-		# 		aseguradora[i]['positiva'] = round(float(TasaAsegur.objects.get(id_aseg_id=1,anio=anio,riesgo_id=riesgopositiva,id_uso_id=uso,tipo_id=tipo).value)/100*float(monto),2)
-
-		# 		aseguradora[i]['positivasubtotal'] = round((100+float(demision))*aseguradora[i]['positiva']/100,2)
-
-		# 		aseguradora[i]['positivatotal'] = round((100+float(igv))*aseguradora[i]['positivasubtotal']/100,2)
+				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),origen='Chino',programa_id=programapostiva)
 		
-		# if aseguradora[i]['id_asegurad'] == 2:
+		if aseguradora[i]['id_asegurad'] == 3:
 
-		# 	if int(uso) == 1:
-
-
-		# 		t = TasaAsegur.objects.filter(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico)
-
-		# 		if t.count()==1:
-
-		# 			aseguradora[i]['tasapacifico'] = round(float(TasaAsegur.objects.get(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico).value),2)
-
-		# 			aseguradora[i]['pacifico'] = round(float(TasaAsegur.objects.get(id_aseg_id=2,anio=anio,riesgo_id=riesgopacifico).value)/100*float(monto),2)
-
-		# 			aseguradora[i]['pacificosubtotal'] = round((100+float(demision))*aseguradora[i]['pacifico']/100,2)
-
-		# 			aseguradora[i]['pacificototal'] = round((100+int(igv))*aseguradora[i]['pacificosubtotal']/100,2)
-			
-
-
-		# 	else:
-
-		# 		aseguradora[i]['pacifico'] = 'Consultar en la URL:'
-
-		# 		aseguradora[i]['pacificosubtotal'] = 'http://pacifico.com'
-
-		# 		aseguradora[i]['pacificototal'] = ''
-
+			tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),categoria_id=categoria,programa_id=programahdi)
 
 		if aseguradora[i]['id_asegurad'] == 4:
 
-			if int(programarimac) == 2: #
+			if int(programamapre)==1:
 
-			if int(programarimac) == 2: #
+				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgomapfre,programa_id=programarimac)
 
-			if int(programarimac) == 2: #
+				if origenname == 'Chino':
 
-			if int(programarimac) == 2: #
+					tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),origen='Chino',programa_id=programamapfre)
 
-			if int(programarimac) == 2: #
+			if int(programamapfre)==22:
 
-			if int(programarimac) == 2: #
+				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),id_uso__uso=usoname,programa_id=programamapfre)
 
-			if int(programarimac) == 2: #
+				if origenname == 'Chino':
 
-			if int(programarimac) == 2: #
+					tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),origen='Chino',id_uso__uso=usoname,programa_id=programamapfre)
+				
+			if int(programamapfre)==5:
 
-			if int(programarimac) == 2: #
+				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgomapfre,programa_id=programamapfre)
 
-			if int(programarimac) == 2: #
+				if origenname == 'Chino':
 
-			if int(programarimac) == 2: #
+					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),origen='Chino',programa_id=programamapfre)
 
+				if tiponame =='Pick Up':
 
-		# 	m = TasaAsegur.objects.filter(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1)
- 
-		# 	if m.count()==1:
+					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase=tiponame,programa_id=programamapfre)
 
-		# 		aseguradora[i]['tasamapfre'] = round(float(TasaAsegur.objects.get(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1).value),2)
+			if int(programamapfre)==14:
 
-		# 		aseguradora[i]['mapfre'] = round(float(TasaAsegur.objects.get(id_aseg_id=4,riesgo_id=riesgomapfre,anio=anio,tipo_id=tipo,ubicacion=1).value)/100*float(monto),2)
+				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgomapfre,programa_id=programamapfre)
 
-		# 		aseguradora[i]['mapfresubtotal'] = round((100+float(demision))*aseguradora[i]['mapfre']/100,2)
+				if tiponame =='Pick Up':
 
-		# 		aseguradora[i]['mapfretotal'] = round((100+float(igv))*aseguradora[i]['mapfresubtotal']/100,2)
+					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase=tiponame,programa_id=programamapfre)
+				
+			if int(programamapfre)==15:
 
+				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase=tiponame,programa_id=programamapfre)
+				
+			if int(programamapfre)==16:
+
+				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase=tiponame,programa_id=programamapfre)
+				
+			if int(programamapfre)==17:
+
+				print 'Consultar'
+				
+			if int(programamapfre)==18:
+
+				print 'Consultar'
+				
+			if int(programamapfre)==19:
+
+				print 'Consultar'
+				
+			if int(programamapfre)==20:
+
+				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgomapfre,programa_id=programamapfre)
+				
+			if int(programamapfre)==21:
+
+				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgomapfre,programa_id=programamapfre)
+
+				if origenname == 'Chino':
+
+					tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),origen='Chino',programa_id=programamapfre)
 
 
 		if int(aseguradora[i]['id_asegurad']) == 5:
