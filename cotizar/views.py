@@ -352,7 +352,7 @@ def uploadfile(request):
 
 							if col==21:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=22,programa_id=15).save()
+								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=2,programa_id=15).save()
 
 							# Mapfre Camiones menores A
 
@@ -908,7 +908,7 @@ def riesgocsv(request,riesgo):
 @csrf_exempt
 def tasascsv(request):
 
-	ta = TasaAsegur.objects.filter(id_aseg_id=5)
+	ta = TasaAsegur.objects.all()
 
 	response = HttpResponse(content_type='text/xls')
 
@@ -923,32 +923,67 @@ def tasascsv(request):
 		programa=None
 		tipo=None
 		modelo=None
+		categoria=None
+
+		print t.id
 
 		if t.riesgo_id:
+
+			t.riesgo.tipo_riesgo = t.riesgo.tipo_riesgo.encode('ascii','ignore')
+
+			t.riesgo.tipo_riesgo = t.riesgo.tipo_riesgo.encode('ascii','replace')
 
 			riesgo=t.riesgo.tipo_riesgo
 
 		if t.id_uso_id:
 
+			t.id_uso.uso = t.id_uso.uso.encode('ascii','ignore')
+
+			t.id_uso.uso = t.id_uso.uso.encode('ascii','replace')
+
 			uso = t.id_uso.uso
 
 		if t.programa_id:
+
+			t.programa.program = t.programa.program.encode('ascii','ignore')
+
+			t.programa.program = t.programa.program.encode('ascii','replace')
 
 			programa= t.programa.program
 
 		if t.tipo_id:
 
+			t.tipo.clase = t.tipo.clase.encode('ascii','ignore')
+
+			t.tipo.clase = t.tipo.clase.encode('ascii','replace')
+
 			tipo=t.tipo.clase
 
 		if t.modelo_id:
+
+			t.modelo.id_modelo.name_model = t.modelo.id_modelo.name_model.encode('ascii','ignore')
+
+			t.modelo.id_modelo.name_model = t.modelo.id_modelo.name_model.encode('ascii','replace')
 
 			modelo=t.modelo.id_modelo.name_model
 
 		if t.categoria_id:
 
+			t.categoria.categoria = t.categoria.categoria.encode('ascii','ignore')
+
+			t.categoria.categoria = t.categoria.categoria.encode('ascii','replace')
+
 			categoria=t.categoria.categoria
 
-		writer.writerow([t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,modelo,categoria,t.value])
+
+		data = t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,modelo,categoria,t.value
+
+		# datos = str(data).encode('ascii','ignore')
+
+		# datos = datos.encode('ascii','replace')
+
+
+		writer.writerow(data)
 
 	return response
 
@@ -967,6 +1002,11 @@ def modeloscsv(request):
 	for r in ri:
 
 		datos = r['id_modelo__name_model'],r['id_marca__name_marca'],r['id_tipo__clase']
+
+		datos = datos.encode('ascii','ignore')
+
+		datos = datos.encode('ascii','replace')
+
 
 		print datos
 
@@ -2046,24 +2086,12 @@ def primaneta(request,descuento):
 	riesgomapfre = 3
 	riesgopacifico = 3
 
-	# if RiesgAseg.objects.filter(aseguradora_id=1,id_model_id=id_auto_valor):
-
-	# 	riesgopositiva = RiesgAseg.objects.get(aseguradora_id=1,id_model_id=modelo).id_riesg__tipo_riesgo
-	
-	# if RiesgAseg.objects.filter(aseguradora_id=2,id_model_id=id_auto_valor):
-
-	# 	riesgopacifico = RiesgAseg.objects.get(aseguradora_id=2,id_model_id=modelo).id_riesg__tipo_riesgo
-	
-	# if RiesgAseg.objects.filter(aseguradora_id=4,id_model_id=id_auto_valor):
-	
-	# 	riesgomapfre = RiesgAseg.objects.get(aseguradora_id=4,id_model_id=modelo).id_riesg__tipo_riesgo
 	
 	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=id_auto_valor):
 
 		riesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.id_riesgo
 
 		nameriesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
-
 
 	print 'riesgorimac',riesgorimac, nameriesgorimac
 
