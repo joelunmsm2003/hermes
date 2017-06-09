@@ -2,7 +2,7 @@
 
   
 
-    host ='http://cotizador.hermes.pe:8000'
+    host ='http://localhost:8000'
 
 
 
