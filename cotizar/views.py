@@ -101,7 +101,7 @@ def uploadfile(request):
 
 			for col in range(sh.ncols):
 
-				if 0>4:
+				if rx>4:
 
 					if col==0:
 
@@ -906,9 +906,9 @@ def riesgocsv(request,riesgo):
 	return response
 
 @csrf_exempt
-def tasascsv(request):
+def tasascsv(request,aseguradora):
 
-	ta = TasaAsegur.objects.all()
+	ta = TasaAsegur.objects.filter(id_aseg=aseguradora)
 
 	response = HttpResponse(content_type='text/xls')
 
