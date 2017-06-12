@@ -877,30 +877,61 @@ def recibeservicios(request):
 @csrf_exempt
 def riesgocsv(request,riesgo):
 
-	ri = RiesgAseg.objects.filter(aseguradora_id=5,id_riesg=riesgo).values('id_model_id','id_model__id_modelo__name_model','id_model__id_marca__name_marca','id_riesg__tipo_riesgo')
+	ri = RiesgAseg.objects.all()
 
-	response = HttpResponse(content_type='text/csv')
+	#values('id_model_id','id_model__id_modelo__name_model','id_model__id_marca__name_marca','id_riesg__tipo_riesgo')
 
-	response['Content-Disposition'] = 'attachment; filename="Riesgos.csv"'
+	response = HttpResponse(content_type='text/xls')
+
+	response['Content-Disposition'] = 'attachment; filename="Riesgos.xls"'
 
 	writer = csv.writer(response)
 
+	data = 'Aseguradora','Modelo','Marca','Riesgo','Riesgo'
+
+	writer.writerow(data)
+
 	for r in ri:
 
-		print r
+		modelo = None
+		marca= None
+		riesgo= None
+		aseguradora = None
 
-		if AutoValor.objects.filter(id=r['id_model_id']).count()>0:
+		if aseguradora_id:
+
+			aseguradora = r.aseguradora.name_asegurad
+
+		if r.id_model_id:
+
+			if AutoValor.objects.filter(id=r.id_model_id).count()>0:
+
+				modelo = r.id_model.id_modelo.name_model
+
+				marca = r.id_model.id_marca.name_marca
+
+		if r.id_riesg_id:
+
+			riesgo = r.id_riesg.tipo_riesgo
+
+		datos= asegiradora,modelo,marca,riesgo
+
+		writer.writerow(datos)
+
+		# print r
+
+		# if AutoValor.objects.filter(id=r['id_model_id']).count()>0:
 
 
-			datos = r['id_model__id_modelo__name_model'],r['id_model__id_marca__name_marca'],r['id_riesg__tipo_riesgo']
+		# 	datos = r['id_model__id_modelo__name_model'],r['id_model__id_marca__name_marca'],r['id_riesg__tipo_riesgo']
 
 
-			print datos
+		# 	print datos
 
 
-			# datos = x['id'],x['tipo__clase'],x['antigued'],x['programa__program'],x['id_cob__descripcion'],x['id_aseg__name_asegurad'],x['id_uso__uso'],x['modalidad__name_modalidad'],x['value']
+		# 	# datos = x['id'],x['tipo__clase'],x['antigued'],x['programa__program'],x['id_cob__descripcion'],x['id_aseg__name_asegurad'],x['id_uso__uso'],x['modalidad__name_modalidad'],x['value']
 			
-			writer.writerow(datos)
+		# 	writer.writerow(datos)
 
 	return response
 
