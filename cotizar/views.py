@@ -2121,6 +2121,8 @@ def primaneta(request,descuento):
 
 	monto = data['precio']
 
+	marca=data['marca']
+
 	orderId = data['orderId']
 
 	uso = data['uso']
@@ -2131,7 +2133,8 @@ def primaneta(request,descuento):
 
 	modelo = data['modelo']
 
-	a = AutoValor.objects.get(id_modelo_id=modelo,id_tipo_id=data['tipo'])
+	a = AutoValor.objects.get(id_marca_id=marca,id_modelo_id=modelo,id_tipo_id=data['tipo'])
+
 
 	id_auto_valor = a.id
 

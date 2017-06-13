@@ -197,6 +197,9 @@ $scope.items8 = [
 
     $scope.monto = $routeParams.monto
 
+    $scope.marca = $routeParams.marca
+
+
     $scope.riesgo = $routeParams.riesgo
 
     $scope.categoria = $routeParams.categoria

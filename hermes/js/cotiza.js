@@ -313,6 +313,8 @@ $scope.selected = $scope.items[0];
 
        tipo = model.claseModelo.id_tipo
 
+       marca = model.marca.id_marca
+
 
         var todo={
 
@@ -371,7 +373,7 @@ $scope.selected = $scope.items[0];
         success(function(data) {
 
 
-        $location.url('/resultado/'+data+'/'+model.uso.id_uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/4z2z25z/'+model.modelo.id_modelo+'/'+$scope.precio+'/'+tipo)
+        $location.url('/resultado/'+data+'/'+model.uso.id_uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/4z2z25z/'+model.modelo.id_modelo+'/'+$scope.precio+'/'+tipo+'/'+marca)
        
 
         })
