@@ -125,7 +125,6 @@ def uploadfile(request):
 
 							if col==2:
 
-
 								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=2).save()
 
 							if col==3:
@@ -877,13 +876,15 @@ def recibeservicios(request):
 @csrf_exempt
 def riesgocsv(request,riesgo):
 
-	ri = RiesgAseg.objects.all()
+	ri = RiesgAseg.objects.filter(aseguradora=5)
 
 	#values('id_model_id','id_model__id_modelo__name_model','id_model__id_marca__name_marca','id_riesg__tipo_riesgo')
 
 	response = HttpResponse(content_type='text/xls')
 
 	response['Content-Disposition'] = 'attachment; filename="Riesgos.xls"'
+
+
 
 	writer = csv.writer(response)
 
@@ -897,8 +898,9 @@ def riesgocsv(request,riesgo):
 		marca= None
 		riesgo= None
 		aseguradora = None
+		programa = None
 
-		if aseguradora_id:
+		if r.aseguradora_id:
 
 			aseguradora = r.aseguradora.name_asegurad
 
@@ -914,7 +916,13 @@ def riesgocsv(request,riesgo):
 
 			riesgo = r.id_riesg.tipo_riesgo
 
-		datos= asegiradora,modelo,marca,riesgo
+
+		if r.programa_id:
+
+			programa = r.programa.program
+
+
+		datos= aseguradora,modelo,marca,riesgo
 
 		writer.writerow(datos)
 
@@ -1036,24 +1044,37 @@ def tasascsv(request,aseguradora):
 @csrf_exempt
 def modeloscsv(request):
 
-	ri = AutoValor.objects.all().values('id_modelo__name_model','id_marca__name_marca','id_tipo__clase')
+	ri = AutoValor.objects.all().values('id_modelo__name_model','id_marca__name_marca','id_tipo__clase','traccion')
 
-	response = HttpResponse(content_type='text/csv')
+	response = HttpResponse(content_type='text/xls')
 
-	response['Content-Disposition'] = 'attachment; filename="Riesgos.csv"'
+	response['Content-Disposition'] = 'attachment; filename="Modelos.xls"'
 
+	datos = 'modelo','marca','clase','traccion'
+		
 	writer = csv.writer(response)
+
+	writer.writerow(datos)
 
 	for r in ri:
 
-		datos = r['id_modelo__name_model'],r['id_marca__name_marca'],r['id_tipo__clase']
+		modelo = r['id_modelo__name_model'].encode('ascii','ignore')
 
-		datos = datos.encode('ascii','ignore')
+		modelo = modelo.encode('ascii','replace')
 
-		datos = datos.encode('ascii','replace')
+		marca = r['id_marca__name_marca'].encode('ascii','ignore')
+
+		marca = marca.encode('ascii','replace')
+
+		clase = r['id_tipo__clase'].encode('ascii','ignore')
+
+		clase = clase.encode('ascii','replace')
+
+		datos = modelo,marca,clase,r['traccion']
 
 
-		print datos
+
+
 
 		# datos = x['id'],x['tipo__clase'],x['antigued'],x['programa__program'],x['id_cob__descripcion'],x['id_aseg__name_asegurad'],x['id_uso__uso'],x['modalidad__name_modalidad'],x['value']
 			
@@ -1502,9 +1523,19 @@ def addigv(request):
 
 
 @csrf_exempt
-def asegprogram(request,aseguradora):
+def asegprogram(request,aseguradora,modelo):
 
+	
 	aseg = ProgAseg.objects.filter(id_aseg_id=aseguradora).values('id_prog','id_prog__program')
+
+	if int(aseguradora)==5:
+
+		traccion = AutoValor.objects.filter(id_modelo_id=modelo,traccion=1).count()
+
+		if traccion>0:
+
+			aseg = ProgAseg.objects.filter(id_aseg_id=aseguradora,id_prog_id=7).values('id_prog','id_prog__program')
+
 
 	data_dict = ValuesQuerySetToDict(aseg)	
 
@@ -2086,8 +2117,7 @@ def primaneta(request,descuento):
 
 	print 'PrimaNeta',data
 
-	#PrimaNeta {u'orderId': u'618', u'anio': u'29', u'uso': u'1', u'precio': u'212', u'modelo': u'5506', u'programa': u'4z13z25z', u'modalidad': u'1'}
-
+	# PrimaNeta {u'orderId': u'618', u'anio': u'29', u'uso': u'1', u'precio': u'212', u'modelo': u'5506', u'programa': u'4z13z25z', u'modalidad': u'1'}
 
 	monto = data['precio']
 
@@ -2097,11 +2127,11 @@ def primaneta(request,descuento):
 
 	usoname = Uso.objects.get(id_uso=uso).uso
 
-	print 'uso',usoname
+	print 'uso...',usoname
 
 	modelo = data['modelo']
 
-	a = AutoValor.objects.get(id_modelo_id=modelo)
+	a = AutoValor.objects.get(id_modelo_id=modelo,id_tipo_id=data['tipo'])
 
 	id_auto_valor = a.id
 
@@ -2123,7 +2153,11 @@ def primaneta(request,descuento):
 
 	programarimac= programa[1]
 
-	print 'programarimac',programarimac
+	programapostiva=programa[2]
+
+	programamapfre = programa[0]
+
+	print 'programa----',programarimac,programamapfre
 
 	riesgohdi = 3
 	riesgorimac= 3
@@ -2131,14 +2165,20 @@ def primaneta(request,descuento):
 	riesgomapfre = 3
 	riesgopacifico = 3
 
-	
 	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=id_auto_valor):
 
 		riesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.id_riesgo
 
 		nameriesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
 
-	print 'riesgorimac',riesgorimac, nameriesgorimac
+	if RiesgAseg.objects.filter(aseguradora_id=4,id_model_id=id_auto_valor):
+
+		riesgomapfre = RiesgAseg.objects.get(aseguradora_id=4,id_model_id=id_auto_valor).id_riesg.id_riesgo
+
+		nameriesgomapfre = RiesgAseg.objects.get(aseguradora_id=4,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
+
+		print 'nameriesgomapfre',nameriesgomapfre
+
 
 	anio = int(Anio.objects.get(id_anio=anio).anio_antig)
 
@@ -2154,23 +2194,23 @@ def primaneta(request,descuento):
 
 	for i in range(len(aseguradora)):
 
-		if aseguradora[i]['id_asegurad'] == 2:
+		# if aseguradora[i]['id_asegurad'] == 2:
 
-			tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgopositiva,programa_id=programapostiva)
+		# 	tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgopositiva,programa_id=programapostiva)
 
-			if origenname == 'Chino':
+		# 	if origenname == 'Chino':
 
-				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),origen='Chino',programa_id=programapostiva)
+		# 		tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),origen='Chino',programa_id=programapostiva)
 		
-		if aseguradora[i]['id_asegurad'] == 3:
+		# if aseguradora[i]['id_asegurad'] == 3:
 
-			tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),categoria_id=categoria,programa_id=programahdi)
+		# 	tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),categoria_id=categoria,programa_id=programahdi)
 
 		if aseguradora[i]['id_asegurad'] == 4:
 
-			if int(programamapre)==1:
+			if int(programamapfre)==1:
 
-				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgomapfre,programa_id=programarimac)
+				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),riesgo_id=riesgomapfre,programa_id=programamapfre)
 
 				if origenname == 'Chino':
 
@@ -2179,6 +2219,8 @@ def primaneta(request,descuento):
 			if int(programamapfre)==22:
 
 				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),id_uso__uso=usoname,programa_id=programamapfre)
+
+				print 'tasa.count()',tasa.count()
 
 				if origenname == 'Chino':
 
@@ -2235,6 +2277,17 @@ def primaneta(request,descuento):
 				if origenname == 'Chino':
 
 					tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),origen='Chino',programa_id=programamapfre)
+
+
+			aseguradora[i]['tasamapfre'] = round(float(tasa.value)*int(descuento)/100,2)
+			
+			aseguradora[i]['mapfre'] = round(aseguradora[i]['tasamapfre']*float(monto)/100,2)
+
+			aseguradora[i]['mapfresubtotal'] = round(aseguradora[i]['mapfre']*1.2154,2)
+
+			aseguradora[i]['riesgomapfre'] = nameriesgomapfre
+
+			aseguradora[i]['idriesgomapfre'] = riesgomapfre
 
 
 		if int(aseguradora[i]['id_asegurad']) == 5:
@@ -2297,6 +2350,7 @@ def primaneta(request,descuento):
 
 					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase='Camion',programa_id=programarimac)
 
+
 			aseguradora[i]['tasarimac'] = round(float(tasa.value)*int(descuento)/100,2)
 			
 			aseguradora[i]['rimac'] = round(aseguradora[i]['tasarimac']*float(monto)/100,2)
@@ -2306,6 +2360,9 @@ def primaneta(request,descuento):
 			aseguradora[i]['riesgo'] = nameriesgorimac
 
 			aseguradora[i]['idriesgo'] = riesgorimac
+
+
+
 
 			# 		print programarimac
 

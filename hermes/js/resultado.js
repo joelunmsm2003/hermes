@@ -232,21 +232,20 @@ $scope.items8 = [
 
     //3 HDI 4 Mapfre 2 Pacifico 1 Positiva 5 Rimac
 
-  $http.get(host+"/asegprogram/"+1+"/").success(function(response) {$scope.programaspositiva = response;
+  $http.get(host+"/asegprogram/"+1+"/"+2).success(function(response) {$scope.programaspositiva = response;
 
     $scope.model.programap = $scope.programaspositiva[0]
 
   });
-  $http.get(host+"/asegprogram/"+2+"/").success(function(response) {$scope.programaspacifico = response;});
-  $http.get(host+"/asegprogram/"+3+"/").success(function(response) {$scope.programashdi = response;});
-  $http.get(host+"/asegprogram/"+4+"/").success(function(response) {$scope.programasmapfre = response;
+  $http.get(host+"/asegprogram/"+2+"/"+2).success(function(response) {$scope.programaspacifico = response;});
+  $http.get(host+"/asegprogram/"+3+"/"+2).success(function(response) {$scope.programashdi = response;});
+  $http.get(host+"/asegprogram/"+4+"/"+2).success(function(response) {$scope.programasmapfre = response;
 
-      console.log('Mapgre programs',$scope.programasmapfre)
 
-      $scope.model.programam = $scope.programasmapfre[2]
+      $scope.model.programam = $scope.programasmapfre[0]
 
   });
-  $http.get(host+"/asegprogram/"+5+"/").success(function(response) {$scope.programasrimac = response;
+  $http.get(host+"/asegprogram/"+5+"/"+$scope.modelo).success(function(response) {$scope.programasrimac = response;
 
     $scope.model.programar = $scope.programasrimac[0]
 
@@ -294,19 +293,24 @@ $scope.items8 = [
 
     });
 
-    // $scope.mafe = 4
-    // $scope.posi = 25
-    // $scope.ri = 18
-    // $scope.pa = ''
+    $scope.mafe = 1
+    $scope.posi =5 
+    $scope.ri = 2
+    $scope.pa = ''
 
-    // $scope.parametros.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
+    $scope.parametros.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
     $scope.programamapfre = function (data) {
 
+        console.log('dkkdkdkkd',data)
+
         $scope.mafe = data.programam.id_prog 
 
-
         $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
+
+        $scope.parametros.programa = $scope.programa
+
+        $scope.traeprima(100)
 
         console.log('programa',$scope.programa)
 
@@ -389,6 +393,8 @@ $scope.items8 = [
 
         $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
+        $scope.parametros.programa = $scope.programa
+
         console.log('programa',$scope.programa)
 
         $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
@@ -428,6 +434,8 @@ $scope.items8 = [
         console.log($scope.posi)
 
         $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
+
+        $scope.parametros.programa = $scope.programa
 
         console.log('programa',$scope.programa)
 
@@ -551,6 +559,8 @@ $scope.items8 = [
 
     $scope.traeprima = function(descuento){
 
+    console.log('enviando parametros',$scope.parametros)
+
     $http({
 
         url: host+"/primaneta/"+descuento,
@@ -585,6 +595,11 @@ $scope.items8 = [
         $scope.mapfretotal = data[1]['mapfretotal']
         $scope.pacificototal = data[2]['pacificototal']
         $scope.rimactotal = data[4]['rimactotal']
+
+        $scope.riesgomapfre =data[1]['riesgomapfre']
+        $scope.idriesgomapfre =data[1]['idriesgomapfre']      
+
+
         $scope.riesgorimac =data[4]['riesgo']
         $scope.idriesgo =data[4]['idriesgo']
 

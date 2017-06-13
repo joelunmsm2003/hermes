@@ -93,6 +93,7 @@ class AutoValor(models.Model):
     id_marca = models.ForeignKey('Marca', models.DO_NOTHING, db_column='id_marca')
     id_modelo = models.ForeignKey('Modelo', models.DO_NOTHING, db_column='id_modelo')
     id_tipo = models.ForeignKey('Clase', models.DO_NOTHING, db_column='id_tipo')
+    traccion = models.IntegerField()
 
 
     class Meta:
@@ -362,6 +363,7 @@ class RiesgAseg(models.Model):
     id_riesg = models.ForeignKey('Riesgo', models.DO_NOTHING, db_column='id_riesg')
     id_model = models.ForeignKey('AutoValor', models.DO_NOTHING, db_column='id_model')
     aseguradora = models.ForeignKey('Aseguradora', models.DO_NOTHING, db_column='aseguradora')
+    programa = models.ForeignKey('Programa', models.DO_NOTHING, db_column='programa')
 
 
 

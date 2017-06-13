@@ -2,7 +2,7 @@
 
   
 
-    host ='http://localhost:8000'
+    host ='http://localhost:2000'
 
 
 
@@ -16,7 +16,7 @@
                     templateUrl: 'webcotiz.html',
                     controller: 'Cotiza'
                 }).
-                when('/resultado/:orderId/:uso/:anio/:modalidad/:programa/:modelo/:precio', {
+                when('/resultado/:orderId/:uso/:anio/:modalidad/:programa/:modelo/:precio/:tipo', {
                     templateUrl: 'resultadofiltro.html',
                     controller: 'Resultado'
 

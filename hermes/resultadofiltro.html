@@ -84,7 +84,7 @@
               
               <th width='20%' class="commercial_name">Aseguradoras <a ng-click="sort_by('commercial_name',currentPage)"></a></th>
                
-                <th width='16%' class="legal_id">MAPFRE <a ng-click="sort_by('legal_id',currentPage)"></a></th>
+                <th width='16%' class="legal_id">MAPFRE <small>{{riesgomapfre}}</small> <a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' class="legal_id">RÍMAC <small>{{riesgorimac}}</small><a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' class="legal_id">LA POSITIVA <a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' class="legal_id">PACÍFICO <a ng-click="sort_by('legal_id',currentPage)"></a></th>
@@ -122,7 +122,7 @@
             </tr>
 
             <th style='background-color:#FF6601; color=#000'><strong>Primas</strong></th>
-            <th style='background-color:#FF6601;'></th>
+            <th style='background-color:#FF6601;'>Tasa : {{model.tasamapfre}}% </th>
             <th style='background-color:#FF6601;' >Tasa : <span class="animated bounceIn">{{model.tasarimac}}% </span> 
 
             <select  ng-change='descuento(item)' ng-options="item as item.label for item in items track by item.id" ng-model="item"></select></th>
