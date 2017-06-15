@@ -78,6 +78,8 @@ $scope.items8 = [
 
         console.log('tasas...',descuento)
 
+
+
          $scope.traeprima(descuento.value)
     }
 
@@ -235,20 +237,21 @@ $scope.items8 = [
 
     //3 HDI 4 Mapfre 2 Pacifico 1 Positiva 5 Rimac
 
-  $http.get(host+"/asegprogram/"+1+"/"+2).success(function(response) {$scope.programaspositiva = response;
+  $http.get(host+"/asegprogram/"+1+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programaspositiva = response;
 
     $scope.model.programap = $scope.programaspositiva[0]
 
   });
-  $http.get(host+"/asegprogram/"+2+"/"+2).success(function(response) {$scope.programaspacifico = response;});
-  $http.get(host+"/asegprogram/"+3+"/"+2).success(function(response) {$scope.programashdi = response;});
-  $http.get(host+"/asegprogram/"+4+"/"+2).success(function(response) {$scope.programasmapfre = response;
 
+
+  $http.get(host+"/asegprogram/"+2+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programaspacifico = response;});
+  $http.get(host+"/asegprogram/"+3+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programashdi = response;});
+  $http.get(host+"/asegprogram/"+4+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programasmapfre = response;
 
       $scope.model.programam = $scope.programasmapfre[0]
 
   });
-  $http.get(host+"/asegprogram/"+5+"/"+$scope.modelo).success(function(response) {$scope.programasrimac = response;
+  $http.get(host+"/asegprogram/"+5+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programasrimac = response;
 
     $scope.model.programar = $scope.programasrimac[0]
 
@@ -345,9 +348,18 @@ $scope.items8 = [
 
     }
 
+    $scope.muestradescuento = true
+
     $scope.programarimac = function (data) {
 
-        $scope.ri = data.programar.id_prog
+
+
+    $scope.muestradescuento = false
+
+    $scope.ri = data.programar.id_prog
+
+
+      
 
         $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
@@ -370,6 +382,11 @@ $scope.items8 = [
 
 
         $scope.traeprima(100)
+
+        if ($scope.ri=='2'){
+
+            $scope.muestradescuento = true
+        }
 
         $http.get(host+"/deducible/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
@@ -605,6 +622,10 @@ $scope.items8 = [
 
         $scope.riesgorimac =data[4]['riesgo']
         $scope.idriesgo =data[4]['idriesgo']
+
+
+        $scope.riesgopositiva =data[3]['riesgopositiva']
+        $scope.idriesgopositiva =data[3]['idriesgopositiva']
 
         if($scope.idriesgo == 5 || $scope.idriesgo==6){
 
