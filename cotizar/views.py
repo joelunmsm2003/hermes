@@ -108,6 +108,41 @@ def marcaschinas(request):
 
 	return HttpResponse('nologeado', content_type="application/json")
 
+def excluidospositiva(request):
+
+	xls_name = '/home/excluidos_positiva.xls'
+
+	print xls_name
+
+	book = xlrd.open_workbook(xls_name)
+
+	sh = book.sheet_by_index(0)
+
+	for rx in range(sh.nrows):
+
+		for col in range(sh.ncols):
+
+			print rx,col
+
+			if rx>0:
+
+				if col==0:
+
+					id= str(sh.row(rx)[col]).split(':')[1].split('.')[0]
+
+					a = AutoValor.objects.get(id=id)
+
+				if col==5:
+
+					print str(sh.row(rx)[col]).split("'")[1],a ,a.id
+				
+					if str(sh.row(rx)[col]).split("'")[1] == 'No permitido':
+
+						a.permitido = 'No Permitido'
+						a.save()
+
+
+	return HttpResponse('nologeado', content_type="application/json")
 
 
 def uploadfile(request):
@@ -1105,13 +1140,13 @@ def tasascsv(request,aseguradora):
 @csrf_exempt
 def modeloscsv(request):
 
-	ri = AutoValor.objects.all().values('id_modelo__name_model','id_marca__name_marca','id_tipo__clase','traccion')
+	ri = AutoValor.objects.all().values('id','id_modelo__name_model','id_marca__name_marca','id_tipo__clase','traccion')
 
 	response = HttpResponse(content_type='text/xls')
 
 	response['Content-Disposition'] = 'attachment; filename="Modelos.xls"'
 
-	datos = 'modelo','marca','clase','traccion'
+	datos = 'id','modelo','marca','clase','traccion'
 		
 	writer = csv.writer(response)
 
@@ -1131,7 +1166,7 @@ def modeloscsv(request):
 
 		clase = clase.encode('ascii','replace')
 
-		datos = modelo,marca,clase,r['traccion']
+		datos = r['id'],modelo,marca,clase,r['traccion']
 
 
 
@@ -2236,12 +2271,9 @@ def primaneta(request,descuento):
 
 	usoname = Uso.objects.get(id_uso=uso).uso
 
-	
-
 	modelo = data['modelo']
 
 	a = AutoValor.objects.get(id_marca_id=marca,id_modelo_id=modelo,id_tipo_id=data['tipo'])
-
 
 	id_auto_valor = a.id
 
@@ -2274,6 +2306,7 @@ def primaneta(request,descuento):
 	riesgopacifico = 3
 	nameriesgomapfre = 'Bajo Riesgo'
 	nameriesgorimac = 'Bajo Riesgo II'
+	nameriesgopositiva = 'Bajo Riesgo'
 
 
 	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=id_auto_valor):
@@ -2290,11 +2323,11 @@ def primaneta(request,descuento):
 
 	if RiesgAseg.objects.filter(aseguradora_id=1,id_model_id=id_auto_valor):
 
+
+
 		riesgopositiva = RiesgAseg.objects.get(aseguradora_id=1,id_model_id=id_auto_valor).id_riesg.id_riesgo
 
 		nameriesgopositiva = RiesgAseg.objects.get(aseguradora_id=1,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
-
-		print ',x,x,x,x,,x',riesgopositiva,nameriesgopositiva
 
 	anio = int(Anio.objects.get(id_anio=anio).anio_antig)
 
@@ -2314,13 +2347,17 @@ def primaneta(request,descuento):
 
 			tasa = None
 
-			tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),riesgo_id=riesgopositiva)
+			print 'a.permitido',a.permitido
 
-			if origenname == 'Chino':
+			if a.permitido != 'No Permitido':
 
-				tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),origen='Chino',programa_id=programapositiva)
+				tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),riesgo_id=riesgopositiva)
 
-			print 'tasa postiva',tasa
+				if origenname == 'Chino':
+
+					tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),origen='Chino',programa_id=programapositiva)
+
+				print 'tasa postiva',tasa
 
 			if tasa !=None:
 
@@ -2329,6 +2366,8 @@ def primaneta(request,descuento):
 				aseguradora[i]['positiva'] = round(aseguradora[i]['tasapositiva']*float(monto)/100,2)
 
 				aseguradora[i]['positivasubtotal'] = round(aseguradora[i]['positiva']*1.2154,2)
+
+				aseguradora[i]['positivatotal'] = round(aseguradora[i]['positiva']*1.2154,2)
 
 				aseguradora[i]['riesgopositiva'] = nameriesgopositiva
 
@@ -2345,6 +2384,7 @@ def primaneta(request,descuento):
 		if aseguradora[i]['id_asegurad'] == 4:
 
 			tasa = None
+
 
 			if int(programamapfre)==1:
 
@@ -2426,6 +2466,8 @@ def primaneta(request,descuento):
 
 				aseguradora[i]['mapfresubtotal'] = round(aseguradora[i]['mapfre']*1.2154,2)
 
+				aseguradora[i]['mapfretotal'] = round(aseguradora[i]['mapfre']*1.2154,2)
+
 				aseguradora[i]['riesgomapfre'] = nameriesgomapfre
 
 				aseguradora[i]['idriesgomapfre'] = riesgomapfre
@@ -2506,6 +2548,8 @@ def primaneta(request,descuento):
 				aseguradora[i]['rimac'] = round(aseguradora[i]['tasarimac']*float(monto)/100,2)
 
 				aseguradora[i]['rimacsubtotal'] = round(aseguradora[i]['rimac']*1.2154,2)
+
+				aseguradora[i]['rimactotal'] = round(aseguradora[i]['rimac']*1.2154,2)
 
 				aseguradora[i]['riesgo'] = nameriesgorimac
 

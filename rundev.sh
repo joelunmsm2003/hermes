@@ -1,5 +1,5 @@
-
+killall -9 python
 cd /var/www/hermes
-python manage.py runserver 0.0.0.0:2000&
+python manage.py runserver 0.0.0.0:8000&
 
 #node server.js&

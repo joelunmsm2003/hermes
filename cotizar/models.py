@@ -94,7 +94,7 @@ class AutoValor(models.Model):
     id_modelo = models.ForeignKey('Modelo', models.DO_NOTHING, db_column='id_modelo')
     id_tipo = models.ForeignKey('Clase', models.DO_NOTHING, db_column='id_tipo')
     traccion = models.IntegerField()
-
+    permitido = models.CharField(max_length=100)
 
     class Meta:
         managed = False
@@ -294,6 +294,7 @@ class Marca(models.Model):
     id_marca = models.AutoField(primary_key=True)
     name_marca = models.CharField(max_length=20)
     origen = models.CharField(max_length=2000)
+    permitido = models.CharField(max_length=100)
 
     class Meta:
         managed = False

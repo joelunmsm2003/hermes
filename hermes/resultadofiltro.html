@@ -130,7 +130,7 @@
             <select  ng-if="model.tasarimac" ng-show='muestradescuento' ng-change='descuento(item)' ng-options="item as item.label for item in items track by item.id" ng-model="item"></select></th>
 
 
-            <th style='background-color:#FF6601;'>Tasa: {{model.tasapositiva}}%</th>
+            <th style='background-color:#FF6601;'><span ng-if="model.tasapositiva">Tasa: {{model.tasapositiva}}%</span></th>
             <th style='background-color:#FF6601;'></th>
             <th style='background-color:#FF6601;'></th>
 

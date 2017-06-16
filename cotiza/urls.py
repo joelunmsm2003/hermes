@@ -130,6 +130,8 @@ urlpatterns = patterns('',
     url(r'^uploadfile', 'cotizar.views.uploadfile'),
     url(r'^marcacsv', 'cotizar.views.marcacsv'),
     url(r'^marcaschinas', 'cotizar.views.marcaschinas'),
+    url(r'^excluidospositiva', 'cotizar.views.excluidospositiva'),
+
 
 
 
