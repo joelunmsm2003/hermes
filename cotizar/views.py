@@ -1001,11 +1001,15 @@ def riesgocsv(request,aseguradora):
 
 		if r.id_model_id:
 
+			print r.id_model_id
+
 			if AutoValor.objects.filter(id=r.id_model_id).count()>0:
 
 				modelo = r.id_model.id_modelo.name_model
 
-				marca = r.id_model.id_marca.name_marca
+				if Marca.objects.filter(id_marca=r.id_model.id_marca_id).count()>0:
+
+					marca = r.id_model.id_marca.name_marca
 
 		if r.id_riesg_id:
 
@@ -2307,6 +2311,8 @@ def primaneta(request,descuento):
 	nameriesgomapfre = 'Bajo Riesgo'
 	nameriesgorimac = 'Bajo Riesgo II'
 	nameriesgopositiva = 'Bajo Riesgo'
+
+
 
 
 	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=id_auto_valor):
