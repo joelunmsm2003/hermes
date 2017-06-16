@@ -2367,7 +2367,7 @@ def primaneta(request,descuento):
 
 			if tasa !=None:
 
-				aseguradora[i]['tasapositiva'] = round(float(tasa.value)*int(descuento)/100,2)
+				aseguradora[i]['tasapositiva'] = round(float(tasa.value),2)
 				
 				aseguradora[i]['positiva'] = round(aseguradora[i]['tasapositiva']*float(monto)/100,2)
 
@@ -2466,7 +2466,7 @@ def primaneta(request,descuento):
 
 			if tasa !=None:
 
-				aseguradora[i]['tasamapfre'] = round(float(tasa.value)*int(descuento)/100,2)
+				aseguradora[i]['tasamapfre'] = round(float(tasa.value),2)
 				
 				aseguradora[i]['mapfre'] = round(aseguradora[i]['tasamapfre']*float(monto)/100,2)
 
