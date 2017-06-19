@@ -220,7 +220,7 @@ def uploadfile(request):
 
 							if col==7:
 
-								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,id_uso_id=2,programa_id=7).save()
+								TasaAsegur(id_aseg_id=5,value=valor,tipo_id=7,anio=ant,id_uso_id=2,programa_id=7).save()
 
 							# Rimac Vehicular Pick Up
 
@@ -1632,6 +1632,8 @@ def asegprogram(request,aseguradora,modelo,uso,marca,tipo):
 
 		prog =[]
 
+		prog.append(2)
+
 		traccion = AutoValor.objects.filter(id_modelo_id=modelo,id_marca_id=marca,id_tipo_id=tipo,traccion=1).count()
 
 		if traccion>0:
@@ -2299,8 +2301,6 @@ def primaneta(request,descuento):
 
 	programarimac= programa[1]
 
-	programapositiva=programa[2]
-
 	programamapfre = programa[0]
 
 	riesgohdi = 3
@@ -2312,7 +2312,7 @@ def primaneta(request,descuento):
 	nameriesgorimac = 'Bajo Riesgo II'
 	nameriesgopositiva = 'Bajo Riesgo'
 
-
+	print 'Modelo Auto Valor',id_auto_valor
 
 
 	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=id_auto_valor):
@@ -2328,8 +2328,6 @@ def primaneta(request,descuento):
 		nameriesgomapfre = RiesgAseg.objects.get(aseguradora_id=4,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
 
 	if RiesgAseg.objects.filter(aseguradora_id=1,id_model_id=id_auto_valor):
-
-
 
 		riesgopositiva = RiesgAseg.objects.get(aseguradora_id=1,id_model_id=id_auto_valor).id_riesg.id_riesgo
 
@@ -2353,7 +2351,6 @@ def primaneta(request,descuento):
 
 			tasa = None
 
-			print 'a.permitido',a.permitido
 
 			if a.permitido != 'No Permitido':
 
@@ -2361,23 +2358,26 @@ def primaneta(request,descuento):
 
 				if origenname == 'Chino':
 
-					tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),origen='Chino',programa_id=programapositiva)
+					tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),origen='Chino')
 
-				print 'tasa postiva',tasa
+	
 
 			if tasa !=None:
 
-				aseguradora[i]['tasapositiva'] = round(float(tasa.value),2)
+				aseguradora[i]['tasapositiva'] = round(float(tasa.value)*int(descuento)/100,2)
 				
 				aseguradora[i]['positiva'] = round(aseguradora[i]['tasapositiva']*float(monto)/100,2)
 
-				aseguradora[i]['positivasubtotal'] = round(aseguradora[i]['positiva']*1.2154,2)
+				aseguradora[i]['positivasubtotal'] = round((aseguradora[i]['positiva'] + 3*aseguradora[i]['positiva']/100),2)
 
-				aseguradora[i]['positivatotal'] = round(aseguradora[i]['positiva']*1.2154,2)
+				aseguradora[i]['positivatotal'] = round((aseguradora[i]['positivasubtotal']+18*aseguradora[i]['positivasubtotal']/100),2)
 
 				aseguradora[i]['riesgopositiva'] = nameriesgopositiva
 
 				aseguradora[i]['idriesgopositiva'] = riesgopositiva
+
+
+
 
 			else:
 
@@ -2466,17 +2466,21 @@ def primaneta(request,descuento):
 
 			if tasa !=None:
 
-				aseguradora[i]['tasamapfre'] = round(float(tasa.value),2)
+
+
+				aseguradora[i]['tasamapfre'] = round(float(tasa.value)*int(descuento)/100,2)
 				
 				aseguradora[i]['mapfre'] = round(aseguradora[i]['tasamapfre']*float(monto)/100,2)
 
-				aseguradora[i]['mapfresubtotal'] = round(aseguradora[i]['mapfre']*1.2154,2)
+				aseguradora[i]['mapfresubtotal'] = round((aseguradora[i]['mapfre'] + 3*aseguradora[i]['mapfre']/100),2)
 
-				aseguradora[i]['mapfretotal'] = round(aseguradora[i]['mapfre']*1.2154,2)
+				aseguradora[i]['mapfretotal'] = round((aseguradora[i]['mapfresubtotal']+18*aseguradora[i]['mapfresubtotal']/100),2)
 
 				aseguradora[i]['riesgomapfre'] = nameriesgomapfre
 
 				aseguradora[i]['idriesgomapfre'] = riesgomapfre
+
+
 
 			else:
 
@@ -2494,13 +2498,19 @@ def primaneta(request,descuento):
 
 					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase=tiponame,programa_id=programarimac)
 
+					nameriesgorimac ='Pick-UP'
+
 				if tiponame == 'Pick-UP' and anio < 3:
 
 					tasa = None
 
 			if int(programarimac) == 7: # Programa 4x4
 
+				print tiponame,usoname,programarimac,anio
+
 				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase=tiponame,id_uso__uso=usoname,programa_id=programarimac)
+
+				nameriesgorimac = 'Pick-UP '+usoname[0:3]+'.'
 
 			if int(programarimac) == 6:
 
@@ -2549,13 +2559,16 @@ def primaneta(request,descuento):
 
 			if tasa != None:
 
+
+
+
 				aseguradora[i]['tasarimac'] = round(float(tasa.value)*int(descuento)/100,2)
 				
 				aseguradora[i]['rimac'] = round(aseguradora[i]['tasarimac']*float(monto)/100,2)
 
-				aseguradora[i]['rimacsubtotal'] = round(aseguradora[i]['rimac']*1.2154,2)
+				aseguradora[i]['rimacsubtotal'] = round((aseguradora[i]['rimac'] + 3*aseguradora[i]['rimac']/100),2)
 
-				aseguradora[i]['rimactotal'] = round(aseguradora[i]['rimac']*1.2154,2)
+				aseguradora[i]['rimactotal'] = round((aseguradora[i]['rimacsubtotal']+18*aseguradora[i]['rimacsubtotal']/100),2)
 
 				aseguradora[i]['riesgo'] = nameriesgorimac
 
