@@ -73,8 +73,8 @@
 
         </table>
 
- <a ng-click="uploadpdf()" class="btn btn-sm btn-primary" >PDF <i class="fa fa-download"></i></a>
-
+<!--  <a ng-click="uploadpdf()" class="btn btn-sm btn-primary" >PDF <i class="fa fa-download"></i></a>
+ -->
 <br>
 
         <table class="table table-striped table-condensed table-hover">
@@ -90,7 +90,7 @@
                 <th width='16%' class="legal_id">RÍMAC <small>{{riesgorimac}}</small><a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' class="legal_id">LA POSITIVA <small>{{riesgopositiva}}</small> <a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' class="legal_id">PACÍFICO <a ng-click="sort_by('legal_id',currentPage)"></a></th>
-                <th width='16%' >HDI<a ng-click="sort_by('legal_id',currentPage)"></a></th>
+                <th width='16%' >HDI {{riesgohdi}}<a ng-click="sort_by('legal_id',currentPage)"></a></th>
 
             </tr>
 
@@ -132,7 +132,7 @@
 
             <th style='background-color:#FF6601;'><span ng-if="model.tasapositiva">Tasa: {{model.tasapositiva}}%</span></th>
             <th style='background-color:#FF6601;'></th>
-            <th style='background-color:#FF6601;'></th>
+            <th style='background-color:#FF6601;'><span ng-if="model.tasahdi"> Tasa : {{model.tasahdi}}% </span> </th>
 
             <tr>
 
@@ -161,7 +161,7 @@
             <td >{{rimacsubtotal}}</td>
             <td>{{positivasubtotal}}</td>
             <td>{{pacificosubtotal}}</td>
-            <td>{{phdisubtotal}}</td>
+            <td>{{hdisubtotal}}</td>
             </tr>
 
             <tr>
@@ -170,7 +170,7 @@
             <td>{{rimactotal}}</td>
             <td>{{positivatotal}}</td>
             <td>{{pacificototal}}</td>
-            <td>{{phditotal}}</td>
+            <td>{{hditotal}}</td>
             </tr>
 
             <th style='background-color:#FF6601; color=#000'><strong>Financiamiento</strong></th>

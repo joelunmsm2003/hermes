@@ -12,6 +12,13 @@ urlpatterns = patterns('',
 
     url(r'^perfil/$', Perfil.as_view()),
     url(r'^riesgocsv/(\d+)', 'cotizar.views.riesgocsv'),
+    url(r'^riesgosubir/(\d+)', 'cotizar.views.riesgosubir'),
+    url(r'^riesgohdi/(\d+)', 'cotizar.views.riesgohdi'),
+    url(r'^tipousosubir/', 'cotizar.views.tipousosubir'),
+    url(r'^usos/(\d+)', 'cotizar.views.usos'),
+    
+
+    url(r'^excluidoshdi/', 'cotizar.views.excluidoshdi'),
     url(r'^marca/', 'cotizar.views.marca'),
     url(r'^anio/', 'cotizar.views.anio'),
     url(r'^uso/', 'cotizar.views.uso'),

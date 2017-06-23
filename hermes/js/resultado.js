@@ -189,6 +189,8 @@ $scope.items8 = [
 
     $scope.order_id = $routeParams.orderId;
 
+    console.log('$scope.order_id',$scope.order_id)
+
     $scope.uso = $routeParams.uso
 
     $scope.tipo = $routeParams.tipo
@@ -235,27 +237,13 @@ $scope.items8 = [
 
     });
 
-    //3 HDI 4 Mapfre 2 Pacifico 1 Positiva 5 Rimac
+  /// Trae Programas 
 
-  $http.get(host+"/asegprogram/"+1+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programaspositiva = response;
-
-    $scope.model.programap = $scope.programaspositiva[0]
-
-  });
-
-
+  $http.get(host+"/asegprogram/"+1+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programaspositiva = response; $scope.model.programap = $scope.programaspositiva[0]});
   $http.get(host+"/asegprogram/"+2+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programaspacifico = response;});
   $http.get(host+"/asegprogram/"+3+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programashdi = response;});
-  $http.get(host+"/asegprogram/"+4+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programasmapfre = response;
-
-      $scope.model.programam = $scope.programasmapfre[0]
-
-  });
-  $http.get(host+"/asegprogram/"+5+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programasrimac = response;
-
-    $scope.model.programar = $scope.programasrimac[0]
-
-  });
+  $http.get(host+"/asegprogram/"+4+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programasmapfre = response; $scope.model.programam = $scope.programasmapfre[0]});
+  $http.get(host+"/asegprogram/"+5+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programasrimac = response; $scope.model.programar = $scope.programasrimac[0]});
 
 
   $http.get(host+"/getgps/"+$scope.modelo+"/").success(function(response) {
@@ -604,21 +592,23 @@ $scope.items8 = [
         $scope.pacifico = data[2]['pacifico']
         $scope.rimac = data[4]['rimac']
 
-        $scope.phdisubtotal = data[0]['phdisubtotal']
+        $scope.hdisubtotal = data[0]['hdisubtotal']
         $scope.positivasubtotal = data[3]['positivasubtotal']
         $scope.mapfresubtotal = data[1]['mapfresubtotal']
         $scope.pacificosubtotal = data[2]['pacificosubtotal']
         $scope.rimacsubtotal = data[4]['rimacsubtotal']
 
-        $scope.phditotal = data[0]['phditotal']
+        $scope.hditotal = data[0]['hditotal']
         $scope.positivatotal = data[3]['positivatotal']
         $scope.mapfretotal = data[1]['mapfretotal']
         $scope.pacificototal = data[2]['pacificototal']
         $scope.rimactotal = data[4]['rimactotal']
 
         $scope.riesgomapfre =data[1]['riesgomapfre']
-        $scope.idriesgomapfre =data[1]['idriesgomapfre']      
+        $scope.idriesgomapfre =data[1]['idriesgomapfre'] 
 
+        $scope.riesgohdi =data[0]['riesgohdi']
+        $scope.idriesgohdi =data[0]['idriesgohdi']      
 
         $scope.riesgorimac =data[4]['riesgo']
         $scope.idriesgo =data[4]['idriesgo']

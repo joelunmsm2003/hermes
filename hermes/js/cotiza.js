@@ -281,10 +281,26 @@ function Cotiza($scope,$http,$filter,$location,$localStorage) {
         });
 
 
+    }
 
+
+        $scope.obteneruso = function (data) {
+
+        
+
+  
+
+        $http.get(host+"/usos/"+$scope.model.claseModelo.id_tipo).success(function(response) {
+
+            console.log('response',response)
+
+        $scope.uso = response
+             
+        });
 
 
     }
+
 
 
 $scope.items = [{
@@ -373,10 +389,37 @@ $scope.selected = $scope.items[0];
         success(function(data) {
 
 
-        $location.url('/resultado/'+data+'/'+model.uso.id_uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/4z2z25z/'+model.modelo.id_modelo+'/'+$scope.precio+'/'+tipo+'/'+marca)
+
+      /// Trae Programas
+
+      $http.get(host+"/asegprogram/"+4+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo).success(function(response) {
+
+        $scope.pm = response; $scope.pm = $scope.pm[0].id_prog
+
+        $http.get(host+"/asegprogram/"+5+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo).success(function(response) {console.log(response); $scope.pr = response; $scope.pr = $scope.pr[0].id_prog});
+
+        if(!$scope.pr){
+
+            $scope.pr=3
+        }
+
+
+        console.log('pm',$scope.pm)
+
+        console.log('pr',$scope.pr)
+
+        programita = $scope.pm+'z'+$scope.pr+'z3z'
+
+        $location.url('/resultado/'+data+'/'+model.uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/'+programita+'/'+model.modelo.id_modelo+'/'+$scope.precio+'/'+tipo+'/'+marca)
+            
+
+    });
+     
+      
+
        
 
-        })
+      })
 
 
         

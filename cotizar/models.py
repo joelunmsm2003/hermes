@@ -95,6 +95,8 @@ class AutoValor(models.Model):
     id_tipo = models.ForeignKey('Clase', models.DO_NOTHING, db_column='id_tipo')
     traccion = models.IntegerField()
     permitido = models.CharField(max_length=100)
+    excluidohdi = models.CharField(max_length=100)
+    categoriahdi = models.CharField(max_length=100)
 
     class Meta:
         managed = False
@@ -295,6 +297,7 @@ class Marca(models.Model):
     name_marca = models.CharField(max_length=20)
     origen = models.CharField(max_length=2000)
     permitido = models.CharField(max_length=100)
+    orden = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -441,3 +444,13 @@ class Lote(models.Model):
     class Meta:
         managed = False
         db_table = 'lote'
+
+class Tipouso(models.Model):
+    id = models.IntegerField(primary_key=True)  # AutoField?
+    tipo = models.ForeignKey('Clase', db_column='tipo')
+    uso = models.ForeignKey('Uso', db_column='uso')
+
+
+    class Meta:
+        managed = False
+        db_table = 'tipouso'

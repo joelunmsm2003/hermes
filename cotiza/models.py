@@ -115,6 +115,8 @@ class AutoValor(models.Model):
         db_table = 'auto_valor'
 
 
+
+
 class Categorias(models.Model):
     id_categ = models.IntegerField(primary_key=True)
     categoria = models.CharField(max_length=100)
@@ -328,6 +330,7 @@ class RiesgAseg(models.Model):
     id_riesg = models.ForeignKey('Riesgo', db_column='id_riesg')
     id_model = models.ForeignKey(AutoValor, db_column='id_model')
     aseguradora = models.ForeignKey(Aseguradora, db_column='aseguradora', blank=True, null=True)
+    uso = models.ForeignKey(Uso, db_column='uso', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -404,10 +407,19 @@ class Uso(models.Model):
         db_table = 'uso'
 
 
-
 class Lote(models.Model):
     file =models.FileField(upload_to='static')
 
     class Meta:
         managed = False
         db_table = 'lote'
+
+class Tipouso(models.Model):
+    id = models.IntegerField(primary_key=True)  # AutoField?
+    tipo = models.ForeignKey('Clase', db_column='tipo')
+    uso = models.ForeignKey('Uso', db_column='uso')
+
+
+    class Meta:
+        managed = False
+        db_table = 'tipouso'

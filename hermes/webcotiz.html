@@ -48,16 +48,18 @@
 
 							<div class="col-md-3">
 								Tipo:				
-									<select placeholder="Seleccionar Tipo"  ng-options="item as item.id_tipo__clase for item in claseModelo track by item.id" type="text" class="form-control" ng-model="model.claseModelo" required =""  ></select>
+									<select placeholder="Seleccionar Tipo"  ng-change= "obteneruso(model)" ng-options="item as item.id_tipo__clase for item in claseModelo track by item.id" type="text" class="form-control" ng-model="model.claseModelo" required =""  ></select>
 									<i></i>
 								
 							</div>
 
+						
+
 							<div class="col-md-3">
-								Timón:							
-									<select placeholder="Seleccionar Timón" ng-options="item as item.name_tipo for item in timon track by item.id_timon" type="text" class="form-control" ng-model="model.timon" required =""  ></select>
-									<i></i>
+								Uso:						
+									<select placeholder="Seleccionar Uso" ng-options="item.uso as item.uso__uso for item in uso" type="text" class="form-control" ng-model="model.uso" required =""  ></select>
 								
+									
 							</div>
 
 						</div>
@@ -90,13 +92,15 @@
 									<select placeholder="Seleccionar Modalidad" ng-options="item as item.name_modalidad for item in modalidad track by item.id_modalidad" type="text" class="form-control" ng-model="model.modalidad" required =""  ></select>
 						
 							</div>
-
-							<div class="col-md-3">
-								Uso:						
-									<select placeholder="Seleccionar Uso" ng-options="item as item.uso for item in uso track by item.id_uso" type="text" class="form-control" ng-model="model.uso" required =""  ></select>
+<!-- 
+								<div class="col-md-3">
+								Timón:							
+									<select placeholder="Seleccionar Timón" ng-options="item as item.name_tipo for item in timon track by item.id_timon" type="text" class="form-control" ng-model="model.timon" required =""  ></select>
+									<i></i>
 								
-									
-							</div>
+							</div> -->
+
+							
 
 							<div class="col-md-3">
 								Ubicación:	
