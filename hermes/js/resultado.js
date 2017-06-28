@@ -189,7 +189,6 @@ $scope.items8 = [
 
     $scope.order_id = $routeParams.orderId;
 
-    console.log('$scope.order_id',$scope.order_id)
 
     $scope.uso = $routeParams.uso
 
@@ -199,7 +198,9 @@ $scope.items8 = [
 
     $scope.anio = $routeParams.anio
 
-    $scope.monto = $routeParams.monto
+    $scope.monto = $routeParams.precio
+
+
 
     $scope.marca = $routeParams.marca
 
@@ -218,7 +219,7 @@ $scope.items8 = [
 
 
 
-    console.log('parametros',$scope.parametros)
+    console.log('parametros pe carajoooooooo',$scope.parametros)
 
     $scope.absUrl = $location.absUrl();
 
@@ -237,19 +238,12 @@ $scope.items8 = [
 
     });
 
-  /// Trae Programas 
 
-  $http.get(host+"/asegprogram/"+1+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programaspositiva = response; $scope.model.programap = $scope.programaspositiva[0]});
-  $http.get(host+"/asegprogram/"+2+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programaspacifico = response;});
-  $http.get(host+"/asegprogram/"+3+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programashdi = response;});
-  $http.get(host+"/asegprogram/"+4+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programasmapfre = response; $scope.model.programam = $scope.programasmapfre[0]});
-  $http.get(host+"/asegprogram/"+5+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo).success(function(response) {$scope.programasrimac = response; $scope.model.programar = $scope.programasrimac[0]});
+
+
 
 
   $http.get(host+"/getgps/"+$scope.modelo+"/").success(function(response) {
-
-    console.log('GPS',response)
-
 
       $http({
         
@@ -287,20 +281,21 @@ $scope.items8 = [
 
     });
 
-    $scope.mafe = 1
-    $scope.posi =5 
-    $scope.ri = 2
-    $scope.pa = ''
+    // $scope.mafe = 1
+    // $scope.posi =5 
+    // $scope.ri = 2
+    // $scope.pa = ''
 
-    $scope.parametros.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
+    // $scope.parametros.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
     $scope.programamapfre = function (data) {
 
-        console.log('dkkdkdkkd',data)
 
         $scope.mafe = data.programam.id_prog 
 
-        $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
+        $scope.p = $scope.parametros.programa.split('z')
+
+        $scope.programa= $scope.p[0]+'z'+$scope.mafe+'z3z'
 
         $scope.parametros.programa = $scope.programa
 
@@ -347,13 +342,15 @@ $scope.items8 = [
     $scope.ri = data.programar.id_prog
 
 
-      
 
-        $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
+    console.log('$scope.ri',$scope.ri)
+  
+
+        $scope.p = $scope.parametros.programa.split('z')
+
+        $scope.programa= $scope.p[0]+'z'+$scope.ri+'z3z'
 
         $scope.parametros.programa = $scope.programa
-
-        console.log('parametros',$scope.parametros)
 
         $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
@@ -371,7 +368,7 @@ $scope.items8 = [
 
         $scope.traeprima(100)
 
-        if ($scope.ri=='2'){
+        if ($scope.ri=='2' || $scope.ri=='25' || $scope.ri=='26'){
 
             $scope.muestradescuento = true
         }
@@ -391,89 +388,90 @@ $scope.items8 = [
 
     }
 
-    $scope.programapositiva = function (data) {
+    // $scope.programapositiva = function (data) {
 
       
 
-        $scope.posi = data.programap.id_prog
+    //     $scope.posi = data.programap.id_prog
 
-        console.log($scope.posi)
+    //     console.log($scope.posi)
 
-        $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
+    //     $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
-        $scope.parametros.programa = $scope.programa
+    //     $scope.parametros.programa = $scope.programa
 
-        console.log('programa',$scope.programa)
+    //     console.log('programa',$scope.programa)
 
-        $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
+    //     $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
-            $scope.cobertura = response;
+    //         $scope.cobertura = response;
 
-            $http({
-            url: host+"/recibecoberturas/",
-            data: $scope.cobertura,
-            method: 'POST',
+    //         $http({
+    //         url: host+"/recibecoberturas/",
+    //         data: $scope.cobertura,
+    //         method: 'POST',
          
-            })
+    //         })
 
-        });
+    //     });
 
-         $http.get(host+"/deducible/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
+    //      $http.get(host+"/deducible/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
-        $scope.deducible = response;
+    //     $scope.deducible = response;
 
-          $http({
-            url: host+"/recibededucibles/",
-            data: $scope.deducible,
-            method: 'POST',
+    //       $http({
+    //         url: host+"/recibededucibles/",
+    //         data: $scope.deducible,
+    //         method: 'POST',
          
-            })
+    //         })
 
-        });
+    //     });
 
-    }
+    // }
 
-    $scope.programapacifico = function (data) {
+    // $scope.programapacifico = function (data) {
 
-        $scope.pa = data.programapa.id_prog
-        console.log($scope.pa)
+    //     $scope.pa = data.programapa.id_prog
 
 
-        console.log($scope.posi)
+    //     console.log($scope.pa)
 
-        $scope.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
-        $scope.parametros.programa = $scope.programa
+    //     console.log($scope.parametros.programa)
 
-        console.log('programa',$scope.programa)
 
-        $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
+      
 
-            $scope.cobertura = response;
+    //     console.log('programa',$scope.programa)
 
-            $http({
-            url: host+"/recibecoberturas/",
-            data: $scope.cobertura,
-            method: 'POST',
+    //     $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
+
+    //         $scope.cobertura = response;
+
+    //         $http({
+    //         url: host+"/recibecoberturas/",
+    //         data: $scope.cobertura,
+    //         method: 'POST',
          
-            })
+    //         })
 
-        });
+    //     });
 
-         $http.get(host+"/deducible/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
+    //      $http.get(host+"/deducible/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
-        $scope.deducible = response;
+    //     $scope.deducible = response;
 
-          $http({
-            url: host+"/recibededucibles/",
-            data: $scope.deducible,
-            method: 'POST',
+    //       $http({
+    //         url: host+"/recibededucibles/",
+    //         data: $scope.deducible,
+    //         method: 'POST',
          
-            })
+    //         })
 
-        });
+    //     });
 
-    }
+    // }
 
 
 
@@ -495,72 +493,71 @@ $scope.items8 = [
 
     }
 
-        $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
+        // $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
-            $scope.cobertura = response;
+        //     $scope.cobertura = response;
 
-            $http({
-            url: host+"/recibecoberturas/",
-            data: $scope.cobertura,
-            method: 'POST',
+        //     $http({
+        //     url: host+"/recibecoberturas/",
+        //     data: $scope.cobertura,
+        //     method: 'POST',
          
-            })
+        //     })
 
-            $http({
-            url: host+"/pdfx/",
-            data: $scope.absUrl,
-            method: 'POST',
+        //     $http({
+        //     url: host+"/pdfx/",
+        //     data: $scope.absUrl,
+        //     method: 'POST',
          
-            }).
-            success(function(data) {
+        //     }).
+        //     success(function(data) {
 
 
-            })
+        //     })
 
-        });
-
-        console.log('Deducible.............')
+        // });
 
 
-        $http.get(host+"/servic/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+"/").success(function(response) {
 
-        $scope.servic = response;
 
-        console.log('servic HDI',$scope.servic)
+        // $http.get(host+"/servic/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+"/").success(function(response) {
 
-        $http({
-            url: host+"/recibeservicios/",
-            data: $scope.servic,
-            method: 'POST',
+        // $scope.servic = response;
+
+        // console.log('servic HDI',$scope.servic)
+
+        // $http({
+        //     url: host+"/recibeservicios/",
+        //     data: $scope.servic,
+        //     method: 'POST',
          
-            })
+        //     })
 
-        });
+        // });
 
         /*
         $http.get(host+"/financ/").success(function(response) {
 
         $scope.financ = response;
 
-        console.log('Financiamiento',$scope.financ)
 
         });
 
 */
 
 
-     $http.get(host+"/deducible/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
+     // $http.get(host+"/deducible/"+$scope.order_id+'/'+$scope.uso+"/"+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
-        $scope.deducible = response;
+     //    $scope.deducible = response;
 
-          $http({
-            url: host+"/recibededucibles/",
-            data: $scope.deducible,
-            method: 'POST',
+     //      $http({
+     //        url: host+"/recibededucibles/",
+     //        data: $scope.deducible,
+     //        method: 'POST',
          
-            })
+     //        })
 
-        });
+     //    });
 
 
     $scope.model = {}
@@ -617,6 +614,9 @@ $scope.items8 = [
         $scope.riesgopositiva =data[3]['riesgopositiva']
         $scope.idriesgopositiva =data[3]['idriesgopositiva']
 
+        $scope.riesgopacifico =data[2]['riesgopacifico']
+        $scope.idriesgopacifico =data[2]['idriesgopacifico']
+
         if($scope.idriesgo == 5 || $scope.idriesgo==6){
 
             $scope.items = $scope.items5
@@ -670,54 +670,62 @@ $scope.items8 = [
 
     }
 
-
     $scope.traeprima(100)
 
+
+
+  /// Trae Programas 
+
+  $http.get(host+"/asegprogram/"+1+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo+'/'+$scope.monto).success(function(response) {$scope.programaspositiva = response; $scope.model.programap = $scope.programaspositiva[0]});
+  $http.get(host+"/asegprogram/"+2+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo+'/'+$scope.monto).success(function(response) {$scope.programaspacifico = response;});
+  $http.get(host+"/asegprogram/"+3+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo+'/'+$scope.monto).success(function(response) {$scope.programashdi = response;});
+  $http.get(host+"/asegprogram/"+4+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo+'/'+$scope.monto).success(function(response) {$scope.programasmapfre = response; $scope.model.programam = $scope.programasmapfre[0]});
+  $http.get(host+"/asegprogram/"+5+"/"+$scope.modelo+'/'+$scope.uso+'/'+$scope.marca+'/'+$scope.tipo+'/'+$scope.monto).success(function(response) {$scope.programasrimac = response; $scope.model.programar = $scope.programasrimac[0]});
 
        
 
 
 
 
-    $http({
+    // $http({
 
-        url: host+"/enviaemail/",
-        data: $routeParams,
-        method: 'POST',
+    //     url: host+"/enviaemail/",
+    //     data: $routeParams,
+    //     method: 'POST',
 
-    }).
-    success(function(data) {
+    // }).
+    // success(function(data) {
 
-        console.log(data)
-
-
-    })
+    //     console.log(data)
 
 
-
-    $http({
-
-        url: host+"/fiiiii/",
-        data: $routeParams,
-        method: 'POST',
-
-    }).
-    success(function(data) {
-
-        console.log(data)
-
-        $scope.financ = data;
-
-         $http({
-
-                url: host+"/recibefinanciamiento/",
-                data: data,
-                method: 'POST',
-
-            })
+    // })
 
 
-    })
+
+    // $http({
+
+    //     url: host+"/fiiiii/",
+    //     data: $routeParams,
+    //     method: 'POST',
+
+    // }).
+    // success(function(data) {
+
+    //     console.log(data)
+
+    //     $scope.financ = data;
+
+    //      $http({
+
+    //             url: host+"/recibefinanciamiento/",
+    //             data: data,
+    //             method: 'POST',
+
+    //         })
+
+
+    // })
     
 
 

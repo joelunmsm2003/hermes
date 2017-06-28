@@ -89,7 +89,7 @@
                 <th width='16%' class="legal_id">MAPFRE <small>{{riesgomapfre}}</small> <a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' class="legal_id">RÍMAC <small>{{riesgorimac}}</small><a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' class="legal_id">LA POSITIVA <small>{{riesgopositiva}}</small> <a ng-click="sort_by('legal_id',currentPage)"></a></th>
-                <th width='16%' class="legal_id">PACÍFICO <a ng-click="sort_by('legal_id',currentPage)"></a></th>
+                <th width='16%' class="legal_id">PACÍFICO <small>{{riesgopacifico}}</small> <a ng-click="sort_by('legal_id',currentPage)"></a></th>
                 <th width='16%' >HDI {{riesgohdi}}<a ng-click="sort_by('legal_id',currentPage)"></a></th>
 
             </tr>
@@ -131,12 +131,12 @@
 
 
             <th style='background-color:#FF6601;'><span ng-if="model.tasapositiva">Tasa: {{model.tasapositiva}}%</span></th>
-            <th style='background-color:#FF6601;'></th>
+            <th style='background-color:#FF6601;'><span ng-if="model.tasapacifico"> Tasa : {{model.tasapacifico}}% </span></th>
             <th style='background-color:#FF6601;'><span ng-if="model.tasahdi"> Tasa : {{model.tasahdi}}% </span> </th>
 
             <tr>
 
-            Perfil: {{perfil}} 
+            <!-- Perfil: {{perfil}}  -->
 
             <td ng-if="perfil==1">Tasa</td>
             <td ng-if="perfil==1"><input ng-change="calculo(model)" ng-model='model.tasamapfre' type="number" class='form-control'></td>

@@ -97,6 +97,7 @@ class AutoValor(models.Model):
     permitido = models.CharField(max_length=100)
     excluidohdi = models.CharField(max_length=100)
     categoriahdi = models.CharField(max_length=100)
+    excluidorimac = models.CharField(max_length=100)
 
     class Meta:
         managed = False

@@ -205,7 +205,6 @@ def excluidoshdi(request):
 
 					print str(sh.row(rx)[col]).split("'")[1]
 
-					exit(0)
 
 					if str(sh.row(rx)[col]).split("'")[1] == 'x':
 
@@ -214,6 +213,46 @@ def excluidoshdi(request):
 
 
 	return HttpResponse('nologeado', content_type="application/json")
+
+
+def excluidosrimac(request):
+
+	xls_name = '/home/excluidorimac.xls'
+
+	print xls_name
+
+	book = xlrd.open_workbook(xls_name)
+
+	sh = book.sheet_by_index(0)
+
+	for rx in range(sh.nrows):
+
+		for col in range(sh.ncols):
+
+			print rx,col
+
+			if rx>0:
+
+				if col==0:
+
+					id= str(sh.row(rx)[col]).split(':')[1].split('.')[0]
+
+					a = AutoValor.objects.get(id=id)
+
+
+				if col==5:
+
+					print str(sh.row(rx)[col]).split("'")[1]
+
+
+					if str(sh.row(rx)[col]).split("'")[1] == 'x':
+
+						a.excluidorimac = 'Si'
+						a.save()
+
+
+	return HttpResponse('nologeado', content_type="application/json")
+
 
 
 def riesgohdi(request,aseguradora):
@@ -385,467 +424,589 @@ def uploadfile(request):
 
 		book = xlrd.open_workbook(xls_name)
 
-		sh = book.sheet_by_index(0)
+		# sh = book.sheet_by_index(0)
 
-		TasaAsegur.objects.filter(id_aseg_id=5).delete()
+		# TasaAsegur.objects.filter(id_aseg_id=5).delete()
 
-		print 'Rimac'
+		# print 'Rimac'
 
-		for rx in range(sh.nrows):
+		# for rx in range(sh.nrows):
 
-			for col in range(sh.ncols):
+		# 	for col in range(sh.ncols):
 
-				if rx>4:
+		# 		if rx>4 and rx <24 :
 
-					if col==0:
+		# 			if col==0:
 
-						ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
+		# 				ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
 
-					if col > 0:
+		# 			if col > 0:
 
-						print rx,col,str(sh.row(rx)[col])
+		# 				print rx,col,str(sh.row(rx)[col])
 
-						if str(sh.row(rx)[col])!="text:u'No aplica'":
+		# 				if str(sh.row(rx)[col])!="text:u'No aplica'":
 
-							valor= str(sh.row(rx)[col]).split('number:')[1]
+		# 					valor= str(sh.row(rx)[col]).split('number:')[1]
 
-							print valor
+		# 					print valor
 						
-							# Corporativo Rimac
+		# 					# Corporativo Rimac
 
-							if col==1:
+		# 					if col==1:
 
-								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=6,anio=ant,programa_id=2).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=6,anio=ant,programa_id=2).save()
 
-							if col==2:
+		# 					if col==2:
 
-								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=2).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=2).save()
 
-							if col==3:
+		# 					if col==3:
 
-								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=4,anio=ant,programa_id=2).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=4,anio=ant,programa_id=2).save()
 
-							if col==4:
+		# 					if col==4:
 
-								TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=5,anio=ant,programa_id=2).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=5,anio=ant,programa_id=2).save()
 
-							if col==5:
+		# 					if col==5:
 
-								TasaAsegur(id_aseg_id=5,value=valor,tipo_id=6,anio=ant,programa_id=2).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,tipo_id=6,anio=ant,programa_id=2).save()
 
-							# Rimac 4x4
+		# 					# Rimac 4x4
 
 
-							if col==6:
+		# 					if col==6:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,tipo_id=6,id_uso_id=1,programa_id=7).save() # Rural
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,tipo_id=6,id_uso_id=1,programa_id=7).save() # Rural
 
-							if col==7:
+		# 					if col==7:
 
-								TasaAsegur(id_aseg_id=5,value=valor,tipo_id=7,anio=ant,id_uso_id=2,programa_id=7).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,tipo_id=7,anio=ant,id_uso_id=2,programa_id=7).save()
 
-							# Rimac Vehicular Pick Up
+		# 					# Rimac Vehicular Pick Up
 
-							if col==8:
+		# 					if col==8:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=6,id_uso_id=1).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=6,id_uso_id=1).save()
 
-							if col==9:
+		# 					if col==9:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=6,id_uso_id=6).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=6,id_uso_id=6).save()
 
-							if col==10:
+		# 					if col==10:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=6,id_uso_id=2).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=6,id_uso_id=2).save()
 
-							# Rimac Chinos e Indios
+		# 					# Rimac Chinos e Indios
 
-							if col==11:
+		# 					if col==11:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=10,tipo_id=1).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=10,tipo_id=1).save()
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=10,tipo_id=3).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=10,tipo_id=3).save()
 
-							if col==12:
+		# 					if col==12:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=10,tipo_id=6).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=10,tipo_id=6).save()
 
-							# Rimac Taxi Urbano
+		# 					# Rimac Taxi Urbano
 
-							if col==13:
+		# 					if col==13:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=11,tipo_id=1).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=11,tipo_id=1).save()
 
-							if col==14:
+		# 					if col==14:
 
-								mo = AutoValor.objects.filter(id_modelo__name_model__in=['Yaris','Sail'])
+		# 						mo = AutoValor.objects.filter(id_modelo__name_model__in=['Yaris','Sail'])
 
-								for m in mo:
+		# 						for m in mo:
 
-									TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=11,modelo_id=m.id_modelo.id_model).save()
+		# 							TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=11,modelo_id=m.id_modelo.id_model).save()
 
-							if col==15:
+		# 					if col==15:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,origen='Chino',programa_id=11).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,origen='Chino',programa_id=11).save()
 
-							# Rimac Transporte Personal, Escolar, Turismo y Paneles
+		# 					# Rimac Transporte Personal, Escolar, Turismo y Paneles
 
-							if col==16:
+		# 					if col==16:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=12,ubicacion='Lima').save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=12,ubicacion='Lima').save()
 
-							if col==17:
+		# 					if col==17:
 
-								mo = AutoValor.objects.filter(id_modelo__name_model='H1')
+		# 						mo = AutoValor.objects.filter(id_modelo__name_model='H1')
 
-								for m in mo:
+		# 						for m in mo:
 
-									TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=12,modelo_id=m.id_modelo.id_model).save()
+		# 							TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=12,modelo_id=m.id_modelo.id_model).save()
 
-							if col==18:
+		# 					if col==18:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=12,tipo_id=7,id_uso_id=2,origen='No Chinas').save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=12,tipo_id=7,id_uso_id=2,origen='No Chinas').save()
 
-							# Rimac pesados
+		# 					# Rimac pesados
 
-							if col==19:
+		# 					if col==19:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=13,tipo_id=2).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=13,tipo_id=2).save()
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=13,tipo_id=21).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=13,tipo_id=21).save()
 
-							if col==20:
+		# 					if col==20:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=13,tipo_id=20).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=13,tipo_id=20).save()
 
-							if col==21:
+		# 					if col==21:
 
-								TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=13,tipo_id=24).save()
+		# 						TasaAsegur(id_aseg_id=5,value=valor,anio=ant,programa_id=13,tipo_id=24).save()
+
+		# 		if rx >= 24 and rx < 43:
+
+		# 			if col==0:
+
+		# 				ant= str(sh.row(rx)[col]).split(':')[1].split('.')[0]
+
+		# 				print ant
+
+		# 			if col > 0:
+
+		# 				print rx,col,str(sh.row(rx)[col]).split("'")[1]
+
+
+		# 				valor= str(sh.row(rx)[col]).split("'")[1]
+
+
+		# 				if col==1:
+
+		# 					TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=6,anio=ant,programa_id=26).save()
+
+		# 				if col==2:
+
+		# 					TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=26).save()
+
+		# 				if col==3:
+
+		# 					TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=4,anio=ant,programa_id=26).save()
+
+		# 				if col==4:
+
+		# 					TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=5,anio=ant,programa_id=26).save()
+
+
+		# 		if rx >= 43:
+
+		# 			if col==0:
+
+		# 				ant= str(sh.row(rx)[col]).split(':')[1].split('.')[0]
+
+		# 			if col > 0:
+
+		# 				print rx,col
+
+		# 				valor= str(sh.row(rx)[col]).split("'")[1]
+
+		# 				if col==1:
+
+		# 					TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=6,anio=ant,programa_id=25).save()
+
+		# 				if col==2:
+
+		# 					TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=7,anio=ant,programa_id=25).save()
+
+		# 				if col==3:
+
+		# 					TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=4,anio=ant,programa_id=25).save()
+
+		# 				if col==4:
+
+		# 					TasaAsegur(id_aseg_id=5,value=valor,riesgo_id=5,anio=ant,programa_id=25).save()
+
+
+
+
+
+
+
 
 			
-		print 'Mapfre'
+		# print 'Mapfre'
 
-		TasaAsegur.objects.filter(id_aseg_id=4).delete()
+		# TasaAsegur.objects.filter(id_aseg_id=4).delete()
 
-		sh = book.sheet_by_index(1)
+		# sh = book.sheet_by_index(1)
 
-		for rx in range(sh.nrows):
+		# for rx in range(sh.nrows):
 
-			for col in range(sh.ncols):
+		# 	for col in range(sh.ncols):
 
-				if rx>4:
+		# 		if rx>4:
 
-					if col==0:
+		# 			if col==0:
 
-						ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
+		# 				ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
 
-					if col > 0:
+		# 			if col > 0:
 
-						print rx,col,str(sh.row(rx)[col])
+		# 				print rx,col,str(sh.row(rx)[col])
 
-						if str(sh.row(rx)[col])!="text:u'No aplica'":
+		# 				if str(sh.row(rx)[col])!="text:u'No aplica'":
 
-							valor= str(sh.row(rx)[col]).split('number:')[1]
+		# 					valor= str(sh.row(rx)[col]).split('number:')[1]
 
-							# Corporativo Mapfre
+		# 					# Corporativo Mapfre
 
-							if col==1:
+		# 					if col==1:
 
-								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=3,anio=ant,programa_id=1).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=3,anio=ant,programa_id=1).save()
 
-							if col==2:
+		# 					if col==2:
 
 
-								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=2,anio=ant,programa_id=1).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=2,anio=ant,programa_id=1).save()
 
-							if col==3:
+		# 					if col==3:
 
-								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=1,anio=ant,programa_id=1).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=1,anio=ant,programa_id=1).save()
 
-							if col==4:
+		# 					if col==4:
 
-								TasaAsegur(id_aseg_id=4,value=valor,origen='Chino',anio=ant,programa_id=1).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,origen='Chino',anio=ant,programa_id=1).save()
 
-							# MAPFRE Dorada Pick Up
+		# 					# MAPFRE Dorada Pick Up
 
-							if col==5:
+		# 					if col==5:
 
-								TasaAsegur(id_aseg_id=4,value=valor,id_uso_id=1,anio=ant,programa_id=22).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,id_uso_id=1,anio=ant,programa_id=22).save()
 
-							if col==6:
+		# 					if col==6:
 
-								TasaAsegur(id_aseg_id=4,value=valor,id_uso_id=2,anio=ant,programa_id=22).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,id_uso_id=2,anio=ant,programa_id=22).save()
 
-							if col==7:
+		# 					if col==7:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,id_uso_id=6,programa_id=22).save() # Rural
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,id_uso_id=6,programa_id=22).save() # Rural
 
-							if col==8:
+		# 					if col==8:
 
-								TasaAsegur(id_aseg_id=4,value=valor,origen='Chino',id_uso_id=1,anio=ant,programa_id=22).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,origen='Chino',id_uso_id=1,anio=ant,programa_id=22).save()
 
-							if col==9:
+		# 					if col==9:
 
-								TasaAsegur(id_aseg_id=4,value=valor,origen='Chino',anio=ant,id_uso_id=2,programa_id=22).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,origen='Chino',anio=ant,id_uso_id=2,programa_id=22).save()
 
-							if col==10:
+		# 					if col==10:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,origen='Chino',id_uso_id=6,programa_id=22).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,origen='Chino',id_uso_id=6,programa_id=22).save()
 
-							# Mapfre Dorada Economica
+		# 					# Mapfre Dorada Economica
 
-							if col==11:
+		# 					if col==11:
 
-								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=3,anio=ant,programa_id=5).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=3,anio=ant,programa_id=5).save()
 
-							if col==12:
+		# 					if col==12:
 
-								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=2,anio=ant,programa_id=5).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=2,anio=ant,programa_id=5).save()
 
-							if col==13:
+		# 					if col==13:
 
-								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=1,anio=ant,programa_id=5).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=1,anio=ant,programa_id=5).save()
 
-							if col==14:
+		# 					if col==14:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,origen='Chino',programa_id=5).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,origen='Chino',programa_id=5).save()
 
-							if col==15:
+		# 					if col==15:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=6,programa_id=5).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=6,programa_id=5).save()
 
-							# Mapfre 0 KM x 2
+		# 					# Mapfre 0 KM x 2
 
-							if col==16:
+		# 					if col==16:
 
-								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=3,anio=ant,programa_id=14).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=3,anio=ant,programa_id=14).save()
 
-							if col==17:
+		# 					if col==17:
 
-								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=2,anio=ant,programa_id=14).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=2,anio=ant,programa_id=14).save()
 
-							if col==18:
+		# 					if col==18:
 
-								TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=1,anio=ant,programa_id=14).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,riesgo_id=1,anio=ant,programa_id=14).save()
 
-							if col==19:
+		# 					if col==19:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=6,programa_id=14).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=6,programa_id=14).save()
 
-							#Mapfre Camiones A
+		# 					#Mapfre Camiones A
 
-							if col==20:
+		# 					if col==20:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=2,programa_id=15).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=2,programa_id=15).save()
 
-							if col==21:
+		# 					if col==21:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=8,programa_id=15).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=8,programa_id=15).save()
 
-							if col==22:
+		# 					if col==22:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=25,programa_id=15).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,tipo_id=25,programa_id=15).save()
 
-							# Mapfre Camiones menores A
+		# 					# Mapfre Camiones menores A
 
-							if col==23:
+		# 					if col==23:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=16,tipo_id=2).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=16,tipo_id=2).save()
 
-							# MAPFRE Perdida Total Livianos
+		# 					# MAPFRE Perdida Total Livianos
 
-							if col==24:
+		# 					if col==24:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=17).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=17).save()
 
-							# MAPFRE Plateada
+		# 					# MAPFRE Plateada
 
-							if col==25:
+		# 					if col==25:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=18).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=18).save()
 
-							if col==26:
+		# 					if col==26:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=18).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,programa_id=18).save()
 
-							# MAPFRE Serv. Turistico/Personal
+		# 					# MAPFRE Serv. Turistico/Personal
 
-							if col==27:
+		# 					if col==27:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,ubicacion='Lima',programa_id=19).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,ubicacion='Lima',programa_id=19).save()
 
-							# MAPFRE VIP Mujer
+		# 					# MAPFRE VIP Mujer
 
-							if col==28:
+		# 					if col==28:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=3,programa_id=20).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=3,programa_id=20).save()
 
 
-							if col==29:
+		# 					if col==29:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=2,programa_id=20).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=2,programa_id=20).save()
 
 
-							if col==30:
+		# 					if col==30:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=1,programa_id=20).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=1,programa_id=20).save()
 
-							# Mapfre Taxi
+		# 					# Mapfre Taxi
 
-							if col==31:
+		# 					if col==31:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=3,programa_id=21).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=3,programa_id=21).save()
 
 
-							if col==32:
+		# 					if col==32:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=1,programa_id=21).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,riesgo_id=1,programa_id=21).save()
 
 
-							if col==33:
+		# 					if col==33:
 
-								TasaAsegur(id_aseg_id=4,value=valor,anio=ant,origen='Chino',programa_id=21).save()
+		# 						TasaAsegur(id_aseg_id=4,value=valor,anio=ant,origen='Chino',programa_id=21).save()
 
 
-		TasaAsegur.objects.filter(id_aseg_id=3).delete()
+		# TasaAsegur.objects.filter(id_aseg_id=3).delete()
 
-		print 'Hdi'
+		# print 'Hdi'
 
-		sh = book.sheet_by_index(2)
+		# sh = book.sheet_by_index(2)
 
-		for rx in range(sh.nrows):
+		# for rx in range(sh.nrows):
 
-			for col in range(sh.ncols):
+		# 	for col in range(sh.ncols):
 
-				if rx>4:
+		# 		if rx>4:
 
-					if col==0:
+		# 			if col==0:
 
-						ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
+		# 				ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
 
-					if col > 0:
+		# 			if col > 0:
 
-						print rx,col
+		# 				print rx,col
 
-						if str(sh.row(rx)[col])!="text:u'No aplica'":
+		# 				if str(sh.row(rx)[col])!="text:u'No aplica'":
 
-							valor= str(sh.row(rx)[col]).split('number:')[1]
+		# 					valor= str(sh.row(rx)[col]).split('number:')[1]
 
-							if col==1:
+		# 					if col==1:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=5,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=5,anio=ant,programa_id=3).save()
 
-							if col==2:
+		# 					if col==2:
 
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=6,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=6,anio=ant,programa_id=3).save()
 
-							if col==3:
+		# 					if col==3:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=7,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=7,anio=ant,programa_id=3).save()
 
-							if col==4:
+		# 					if col==4:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=8,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=8,anio=ant,programa_id=3).save()
 
-							if col==5:
+		# 					if col==5:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=9,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=9,anio=ant,programa_id=3).save()
 
-							if col==6:
+		# 					if col==6:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=10,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=10,anio=ant,programa_id=3).save()
 
-							if col==7:
+		# 					if col==7:
 
-								TasaAsegur(id_aseg_id=3,value=valor,anio=ant,categoria_id=11,programa_id=3).save() # Rural
+		# 						TasaAsegur(id_aseg_id=3,value=valor,anio=ant,categoria_id=11,programa_id=3).save() # Rural
 
-							if col==8:
+		# 					if col==8:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=12,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=12,anio=ant,programa_id=3).save()
 
-							if col==9:
+		# 					if col==9:
 
-								TasaAsegur(id_aseg_id=3,value=valor,anio=ant,categoria_id=13,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,anio=ant,categoria_id=13,programa_id=3).save()
 
-							if col==10:
+		# 					if col==10:
 
-								TasaAsegur(id_aseg_id=3,value=valor,anio=ant,categoria_id=14,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,anio=ant,categoria_id=14,programa_id=3).save()
 
-							if col==11:
+		# 					if col==11:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=15,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=15,anio=ant,programa_id=3).save()
 
-							if col==12:
+		# 					if col==12:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=16,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=16,anio=ant,programa_id=3).save()
 
-							if col==13:
+		# 					if col==13:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=17,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=17,anio=ant,programa_id=3).save()
 
-							if col==14:
+		# 					if col==14:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=18,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=18,anio=ant,programa_id=3).save()
 
-							if col==15:
+		# 					if col==15:
 
-								TasaAsegur(id_aseg_id=3,value=valor,categoria_id=19,anio=ant,programa_id=3).save()
+		# 						TasaAsegur(id_aseg_id=3,value=valor,categoria_id=19,anio=ant,programa_id=3).save()
 
 
 
-		TasaAsegur.objects.filter(id_aseg_id=1).delete()
+		# TasaAsegur.objects.filter(id_aseg_id=1).delete()
 		
-		print 'Positiva'
+		# print 'Positiva'
 
-		sh = book.sheet_by_index(3)
+		# sh = book.sheet_by_index(3)
 
-		for rx in range(sh.nrows):
+		# for rx in range(sh.nrows):
 
-			for col in range(sh.ncols):
+		# 	for col in range(sh.ncols):
 
-				if rx>4:
+		# 		if rx>4:
 
-					if col==0:
+		# 			if col==0:
 
-						ant= str(sh.row(rx)[col]).split(' ')[0].split("u'")[1]
+		# 				ant= str(sh.row(rx)[col]).split(':')[1].split('.')[0]
 
-					if col > 0:
+		# 			if col > 0:
 
-						print rx,col,str(sh.row(rx)[col])
+		# 				print rx,col,str(sh.row(rx)[col])
 
-						if str(sh.row(rx)[col])!="text:u'No aplica'":
+		# 				if str(sh.row(rx)[col])!="text:u'No aplica'":
 
-							valor= str(sh.row(rx)[col]).split('number:')[1]
+		# 					valor= str(sh.row(rx)[col]).split('number:')[1]
 
 
-							if col==1:
+		# 					if col==1:
 
-								TasaAsegur(id_aseg_id=1,value=valor,riesgo_id=3,anio=ant).save()
+		# 						TasaAsegur(id_aseg_id=1,value=valor,riesgo_id=3,anio=ant).save()
 
-							if col==2:
+		# 					if col==2:
 
-								TasaAsegur(id_aseg_id=1,value=valor,riesgo_id=2,anio=ant).save()
+		# 						TasaAsegur(id_aseg_id=1,value=valor,riesgo_id=2,anio=ant).save()
 
-							if col==3:
+		# 					if col==3:
 
-								TasaAsegur(id_aseg_id=1,value=valor,riesgo_id=1,anio=ant).save()
+		# 						TasaAsegur(id_aseg_id=1,value=valor,riesgo_id=1,anio=ant).save()
 
-							if col==4:
+		# 					if col==4:
 
-								TasaAsegur(id_aseg_id=1,value=valor,origen='Chino',anio=ant).save()
+		# 						TasaAsegur(id_aseg_id=1,value=valor,origen='Chino',anio=ant).save()
 
-							if col==5:
+		# 					if col==5:
 
-								TasaAsegur(id_aseg_id=1,value=valor,timon='Cambiado',anio=ant).save()
+		# 						TasaAsegur(id_aseg_id=1,value=valor,timon='Cambiado',anio=ant).save()
 
-							if col==6:
+		# 					if col==6:
 
-								TasaAsegur(id_aseg_id=1,value=valor,tipo_id=6,anio=ant).save()
+		# 						TasaAsegur(id_aseg_id=1,value=valor,tipo_id=6,anio=ant).save()
 
-							if col==7:
+		# 					if col==7:
 
-								TasaAsegur(id_aseg_id=1,value=valor,tipo_id=6,origen='Chino',anio=ant).save()
+		# 						TasaAsegur(id_aseg_id=1,value=valor,tipo_id=6,origen='Chino',anio=ant).save()
+
+
+
+		# TasaAsegur.objects.filter(id_aseg_id=2).delete()
+
+		# sh = book.sheet_by_index(4)
+
+		# for rx in range(sh.nrows):
+
+		# 	for col in range(sh.ncols):
+
+				
+
+		# 		if rx>3:
+
+		# 			if int(col)==0:
+
+		# 				ant= str(sh.row(rx)[col]).split(':')[1].split('.')[0]
+
+		# 			if int(col) > 0:
+
+						
+
+		# 				if str(sh.row(rx)[col])!="text:u'No aplica'":
+
+		# 					valor= str(sh.row(rx)[col]).split('number:')[1]
+
+		# 					print rx,col
+
+
+		# 					if col==1:
+
+		# 						TasaAsegur(id_aseg_id=2,value=valor,riesgo_id=6,anio=ant).save()
+
+		# 					if col==2:
+
+		# 						TasaAsegur(id_aseg_id=2,value=valor,riesgo_id=7,anio=ant).save()
+
+		# 					if col==3:
+
+		# 						TasaAsegur(id_aseg_id=2,value=valor,riesgo_id=2,anio=ant).save()
+
+		# 					if col==4:
+
+		# 						TasaAsegur(id_aseg_id=2,value=valor,riesgo_id=1,anio=ant).save()
+
+		# 					if col==5:
+
+		# 						TasaAsegur(id_aseg_id=2,value=valor,origen='Chino',anio=ant).save()
+
+		# 					if col==6:
+
+		# 						TasaAsegur(id_aseg_id=2,value=valor,tipo_id=6,anio=ant).save()
+
 
 
 
@@ -1861,12 +2022,14 @@ def addigv(request):
 
 
 @csrf_exempt
-def asegprogram(request,aseguradora,modelo,uso,marca,tipo):
+def asegprogram(request,aseguradora,modelo,uso,marca,tipo,precio):
 
 
 	aseg = ProgAseg.objects.filter(id_aseg_id=aseguradora).values('id_prog','id_prog__program').order_by('id_prog__program')
 
 	tiponame = AutoValor.objects.get(id_modelo_id=modelo,id_marca_id=marca,id_tipo_id=tipo).id_tipo.clase
+
+	id_auto_valor = AutoValor.objects.get(id_modelo_id=modelo,id_marca_id=marca,id_tipo_id=tipo).id
 
 	origenname = Marca.objects.get(id_marca=marca).origen
 
@@ -1874,36 +2037,83 @@ def asegprogram(request,aseguradora,modelo,uso,marca,tipo):
 
 	marcaname = Marca.objects.get(id_marca=marca).name_marca
 
-	print tiponame,origenname,usoname
+	restringido =False
+
+	print tiponame,origenname,usoname,precio,id_auto_valor
 
 	if int(aseguradora)==5:
 
-		prog =[]
-
-		prog.append(2)
+		progrimac =[]
 
 		traccion = AutoValor.objects.filter(id_modelo_id=modelo,id_marca_id=marca,id_tipo_id=tipo,traccion=1).count()
 
-		if traccion>0:
+		if traccion>0 and usoname=='Particular':
 
-			prog.append(7)
+			progrimac.append(7)
 
-			prog.append(6)
+		if tiponame=='Pick-UP':
+
+			progrimac.append(6)
 
 		if int(uso) == 20: # Taxis
 
-			prog.append(11)
+			progrimac.append(11)
 
 		if int(uso) == 1: #Particular
 
-			prog.append(2)
+			progrimac.append(2)
 
-		if Marca.objects.get(id_marca=marca).origen=='Chino':
+			progrimac.append(25)
 
-			prog.append(10)
+			progrimac.append(26)
 
-		
-		aseg = ProgAseg.objects.filter(id_aseg_id=aseguradora,id_prog_id__in=prog).values('id_prog','id_prog__program')
+		if origenname =='Chino':
+
+			progrimac.append(10)
+
+		if usoname=='Taxi/Publico':
+
+			progrimac.append(11)
+
+		if usoname=='Transporte de Personal, Turistico, Escolar':
+
+			progrimac.append(12)
+
+		if usoname =='Panel' and origenname=='Chino':
+
+		 	progrimac.remove(12)
+
+		if AutoValor.objects.filter(id=id_auto_valor,excluidorimac='Si').count()>0:
+
+			restringido =True
+
+
+		if (int(precio) >= 75000 and int(precio)<=4000) or origenname=='Chino' or restringido==True or (tiponame=='Van' and usoname=='Particular'):
+
+
+			progrimac.remove(2)
+
+			progrimac.remove(25)
+
+			progrimac.remove(26)
+
+		if int(precio)>60000 and tiponame=='Pick-UP':
+
+			progrimac.remove(6)
+
+		if int(precio)>60000 and int(precio)<=4000 or origenname=='Chino' :
+
+			if 7 in progrimac:
+
+				progrimac.remove(7)
+
+		if (tiponame =='Microbus' or tiponame=='Omnibus' or tiponame=='Camion' or usoname=='Taxi/Publico' or int(precio)>=60000) and origenname=='Chino':
+
+			progrimac.remove(10)
+
+		aseg = ProgAseg.objects.filter(id_aseg_id=aseguradora,id_prog_id__in=progrimac).values('id_prog','id_prog__program')
+
+		print 'progrimac',progrimac
 
 	if int(aseguradora)==4: #Mapfre
 
@@ -1930,6 +2140,7 @@ def asegprogram(request,aseguradora,modelo,uso,marca,tipo):
 			prog.append(24)
 
 		if origenname=='Pick-UP':
+
 
 			prog.remove(1)
 
@@ -1964,6 +2175,7 @@ def asegprogram(request,aseguradora,modelo,uso,marca,tipo):
 			prog.append(21)
 
 		if tiponame == 'Pick-UP' and usoname=='Taxi/Publico':
+
 
 			prog.remove(21)
 
@@ -2573,8 +2785,6 @@ def primaneta(request,descuento):
 
 	data = json.loads(request.body)
 
-	print 'PrimaNeta',data
-
 	# PrimaNeta {u'orderId': u'618', u'anio': u'29', u'uso': u'1', u'precio': u'212', u'modelo': u'5506', u'programa': u'4z13z25z', u'modalidad': u'1'}
 
 	monto = data['precio']
@@ -2599,6 +2809,8 @@ def primaneta(request,descuento):
 
 	modelname =a.id_modelo.name_model
 
+	print 'tiponame,origenname,modelname',tiponame,origenname,modelname
+
 	# for m in a:
 
 	# 	tipo = m.id_tipo.id_clase
@@ -2613,31 +2825,25 @@ def primaneta(request,descuento):
 
 	programamapfre = programa[0]
 
+
+
 	riesgohdi = 3
 	riesgorimac= 7
 	riesgopositiva = 3
 	riesgomapfre = 3
-	riesgopacifico = 3
+	riesgopacifico = 6
 	nameriesgomapfre = 'Bajo Riesgo'
 	nameriesgorimac = 'Bajo Riesgo II'
 	nameriesgopositiva = 'Bajo Riesgo'
 	nameriesgohdi='Cat. I S/.700'
+	nameriesgopacifico = 'Bajo Riesgo I'
 
-	print 'Modelo Auto Valor',id_auto_valor,monto
-
-	# if int(monto) <= 40000:
-
-	# 	nameriesgohdi = 'Cat. I S/.700'
-
-	print id_auto_valor
 
 	if RiesgAseg.objects.filter(id_model_id=id_auto_valor,aseguradora_id=3):
 
 		t =RiesgAseg.objects.filter(id_model_id=id_auto_valor,aseguradora_id=3).values('id_riesg__tipo_riesgo')[0]['id_riesg__tipo_riesgo'].split(' ')[1]
 
 		if t == 'I':
-
-			print 'I',t,monto
 
 			if int(monto) <= 40000:
 
@@ -2668,6 +2874,12 @@ def primaneta(request,descuento):
 
 		nameriesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
 
+		if int(monto)>50000:
+
+			riesgorimac= 4
+
+			nameriesgorimac ='Alto Riesgo I'
+
 	if RiesgAseg.objects.filter(aseguradora_id=4,id_model_id=id_auto_valor):
 
 		riesgomapfre = RiesgAseg.objects.get(aseguradora_id=4,id_model_id=id_auto_valor).id_riesg.id_riesgo
@@ -2679,6 +2891,12 @@ def primaneta(request,descuento):
 		riesgopositiva = RiesgAseg.objects.get(aseguradora_id=1,id_model_id=id_auto_valor).id_riesg.id_riesgo
 
 		nameriesgopositiva = RiesgAseg.objects.get(aseguradora_id=1,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
+
+	if RiesgAseg.objects.filter(aseguradora_id=2,id_model_id=id_auto_valor):
+
+		riesgopacifico = RiesgAseg.objects.get(aseguradora_id=2,id_model_id=id_auto_valor).id_riesg.id_riesgo
+
+		nameriesgopacifico = RiesgAseg.objects.get(aseguradora_id=2,id_model_id=id_auto_valor).id_riesg.tipo_riesgo
 
 	anio = int(Anio.objects.get(id_anio=anio).anio_antig)
 
@@ -2702,9 +2920,17 @@ def primaneta(request,descuento):
 
 				tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),riesgo_id=riesgopositiva)
 
-				if origenname == 'Chino':
+				if origenname == 'Chino' and tiponame != 'Pick-UP':
 
-					tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),origen='Chino')
+					tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),origen='Chino',tipo__isnull=True)
+
+				if origenname == 'Chino' and tiponame == 'Pick-UP':
+
+					tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),origen='Chino',tipo__clase='Pick-UP')
+
+				if origenname != 'Chino' and tiponame == 'Pick-UP':
+
+					tasa = TasaAsegur.objects.get(id_aseg_id=1,anio=int(anio),tipo__clase='Pick-UP',origen__isnull=True)
 
 			if tasa !=None:
 
@@ -2728,15 +2954,47 @@ def primaneta(request,descuento):
 
 			tasa = None
 
+			print 'riesgopacifico',riesgopacifico
+
+			if TasaAsegur.objects.filter(id_aseg_id=2,anio=int(anio),riesgo_id=riesgopacifico).count()>0:
+
+				tasa = TasaAsegur.objects.get(id_aseg_id=2,anio=int(anio),riesgo_id=riesgopacifico)
+
+			if TasaAsegur.objects.filter(id_aseg_id=2,anio=int(anio),tipo__clase=riesgopacifico).count()>0:
+
+				tasa = TasaAsegur.objects.get(id_aseg_id=2,anio=int(anio),tipo__clase=riesgopacifico)
+
+			if TasaAsegur.objects.filter(id_aseg_id=2,anio=int(anio),origen='Chino').count()>0:
+
+				tasa = TasaAsegur.objects.get(id_aseg_id=2,anio=int(anio),origen='Chino')
+
+			if tasa !=None:
+
+				aseguradora[i]['tasapacifico'] = round(float(tasa.value),2)
+				
+				aseguradora[i]['pacifico'] = round(aseguradora[i]['tasapacifico']*float(monto)/100,2)
+
+				aseguradora[i]['pacificosubtotal'] = round((aseguradora[i]['pacifico'] + 3*aseguradora[i]['pacifico']/100),2)
+
+				aseguradora[i]['pacificototal'] = round((aseguradora[i]['pacificosubtotal']+18*aseguradora[i]['pacificosubtotal']/100),2)
+
+				aseguradora[i]['riesgopacifico'] = nameriesgopacifico
+
+				aseguradora[i]['idriesgopacifico'] = riesgopacifico
+
+			else:
+
+				aseguradora[i]['pacifico']='No Aplica'
+
 		if aseguradora[i]['id_asegurad'] == 3:
 
 			tasa=None
 
 			e = AutoValor.objects.get(id=id_auto_valor).excluidohdi
 
-			if e !='Si':
+			print 'excluidohdi.....',e
 
-				print 'nameriesgohdi',nameriesgohdi
+			if e !='Si':
 
 				tasa = TasaAsegur.objects.get(id_aseg_id=3,anio=int(anio),categoria__categoria=nameriesgohdi)
 
@@ -2776,11 +3034,9 @@ def primaneta(request,descuento):
 
 			if int(programamapfre)==22:
 
-				tasa = TasaAsegur.objects.filter(id_aseg_id=4,anio=int(anio),id_uso__uso=usoname,programa_id=programamapfre)
+				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),id_uso__uso=usoname,programa_id=programamapfre,origen__isnull=True)
 
-				if tasa.count()>0:
-
-					tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),id_uso__uso=usoname,programa_id=programamapfre)
+				print tasa
 
 				if origenname == 'Chino':
 
@@ -2860,6 +3116,10 @@ def primaneta(request,descuento):
 
 		if int(aseguradora[i]['id_asegurad']) == 5:
 
+			tasa = None
+
+			print 'anio,tiponame,programarimac',anio,tiponame,programarimac
+
 			if int(programarimac) == 2: # Corporativa Rimac
 
 				if tiponame != 'Pick-UP':
@@ -2876,11 +3136,22 @@ def primaneta(request,descuento):
 
 					tasa = None
 
+			if int(programarimac) == 25: # Corporativa Rimac comision 12.5
+
+				
+
+				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=programarimac)
+
+			if int(programarimac) == 26: # Corporativa Rimac comision 15
+
+				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=programarimac)
+
+
 			if int(programarimac) == 7: # Programa 4x4
 
-				print tiponame,usoname,programarimac,anio
+				print 'tiponame,usoname,programarimac',tiponame,usoname,programarimac
 
-				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase=tiponame,id_uso__uso=usoname,programa_id=programarimac)
+				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),id_uso__uso=usoname,programa_id=programarimac)
 
 				nameriesgorimac = 'Pick-UP '+usoname
 
@@ -2971,7 +3242,9 @@ def primaneta(request,descuento):
 
 				aseguradora[i]['rimac'] = 'No Aplica'
 
+				if AutoValor.objects.filter(id=id_auto_valor,excluidorimac='Si').count()>0:
 
+					aseguradora[i]['rimac'] = 'Modelo Restringido'
 
 
 

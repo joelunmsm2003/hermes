@@ -74,66 +74,66 @@ function Cotiza($scope,$http,$filter,$location,$localStorage) {
 
     }
 
-    $scope.antig = function (todo) {
+    // $scope.antig = function (todo) {
 
-        console.log(todo)
+    //     console.log(todo)
 
-        if($scope.model.modelo.id_modelo == undefined){
-
-
-            console.log('ksksksk')
-        }
+    //     if($scope.model.modelo.id_modelo == undefined){
 
 
-
-        id_modelo = $scope.model.modelo.id_modelo
+    //         console.log('ksksksk')
+    //     }
 
 
 
-        if(todo.antiguedad.label == 'Usado'){
+    //     id_modelo = $scope.model.modelo.id_modelo
 
-            $http.get(host+"/precio/"+id_modelo+'/'+todo.anio.anio_antig).success(function(response) {
 
-            console.log('precio',response)
+
+    //     if(todo.antiguedad.label == 'Usado'){
+
+    //         $http.get(host+"/precio/"+id_modelo+'/'+todo.anio.anio_antig).success(function(response) {
+
+    //         console.log('precio',response)
 
            
 
-            $http.get(host+"/preciodreprecio/"+response).success(function(response) {
+    //         $http.get(host+"/preciodreprecio/"+response).success(function(response) {
 
-            $scope.precio = response
+    //         $scope.precio = response
 
-            });
+    //         });
 
-            });
+    //         });
 
 
 
           
-        }
+    //     }
 
-        if(todo.antiguedad.label == 'Nuevo'){
+    //     if(todo.antiguedad.label == 'Nuevo'){
 
-            //$scope.CurrentDate = new Date()
+    //         //$scope.CurrentDate = new Date()
 
-            //anio = $filter('date')($scope.CurrentDate, 'yyyy')
+    //         //anio = $filter('date')($scope.CurrentDate, 'yyyy')
 
             
-            $http.get(host+"/precio/"+id_modelo+'/'+todo.anio.anio_antig).success(function(response) {
+    //         $http.get(host+"/precio/"+id_modelo+'/'+todo.anio.anio_antig).success(function(response) {
 
-            console.log('precio',response)
+    //         console.log('precio',response)
 
-            $scope.precio = response
+    //         $scope.precio = response
 
-            });
-
-
+    //         });
 
 
 
 
-        }
 
-    }
+
+    //     }
+
+    // }
 
 
     $scope.logear = function (todo) {
@@ -187,6 +187,8 @@ function Cotiza($scope,$http,$filter,$location,$localStorage) {
     });
 
     $http.get(host+"/modalidad/").success(function(response) {$scope.modalidad = response;
+
+        $scope.model.modalidad= $scope.modalidad[1]
 
       
     });
@@ -392,26 +394,42 @@ $scope.selected = $scope.items[0];
 
       /// Trae Programas
 
-      $http.get(host+"/asegprogram/"+4+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo).success(function(response) {
+      console.log('preciooooo',$scope.precio)
+
+      $http.get(host+"/asegprogram/"+4+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo+'/'+$scope.precio).success(function(response) {
+
+        console.log('prog4',response)
 
         $scope.pm = response; $scope.pm = $scope.pm[0].id_prog
 
-        $http.get(host+"/asegprogram/"+5+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo).success(function(response) {console.log(response); $scope.pr = response; $scope.pr = $scope.pr[0].id_prog});
+        $http.get(host+"/asegprogram/"+5+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo+'/'+$scope.precio).success(function(response) {
 
-        if(!$scope.pr){
+            console.log(response,'5.....'); 
+            $scope.pr = response; 
+            $scope.pr = $scope.pr[0].id_prog
 
-            $scope.pr=3
-        }
+            console.log('pm',$scope.pm)
 
+            console.log('pr',$scope.pr)
 
-        console.log('pm',$scope.pm)
+            if(!$scope.pr){
 
-        console.log('pr',$scope.pr)
+                $scope.pr=666
+            }
 
-        programita = $scope.pm+'z'+$scope.pr+'z3z'
+             programita = $scope.pm+'z'+$scope.pr+'z3z'
+
+            console.log(programita)
 
         $location.url('/resultado/'+data+'/'+model.uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/'+programita+'/'+model.modelo.id_modelo+'/'+$scope.precio+'/'+tipo+'/'+marca)
             
+
+
+        });
+
+
+
+
 
     });
      
