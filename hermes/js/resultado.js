@@ -76,7 +76,7 @@ $scope.items8 = [
 
     $scope.descuento = function(descuento){
 
-        console.log('tasas...',descuento)
+
 
 
 
@@ -101,7 +101,7 @@ $scope.items8 = [
             }).
             success(function(data) {
 
-            console.log('Admin........',data)
+
 
                     
                 $scope.model.tasahdi = data[0]['tasahdi']
@@ -130,43 +130,43 @@ $scope.items8 = [
 
                 /*Pdf Genera*/
 
-                $scope.pdf = {}
+                // $scope.pdf = {}
 
 
 
-                $scope.pdf.tasahdi = data[0]['tasahdi']
-                $scope.pdf.tasapositiva = data[3]['tasapositiva']
-                $scope.pdf.tasamapfre = data[1]['tasamapfre']
-                $scope.pdf.tasapacifico = data[2]['tasapacifico']
-                $scope.pdf.tasarimac = data[4]['tasarimac']
+                // $scope.pdf.tasahdi = data[0]['tasahdi']
+                // $scope.pdf.tasapositiva = data[3]['tasapositiva']
+                // $scope.pdf.tasamapfre = data[1]['tasamapfre']
+                // $scope.pdf.tasapacifico = data[2]['tasapacifico']
+                // $scope.pdf.tasarimac = data[4]['tasarimac']
 
-                $scope.pdf.hdi = data[0]['hdi']
-                $scope.pdf.positiva = data[3]['positiva']
-                $scope.pdf.mapfre = data[1]['mapfre']
-                $scope.pdf.pacifico = data[2]['pacifico']
-                $scope.pdf.rimac = data[4]['rimac']
+                // $scope.pdf.hdi = data[0]['hdi']
+                // $scope.pdf.positiva = data[3]['positiva']
+                // $scope.pdf.mapfre = data[1]['mapfre']
+                // $scope.pdf.pacifico = data[2]['pacifico']
+                // $scope.pdf.rimac = data[4]['rimac']
 
-                $scope.pdf.phdisubtotal = data[0]['phdisubtotal']
-                $scope.pdf.positivasubtotal = data[3]['positivasubtotal']
-                $scope.pdf.mapfresubtotal = data[1]['mapfresubtotal']
-                $scope.pdf.pacificosubtotal = data[2]['pacificosubtotal']
-                $scope.pdf.rimacsubtotal = data[4]['rimacsubtotal']
+                // $scope.pdf.phdisubtotal = data[0]['phdisubtotal']
+                // $scope.pdf.positivasubtotal = data[3]['positivasubtotal']
+                // $scope.pdf.mapfresubtotal = data[1]['mapfresubtotal']
+                // $scope.pdf.pacificosubtotal = data[2]['pacificosubtotal']
+                // $scope.pdf.rimacsubtotal = data[4]['rimacsubtotal']
 
-                $scope.pdf.phditotal = data[0]['phditotal']
-                $scope.pdf.positivatotal = data[3]['positivatotal']
-                $scope.pdf.mapfretotal = data[1]['mapfretotal']
-                $scope.pdf.pacificototal = data[2]['pacificototal']
-                $scope.pdf.rimactotal = data[4]['rimactotal']
+                // $scope.pdf.phditotal = data[0]['phditotal']
+                // $scope.pdf.positivatotal = data[3]['positivatotal']
+                // $scope.pdf.mapfretotal = data[1]['mapfretotal']
+                // $scope.pdf.pacificototal = data[2]['pacificototal']
+                // $scope.pdf.rimactotal = data[4]['rimactotal']
 
-                $scope.riesgorimac = data[4]['riesgorimac']
+                // $scope.riesgorimac = data[4]['riesgorimac']
 
-                $http({
+                // $http({
 
-                    url: host+"/recibetasas/",
-                    data: $scope.pdf,
-                    method: 'POST',
+                //     url: host+"/recibetasas/",
+                //     data: $scope.pdf,
+                //     method: 'POST',
 
-                    })
+                //     })
 
             })
 
@@ -219,8 +219,6 @@ $scope.items8 = [
 
 
 
-    console.log('parametros pe carajoooooooo',$scope.parametros)
-
     $scope.absUrl = $location.absUrl();
 
     console.log('$scope.riesgo',$scope.riesgo)
@@ -242,8 +240,7 @@ $scope.items8 = [
 
 
 
-
-  $http.get(host+"/getgps/"+$scope.modelo+"/").success(function(response) {
+  $http.get(host+"/getgps/"+$scope.modelo+"/"+$scope.marca+"/"+$scope.tipo+"/"+$scope.uso+"/"+$scope.monto+'/'+$scope.anio+'/'+$scope.parametros.programa).success(function(response) {
 
       $http({
         
@@ -259,12 +256,7 @@ $scope.items8 = [
 
 
 
-
-
-
     $http.get(host+"/datosfiltro/"+$scope.order_id+"/").success(function(response) {$scope.cliente = response[0];
-
-        console.log('cliente',$scope.cliente)
 
         var f = new Date();
 
@@ -281,12 +273,7 @@ $scope.items8 = [
 
     });
 
-    // $scope.mafe = 1
-    // $scope.posi =5 
-    // $scope.ri = 2
-    // $scope.pa = ''
 
-    // $scope.parametros.programa = $scope.mafe+'z'+$scope.ri+'z'+$scope.posi+'z'+$scope.pa
 
     $scope.programamapfre = function (data) {
 

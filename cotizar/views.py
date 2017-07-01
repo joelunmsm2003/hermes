@@ -1,3 +1,5 @@
+
+
 from django.shortcuts import *
 from django.template import RequestContext
 from django.contrib.auth import *
@@ -77,7 +79,7 @@ def tipousosubir(request):
 
 	xls_name = '/home/tipousos.xls'
 
-	print xls_name
+
 
 	book = xlrd.open_workbook(xls_name)
 
@@ -97,7 +99,7 @@ def tipousosubir(request):
 
 		Tipouso(tipo_id=tipo,uso_id=uso).save()	
 
-		print '--'
+
 
 	return HttpResponse('nologeado', content_type="application/json")
 
@@ -105,7 +107,7 @@ def marcaschinas(request):
 
 	xls_name = '/home/chinas.xls'
 
-	print xls_name
+
 
 	book = xlrd.open_workbook(xls_name)
 
@@ -144,7 +146,6 @@ def excluidospositiva(request):
 
 	xls_name = '/home/excluidos_positiva.xls'
 
-	print xls_name
 
 	book = xlrd.open_workbook(xls_name)
 
@@ -154,7 +155,7 @@ def excluidospositiva(request):
 
 		for col in range(sh.ncols):
 
-			print rx,col
+
 
 			if rx>0:
 
@@ -166,7 +167,7 @@ def excluidospositiva(request):
 
 				if col==5:
 
-					print str(sh.row(rx)[col]).split("'")[1],a ,a.id
+
 				
 					if str(sh.row(rx)[col]).split("'")[1] == 'No permitido':
 
@@ -180,7 +181,7 @@ def excluidoshdi(request):
 
 	xls_name = '/home/excluidoshdi.xls'
 
-	print xls_name
+
 
 	book = xlrd.open_workbook(xls_name)
 
@@ -190,7 +191,6 @@ def excluidoshdi(request):
 
 		for col in range(sh.ncols):
 
-			print rx,col
 
 			if rx>0:
 
@@ -203,7 +203,7 @@ def excluidoshdi(request):
 
 				if col==5:
 
-					print str(sh.row(rx)[col]).split("'")[1]
+
 
 
 					if str(sh.row(rx)[col]).split("'")[1] == 'x':
@@ -214,12 +214,68 @@ def excluidoshdi(request):
 
 	return HttpResponse('nologeado', content_type="application/json")
 
+def gpsrimacsubir(request):
+
+	xls_name = '/home/gpspacificosubir.xls'
+
+	book = xlrd.open_workbook(xls_name)
+
+	sh = book.sheet_by_index(0)
+
+	Gps.objects.filter(id_aseg_id=2).delete()
+
+	for rx in range(sh.nrows):
+
+		for col in range(sh.ncols):
+
+			if rx>0:
+
+				if col==0:
+
+					id= str(sh.row(rx)[col]).split(':')[1].split('.')[0]
+
+					a = AutoValor.objects.get(id=id)
+
+				# if col==4:
+
+				# 	if str(sh.row(rx)[col]).split("'")[1] == 'x':
+
+				# 		Gps(id_auto_id=a.id,value='Si',id_aseg_id=4).save()
+
+				# if col==5:
+
+				# 	if str(sh.row(rx)[col]).split("'")[1] == 'x':
+
+				# 		Gps(id_auto_id=a.id,value='Si',id_aseg_id=5).save()
+
+				# if col==6:
+
+				# 	if str(sh.row(rx)[col]).split("'")[1] == 'x':
+
+				# 		Gps(id_auto_id=a.id,value='Si',id_aseg_id=3).save()
+
+				# if col==7:
+
+				# 	if str(sh.row(rx)[col]).split("'")[1] == 'x':
+
+				# 		Gps(id_auto_id=a.id,value='Si',id_aseg_id=1).save()
+
+				if col==8:
+
+					if str(sh.row(rx)[col]).split("'")[1] == 'x':
+
+						Gps(id_auto_id=a.id,value='Si',id_aseg_id=2).save()
+
+
+
+	return HttpResponse('nologeado', content_type="application/json")
+
 
 def excluidosrimac(request):
 
 	xls_name = '/home/excluidorimac.xls'
 
-	print xls_name
+
 
 	book = xlrd.open_workbook(xls_name)
 
@@ -242,7 +298,6 @@ def excluidosrimac(request):
 
 				if col==5:
 
-					print str(sh.row(rx)[col]).split("'")[1]
 
 
 					if str(sh.row(rx)[col]).split("'")[1] == 'x':
@@ -259,7 +314,7 @@ def riesgohdi(request,aseguradora):
 
 	xls_name = '/home/riesgosubirhdi.xls'
 
-	print xls_name
+
 
 	book = xlrd.open_workbook(xls_name)
 
@@ -295,13 +350,12 @@ def riesgohdi(request,aseguradora):
 
 						marca = str(sh.row(rx)[col]).split("'")[1]
 
-						print marca,modelo
+
 
 						if AutoValor.objects.filter(id_marca__name_marca=marca,id_modelo__name_model=modelo).count()>0:
 
 							id_auto_valor = AutoValor.objects.filter(id_marca__name_marca=marca,id_modelo__name_model=modelo).values('id')[0]['id']
 
-							print 'id_auto_valor',id_auto_valor
 
 					
 					if col==3:
@@ -312,7 +366,7 @@ def riesgohdi(request,aseguradora):
 
 							id_riesgo = Riesgo.objects.get(tipo_riesgo=riesgo).id_riesgo
 
-							print id_riesgo
+	
 
 							RiesgAseg(id_model_id=id_auto_valor,aseguradora_id=3,id_riesg_id=id_riesgo).save()
 
@@ -356,7 +410,6 @@ def riesgosubir(request,aseguradora):
 
 						n_riesgo = str(sh.row(rx)[col]).split("'")[1]
 
-						print n_riesgo
 
 						if n_riesgo!='No Aplica':
 
@@ -419,8 +472,6 @@ def uploadfile(request):
 		process_file = Lote.objects.get(id=id_lote).file
 
 		xls_name = '/var/www/html/'+str(process_file)
-
-		print xls_name
 
 		book = xlrd.open_workbook(xls_name)
 
@@ -1078,7 +1129,7 @@ def pdfout(request):
 
 	#'id_cliente','fullname','email','celular','chose_marca__name_marca','chose_modelo__name_model','chose_tipo__clase','chose_timon__name_tipo','chose_modalid__name_modalidad','chose_uso__uso','chose_anio__anio_antig','chose_ubicl','chose_ubicp','chose_informat','value');
 	
-	print 'hahhaha',cl
+
 	# Draw things on the PDc. Here's where the PDF generation happens.
 	# See the ReportLab documentation for the full list of functionality.
 
@@ -1370,6 +1421,35 @@ def marcacsv(request):
 
 	return response
 
+@csrf_exempt
+def gpscsv(request,aseguradora):
+
+	g=Gps.objects.filter(id_aseg=aseguradora)
+
+
+
+	response = HttpResponse(content_type='text/xls')
+
+	response['Content-Disposition'] = 'attachment; filename="Gps.xls"'
+
+	writer = csv.writer(response)
+
+	data = 'Marca','Modelo','Tipo','Value'
+
+	writer.writerow(data)
+
+	for r in g:
+
+		print r.id_auto_id
+
+		datos= r.id_auto_id,r.id_auto.id_marca.name_marca,r.id_auto.id_modelo.name_model,r.id_auto.id_tipo.clase,r.value
+
+
+		writer.writerow(datos)
+
+	return response
+
+
 
 @csrf_exempt
 def riesgocsv(request,aseguradora):
@@ -1403,8 +1483,6 @@ def riesgocsv(request,aseguradora):
 			aseguradora = r.aseguradora.name_asegurad
 
 		if r.id_model_id:
-
-			print r.id_model_id
 
 			if AutoValor.objects.filter(id=r.id_model_id).count()>0:
 
@@ -1446,6 +1524,43 @@ def riesgocsv(request,aseguradora):
 	return response
 
 @csrf_exempt
+def coberturacsv(request,aseguradora):
+
+	ta = CobertAsegur.objects.filter(id_aseg=aseguradora)
+
+	response = HttpResponse(content_type='text/xls')
+
+	response['Content-Disposition'] = 'attachment; filename="Coberturas.csv"'
+
+	writer = csv.writer(response)
+
+	data = 'Cobertura','Programa'
+
+	writer.writerow(data)
+
+	for r in ta:
+
+		if r.id_cob_id:
+
+			r.id_cob.descripcion = r.id_cob.descripcion.encode('ascii','ignore')
+
+			r.id_cob.descripcion = r.id_cob.descripcion.encode('ascii','replace')
+
+		r.value = r.value.encode('ascii','ignore')
+
+		r.value = r.value.encode('ascii','replace')
+
+
+		data = r.id_cob.descripcion,'|',r.programa.program,'|',r.tipo.clase,'|',r.value
+
+
+		#data = t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,marca,modelo,categoria,t.origen,t.ubicacion,t.anio,t.value
+
+		writer.writerow(data)
+
+	return response
+
+@csrf_exempt
 def tasascsv(request,aseguradora):
 
 	ta = TasaAsegur.objects.filter(id_aseg=aseguradora)
@@ -1470,8 +1585,6 @@ def tasascsv(request,aseguradora):
 		categoria=None
 		marca=None
 
-
-		print t.id
 
 		if t.riesgo_id:
 
@@ -1508,8 +1621,6 @@ def tasascsv(request,aseguradora):
 		if AutoValor.objects.filter(id=t.modelo_id).count()>0:
 
 			if t.modelo_id:
-
-				print 't.modelo_id',t.modelo_id
 
 				marca = t.modelo.id_marca.name_marca.encode('ascii','ignore')
 
@@ -1693,8 +1804,7 @@ def estadologin(request):
 @csrf_exempt
 def exportarcobertura(request,data):
 
-	
-			print 'EC...',data
+
 
 			cobertura = str(data).split('a')[0].split('x')
 
@@ -1775,8 +1885,6 @@ def exportardeducible(request,data):
 			cobertura = str(data).split('a')[0].split('x')
 
 			aseguradora = str(data).split('a')[1].split('x')
-
-			print cobertura,aseguradora,type(cobertura),type([2])
 
 			
 			c =DeducAsegur.objects.filter(id_deduc_id__in=cobertura,id_aseg_id__in=aseguradora).values('riesgo__tipo_riesgo','programa__program','id_deduc__deducible','id_aseg__name_asegurad','id_uso__uso','tipo__clase','value','modalidad__name_modalidad','value').order_by('-id')
@@ -1997,8 +2105,6 @@ def listprimas(request):
 
 	p= Primas.objects.all().values('id','aseguradora__name_asegurad','riesgo__tipo_riesgo','programa__program','primaminima').order_by('-id')
 
-	print 'Primas...',p.count()
-
 	data_dict = ValuesQuerySetToDict(p)
 
 	data = json.dumps(data_dict)
@@ -2038,8 +2144,6 @@ def asegprogram(request,aseguradora,modelo,uso,marca,tipo,precio):
 	marcaname = Marca.objects.get(id_marca=marca).name_marca
 
 	restringido =False
-
-	print tiponame,origenname,usoname,precio,id_auto_valor
 
 	if int(aseguradora)==5:
 
@@ -2113,7 +2217,7 @@ def asegprogram(request,aseguradora,modelo,uso,marca,tipo,precio):
 
 		aseg = ProgAseg.objects.filter(id_aseg_id=aseguradora,id_prog_id__in=progrimac).values('id_prog','id_prog__program')
 
-		print 'progrimac',progrimac
+
 
 	if int(aseguradora)==4: #Mapfre
 
@@ -2204,7 +2308,7 @@ def pdfx(request):
 
 	urlx = request.body
 
-	print 'Generando PDF....',urlx
+
 
 	f = open('/var/www/pdf.txt', 'a')
 	f.write(str(urlx)+'\n')
@@ -2809,7 +2913,6 @@ def primaneta(request,descuento):
 
 	modelname =a.id_modelo.name_model
 
-	print 'tiponame,origenname,modelname',tiponame,origenname,modelname
 
 	# for m in a:
 
@@ -2954,7 +3057,7 @@ def primaneta(request,descuento):
 
 			tasa = None
 
-			print 'riesgopacifico',riesgopacifico
+
 
 			if TasaAsegur.objects.filter(id_aseg_id=2,anio=int(anio),riesgo_id=riesgopacifico).count()>0:
 
@@ -2992,7 +3095,7 @@ def primaneta(request,descuento):
 
 			e = AutoValor.objects.get(id=id_auto_valor).excluidohdi
 
-			print 'excluidohdi.....',e
+
 
 			if e !='Si':
 
@@ -3036,7 +3139,7 @@ def primaneta(request,descuento):
 
 				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),id_uso__uso=usoname,programa_id=programamapfre,origen__isnull=True)
 
-				print tasa
+
 
 				if origenname == 'Chino':
 
@@ -3118,7 +3221,7 @@ def primaneta(request,descuento):
 
 			tasa = None
 
-			print 'anio,tiponame,programarimac',anio,tiponame,programarimac
+
 
 			if int(programarimac) == 2: # Corporativa Rimac
 
@@ -3149,7 +3252,6 @@ def primaneta(request,descuento):
 
 			if int(programarimac) == 7: # Programa 4x4
 
-				print 'tiponame,usoname,programarimac',tiponame,usoname,programarimac
 
 				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),id_uso__uso=usoname,programa_id=programarimac)
 
@@ -3180,11 +3282,11 @@ def primaneta(request,descuento):
 
 					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase='Autos',programa_id=programarimac)
 
-				if 'Yaris' in modeloname:
+				if 'Yaris' in modelname:
 
 					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),modelo__name_model__contains='Yaris',programa_id=programarimac)
 
-				if 'Sail' in modeloname:
+				if 'Sail' in modelname:
 
 					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),modelo__name_model__contains='Sail',programa_id=programarimac)
 
@@ -3294,7 +3396,7 @@ def listagps2(request):
 
 	d=Gps.objects.filter(value=1).values('sumaminima','id','id_aseg__name_asegurad','id_prog__program','value').order_by('-id')[:10]
 
-	print d.count()
+
 
 	data_dict = ValuesQuerySetToDict(d)
 
@@ -3308,7 +3410,6 @@ def listagps(request):
 
 	d=Gps.objects.all().exclude(value=1).values('sumaminima','id','id_aseg__name_asegurad','id_prog__program','id_auto__id_modelo__name_model','id_auto__id_marca__name_marca','id_auto__id_modelo__name_model','id_uso__uso','anio_antig','value','anio_antig__anio_antig').order_by('-id')[:10]
 
-	print d.count()
 
 	data_dict = ValuesQuerySetToDict(d)
 
@@ -3331,50 +3432,125 @@ def riesgomodelo(request,modelo):
 
 
 @csrf_exempt
-def getgps(request,modelo):
+def getgps(request,modelo,marca,tipo,uso,monto,anio,programa):
 
 
-	print 'Modelo....',modelo
 	gpspositiva = 'No'
 	gpsrimac = 'No'
 	gpspacifico = 'No'
 	gpsmapfre = 'No'
 	gpshdi = 'No'
 
-	auto =AutoValor.objects.filter(id_modelo_id=modelo)
 
-	for a in auto:
-		id_auto = a.id
+	auto =AutoValor.objects.get(id_modelo_id=modelo,id_marca_id=marca,id_tipo_id=tipo)
 
-		'''
-		f = open('/var/www/html/gps.txt', 'a')
-		f.write(str(modelo)+' '+str(id_auto)+'\n')
-		f.close()
-		'''
+	id_auto = auto.id
 
-		if Gps.objects.filter(id_auto =id_auto,id_aseg=1).count() > 0 :
-			gpspositiva = 'Si'
-		if Gps.objects.filter(id_auto =id_auto,id_aseg=5).count() > 0:
-			gpsrimac = 'Si'
-		if Gps.objects.filter(id_auto =id_auto,id_aseg=2).count() > 0:
-			gpspacifico = 'Si'
-		if Gps.objects.filter(id_auto =id_auto,id_aseg=4).count() > 0:
+	today = date.today()
+
+	anio = Anio.objects.get(id_anio=anio).anio_antig
+
+	difanio =  int(today.year)-int(anio)
+
+	if Gps.objects.filter(id_auto =id_auto,id_aseg=1).count() > 0 :
+
+		gpspositiva = 'Si'
+
+	## Gps Rimac
+
+	yaris =[1369,1370,1371,1372,1454,1455,1456,1457,1493,1495,1519,1520,1521,8448]
+
+
+	if Gps.objects.filter(id_auto =id_auto,id_aseg=5).count() > 0 and int(difanio)<3:
+
+		gpsrimac = 'Si'
+
+	if  (int(difanio)<5 and int(id_auto)==8376) or (int(difanio)<5 and str(id_auto in yaris) == 'True') :
+
+		gpsrimac = 'Si'
+
+	if int(monto) >=50000:
+
+		gpsrimac = 'Si'
+
+	## Gps Mapfre
+
+	## Dorada 
+
+	progmapfre = programa.split('z')[0]
+
+	print 'progmapfre',progmapfre
+
+	if int(progmapfre)==5 or int(progmapfre)==1 or int(progmapfre)==24:
+
+		if (str(id_auto in yaris) == 'True' and  int(difanio)<4) or (int(id_auto)==8376 and int(difanio)<4):
+
 			gpsmapfre = 'Si'
-		if Gps.objects.filter(id_auto =id_auto,id_aseg=3).count() > 0:
-			gpshdi = 'Si'
 
-	print id_auto
+		if Gps.objects.filter(id_auto=id_auto,id_aseg=4).count()>0 and int(difanio)<3:
 
-	'''
-	f = open('/var/www/html/gps.txt', 'a')
-	f.write('......'+'\n')
-	f.close()
-	'''
-	
+			gpsmapfre = 'Si' 
 
-	
+		if int(monto) >=50000:
 
-	
+			gpsmapfre = 'Si'
+
+	## Dorada Pickup
+
+	pickma= [7669,7815,7817,7814]
+
+	if int(progmapfre)== 22:
+
+		if int(id_auto)==8376 and int(difanio)<4:
+
+			gpsmapfre = 'Si'
+
+		if str(id_auto in pickma) == 'True' and int(difanio)<3:
+
+			gpsmapfre = 'Si'
+
+	if int(progmapfre)== 19:
+
+		if int(id_auto)==8376 and int(difanio)<3:
+
+			gpsmapfre = 'Si'
+
+	if int(progmapfre)== 21:
+
+		gpsmapfre = 'Si'
+
+	# Gps Positiva
+
+	tipop=[1,3,17,6]
+
+	if str(tipo in tipop) == 'True' and int(monto)>=50000:
+
+		gpspositiva = 'Si'
+
+	if tipo==6:
+
+		gpspositiva = 'Si'
+
+	if Gps.objects.filter(id_auto=id_auto,id_aseg=1).count()>0  and int(difanio)<3:
+
+		gpspositiva = 'Si'
+
+	if int(monto)>=50000:
+
+		gpspositiva = 'Si'
+
+	## Gps Hdi 
+
+	if Gps.objects.filter(id_auto=id_auto,id_aseg=3).count()>0 :
+
+		gpshdi= 'Si'
+
+	## Gps Pacifico
+
+	if Gps.objects.filter(id_auto=id_auto,id_aseg=2).count()>0 :
+
+		gpspacifico = 'Si'
+
 
 	data = {'gpshdi':gpshdi,'gpsmapfre':gpsmapfre,'gpsrimac':gpsrimac,'gpspacifico':gpspacifico,'gpspositiva':gpspositiva}
 
@@ -3405,7 +3581,6 @@ def cobertura(request,orden_id,uso,anio,modalidad,programa,modelo):
 
 	difanio =  int(today.year)-int(anio)
 
-	print 'difanio',difanio
 
 	anioset = 10
 	
@@ -3422,8 +3597,6 @@ def cobertura(request,orden_id,uso,anio,modalidad,programa,modelo):
 
 		anioset = 20
 	
-
-	print 'Anioset.........................................................',anioset
 
 	if RiesgAseg.objects.filter(aseguradora_id=1,id_model_id=modelo):
 
@@ -3594,7 +3767,6 @@ def deducible(request,orden_id,uso,anio,modalidad,programa,modelo):
 
 	pro = programa.split('z')
 
-	print 'pro',pro
 
 	promapfre = pro[0]
 	propositiva = pro[2]
@@ -3714,7 +3886,6 @@ def servic(request):
 
 	servicio = Servicios.objects.all().values('id_serv','services').order_by('id_serv')
 
-	print type(servicio)
 
 	lista = []
 
@@ -3780,14 +3951,14 @@ def servicio(request):
 	return HttpResponse(data, content_type="application/json")
 
 
-@csrf_exempt
-def postin(request):
+# @csrf_exempt
+# def postin(request):
 
-	if request.method == 'POST':
+# 	if request.method == 'POST':
 
-		print json.loads(request.body)
+# 		print json.loads(request.body)
 
-	return HttpResponse('xxxxx', content_type="application/json")
+# 	return HttpResponse('xxxxx', content_type="application/json")
 
 
 @csrf_exempt
@@ -3903,7 +4074,7 @@ def add(request):
 
 		data =  json.loads(request.body)
 #		
-		print 'hahahah',data
+
 
 		#{u'categoria': {u'categoria': u'I', u'id_categ': 1}, u'igv': 18, u'clase': [{u'clase': u'Cami\xf3n', u'id_clase': 2}], u'anio': {u'id_anio': 16, u'anio_antig': 2004}, u'uso': {u'uso': u'Particular', u'id_uso': 1}, u'cobertura': [{u'descripcion': u'Riesgos de la Naturaleza', u'id_cobert': 20}], u'riesgo': {u'id_riesgo': 153, u'tipo_riesgo': u'Alta Gama I S/.1700'}, u'marca': {u'id_marca': 178, u'name_marca': u'LADA'}, u'value': u'111', u'demision': 3, u'aniox': 0, u'modelo': {u'id_model': 8062, u'name_model': u'C-61'}, u'programa': [{u'id_program': 3, u'program': u'Corporativo HDI'}], u'ubicacion': {u'id': 1, u'label': u'Lima'}, u'modalidad': [{u'id_modalidad': 2, u'name_modalidad': u'Todo Riesgo'}], u'aseguradora': {u'id_asegurad': 2, u'name_asegurad': u'Pacifico'}}
 
@@ -3976,7 +4147,7 @@ def addservice(request):
 
 		data =  json.loads(request.body)
 
-		print data
+
 
 		aseguradora = data['aseguradora']['id_asegurad']
 		value = data['valor']
@@ -3997,7 +4168,7 @@ def addfinanz(request):
 
 		data =  json.loads(request.body)
 
-		print data
+
 
 		aseguradora = data['aseguradora']['id_asegurad']
 		cuota = data['cuota']
@@ -4014,7 +4185,7 @@ def addfinanciamiento(request):
 
 		data =  json.loads(request.body)
 
-		print 'Dfifnanana',data['financiamiento']
+
 
 		Financiamiento(financiamiento=data['financiamiento']).save()
 
@@ -4130,13 +4301,12 @@ def addriesgoclase(request):
 
 					if m['checkmodel'] == True:
 
-						print m['id_modelo']
 
 						#print 'modelo', AutoValor.objects.filter(id_modelo=m['id_modelo']).values('id','id_marca','id_modelo')
 
 						id_modelo=AutoValor.objects.filter(id_modelo_id=m['id_modelo']).values('id','id_marca','id_modelo')[0]['id']
 
-						print id_modelo
+
 
 						RiesgAseg(id_riesg_id=int(riesgo),id_model_id=id_modelo,aseguradora_id=int(aseguradora)).save()
 
@@ -4163,7 +4333,7 @@ def addprima(request):
 		programa = data['programa']['id_program']
 		primaminima = data['valor']
 
-		print riesgo,aseguradora,programa,primaminima
+
 
 		Primas(riesgo_id=riesgo,aseguradora_id=aseguradora,primaminima=primaminima,programa_id=programa).save()
 
@@ -4181,7 +4351,6 @@ def adddeduccion(request):
 
 		data =  json.loads(request.body)
 #		
-		print 'hahahah',data
 
 		#{u'categoria': {u'categoria': u'I', u'id_categ': 1}, u'igv': 18, u'clase': [{u'clase': u'Cami\xf3n', u'id_clase': 2}], u'anio': {u'id_anio': 16, u'anio_antig': 2004}, u'uso': {u'uso': u'Particular', u'id_uso': 1}, u'cobertura': [{u'descripcion': u'Riesgos de la Naturaleza', u'id_cobert': 20}], u'riesgo': {u'id_riesgo': 153, u'tipo_riesgo': u'Alta Gama I S/.1700'}, u'marca': {u'id_marca': 178, u'name_marca': u'LADA'}, u'value': u'111', u'demision': 3, u'aniox': 0, u'modelo': {u'id_model': 8062, u'name_model': u'C-61'}, u'programa': [{u'id_program': 3, u'program': u'Corporativo HDI'}], u'ubicacion': {u'id': 1, u'label': u'Lima'}, u'modalidad': [{u'id_modalidad': 2, u'name_modalidad': u'Todo Riesgo'}], u'aseguradora': {u'id_asegurad': 2, u'name_asegurad': u'Pacifico'}}
 
@@ -4264,17 +4433,22 @@ def addauto(request):
 
 	model = json.loads(request.body)['model']
 
-	clase = model['clase']
 
-	if type(clase) == dict:
+	tipo=model['clase']['id_clase']
 
-		clase=[clase]
+	marca= model['marca']['id_marca']
 
-	for i in data['item'][0]:
+	modelo= model['modelo']['id_model']
 
-		for c in clase:
+	# if type(clase) == dict:
 
-			AutoValor(id_tipo_id=c['id_clase'],id_modelo_id=i['id_modelo'],id_marca_id=i['id_marca']).save()	
+	# 	clase=[clase]
+
+	# for i in data['item'][0]:
+
+	# 	for c in clase:
+
+	AutoValor(id_tipo_id=tipo,id_modelo_id=modelo,id_marca_id=marca).save()	
 
 
 	return HttpResponse(json.dumps(request.body), content_type="application/json")
@@ -4434,7 +4608,7 @@ def deduc_cob(request):
 @csrf_exempt
 def eliminarries(request):
 
-	print json.loads(request.body)
+
 
 	data = json.loads(request.body)
 
@@ -4446,7 +4620,6 @@ def eliminarries(request):
 @csrf_exempt
 def eliminarcob(request):
 
-	print json.loads(request.body)
 
 	data = json.loads(request.body)
 
@@ -4591,7 +4764,7 @@ def addpoliticagps(request):
 
 		data = json.loads(request.body)['gps']
 
-		print 'ya pueeee.....',data['value']
+
 		modelitos = json.loads(request.body)['modelitos']
 
 		# uso = data['uso']
@@ -4645,7 +4818,7 @@ def addpoliticagps(request):
 								if m['checkmodel'] == True:
 
 
-									print 'hahahah',an,anio
+	
 
 									
 									# precio = AutoValor.objects.filter(id_modelo_id=m['id_modelo']).values('id','id_marca','id_modelo','valor')[0]
@@ -4679,7 +4852,7 @@ def addpoliticagps2(request):
 		data = json.loads(request.body)
 		gps = data['gps']
 
-		print 'gps..',gps
+
 		aseguradora = gps['aseguradora']
 		programa = gps['programa']
 		sumaminima = gps['sumaminima']
@@ -4710,7 +4883,7 @@ def cotiSave(request):
 
 	if request.method == 'POST':
 
-		print json.loads(request.body)
+
 
 		dato = json.loads(request.body)['dato']
 		precio = json.loads(request.body)['precio']
@@ -4746,7 +4919,7 @@ def cotiSave(request):
 	
 		Clientes(fullname=name,email=email,celular=cel,chose_tipo_id=int(tipo),chose_marca_id=int(marca),chose_anio_id=int(anio),chose_modelo_id=int(modelo),chose_modalid_id=int(modalidad),chose_uso_id=int(uso),value=float(precio),chose_ubicl=int(statusubicL),chose_ubicp=int(statusubicP),chose_informat=int(statuscheck)).save()
 
-		print 'guardando..................'
+
 
 		id_cliente =  Clientes.objects.all().values('id_cliente').order_by('-id_cliente')[0]['id_cliente']
 
@@ -4797,7 +4970,6 @@ def enviaemail(request):
 
 		if flag == 1:
 
-			print 'Enviando email....',email
 
 			f = open('/var/www/html/email.txt', 'a')
 			f.write(str(email)+'\n')
@@ -4814,7 +4986,7 @@ def savecob(request):
 
 	data = json.loads(request.body)
 
-	print data
+
 
 	clase = data['clase']['id_clase']
 
@@ -4848,7 +5020,7 @@ def saveprimas(request):
 
 	data = json.loads(request.body)
 
-	print data
+
 
 	primaminima = data['primaminima']
 	programa = data['programa']['id_program']
@@ -4899,13 +5071,13 @@ def savededu(request):
 @csrf_exempt
 def saveservicio(request):
 
-	print 'uyuyuyuyuyu'
+
 
 	if request.method == 'POST':
 
 		data = json.loads(request.body)
 
-		print 'Saving servicio.....',data
+
 
 		servicio = data['servicio']['id_serv']
 
@@ -4926,7 +5098,7 @@ def saveservicio(request):
 def savefinanc(request):
 
 	data = json.loads(request.body)
-	print data 
+
 
 	#{u'id_aseg__name_asegurad': u'Positiva', u'id_finan__financiamiento': u'Cuotas Sin Interes', u'clase': {u'clase': u'Auto', u'id_clase': 1}, u'tea': 676, u'cuota': u'787', u'riesgo': {u'id_riesgo': 84, u'tipo_riesgo': u'Alta Gama hasta $40k'}, u'aseguradora': {u'id_asegurad': 1, u'name_asegurad': u'Positiva'}}
 
@@ -4935,7 +5107,6 @@ def savefinanc(request):
 	fi = data['id_finan']
 	id=data['id']
 
-	print fi
 	aseguradora = data['aseguradora']['id_asegurad']
 
 	c = FinanAsegu.objects.get(id=id)
@@ -4986,7 +5157,6 @@ def savepoliticas(request):
 
 	data = json.loads(request.body)
 
-	print data
 
 
 	anio = data['anio']['id_anio']

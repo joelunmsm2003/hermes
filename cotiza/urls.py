@@ -120,7 +120,7 @@ urlpatterns = patterns('',
     url(r'^asegprogram/(\d+)/(\d+)/(\d+)/(\d+)/(\d+)/(\d+)', 'cotizar.views.asegprogram'),
     url(r'^subir/', 'cotizar.views.subir'),
     url(r'^generapdf/', 'cotizar.views.generapdf'),
-    url(r'^getgps/(\d+)', 'cotizar.views.getgps'),
+    url(r'^getgps/(\d+)/(\w+)/(\w+)/(\w+)/(\w+)/(\w+)/(\w+)', 'cotizar.views.getgps'),
     url(r'^subir/', 'cotizar.views.subir'),
     url(r'^enviaemail/', 'cotizar.views.enviaemail'),
     url(r'^fiiiii/', 'cotizar.views.fiiiii'),
@@ -139,6 +139,11 @@ urlpatterns = patterns('',
     url(r'^marcaschinas', 'cotizar.views.marcaschinas'),
     url(r'^excluidospositiva', 'cotizar.views.excluidospositiva'),
     url(r'^excluidosrimac', 'cotizar.views.excluidosrimac'),
+    url(r'^gpscsv/(\d+)', 'cotizar.views.gpscsv'),
+    url(r'^gpsrimacsubir', 'cotizar.views.gpsrimacsubir'),
+    url(r'^coberturacsv/(\d+)', 'cotizar.views.coberturacsv'),
+    
+
 
 
 

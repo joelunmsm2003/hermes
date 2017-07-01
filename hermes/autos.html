@@ -27,14 +27,14 @@
             <div class="col-md-2">
 
 				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#marca"><i class="fa fa-plus"></i></button>
-				Marca :<select multiple ng-options="item as item.name_marca for item in marcas track by item.id_marca" type="text" class="form-control" ng-model="model.marca" required =""  ></select>
+				Marca :<select  ng-options="item as item.name_marca for item in marcas track by item.id_marca" type="text" class="form-control" ng-model="model.marca" required =""  ></select>
 
 			</div>
 
 			<div class="col-md-2">
 
 				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelo"><i class="fa fa-plus"></i></button>
-				Modelo :<select multiple ng-options="item as item.name_model for item in modelos track by item.id_model" type="text" class="form-control" ng-model="model.modelo" required =""  ></select>
+				Modelo :<select  ng-options="item as item.name_model for item in modelos track by item.id_model" type="text" class="form-control" ng-model="model.modelo" required =""  ></select>
 
 			</div>
 
@@ -86,7 +86,7 @@
 
 				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#clase"><i class="fa fa-plus"></i></button>
 				Clase:
-				<select multiple ng-options="item as item.clase for item in clases track by item.id_clase" type="text" class="form-control" ng-model="model.clase" required =""  ></select>
+				<select  ng-options="item as item.clase for item in clases track by item.id_clase" type="text" class="form-control" ng-model="model.clase" required =""  ></select>
 
 			</div>
 

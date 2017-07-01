@@ -175,7 +175,7 @@ function Cotiza($scope,$http,$filter,$location,$localStorage) {
 
 
         console.log($scope.anio[12])
-        $scope.model.anio = $scope.anio[0]
+        //$scope.model.anio = $scope.anio[0]
 
       
     });
@@ -212,7 +212,21 @@ function Cotiza($scope,$http,$filter,$location,$localStorage) {
 
     }
 
-    
+    $scope.evaluaanio=function(data){
+
+        console.log('aniooooo',data)
+
+        if(data.id_anio<28){
+
+            $scope.showantiguedad = false
+
+
+        }
+        else{
+
+            $scope.showantiguedad = true
+        }
+    }
 
 
        
