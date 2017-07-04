@@ -143,6 +143,8 @@ urlpatterns = patterns('',
     url(r'^gpsrimacsubir', 'cotizar.views.gpsrimacsubir'),
     url(r'^coberturacsv/(\d+)', 'cotizar.views.coberturacsv'),
     url(r'^deduciblecsv/(\d+)', 'cotizar.views.deduciblecsv'),
+    url(r'^serviciocsv/(\d+)', 'cotizar.views.serviciocsv'),
+
     
 
 
