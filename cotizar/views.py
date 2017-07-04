@@ -1526,7 +1526,7 @@ def riesgocsv(request,aseguradora):
 @csrf_exempt
 def coberturacsv(request,aseguradora):
 
-	ta = CobertAsegur.objects.filter(id_aseg=aseguradora)
+	ta = CobertAsegur.objects.all()
 
 	response = HttpResponse(content_type='text/xls')
 
@@ -1540,6 +1540,8 @@ def coberturacsv(request,aseguradora):
 
 	for r in ta:
 
+		print r.id_cob_id
+
 		if r.id_cob_id:
 
 			r.id_cob.descripcion = r.id_cob.descripcion.encode('ascii','ignore')
@@ -1551,7 +1553,46 @@ def coberturacsv(request,aseguradora):
 		r.value = r.value.encode('ascii','replace')
 
 
-		data = r.id_cob.descripcion,'|',r.programa.program,'|',r.tipo.clase,'|',r.value
+		data = r.id_cob_id,'|',r.id_cob.descripcion,'|',r.programa.program,'|',r.tipo.clase,'|',r.value
+
+
+		#data = t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,marca,modelo,categoria,t.origen,t.ubicacion,t.anio,t.value
+
+		writer.writerow(data)
+
+	return response
+
+
+
+@csrf_exempt
+def deducible(request,aseguradora):
+
+	ta = DeducAsegur.objects.filter(id_aseg=aseguradora)
+
+	response = HttpResponse(content_type='text/xls')
+
+	response['Content-Disposition'] = 'attachment; filename="Coberturas.csv"'
+
+	writer = csv.writer(response)
+
+	data = 'Cobertura','Programa'
+
+	writer.writerow(data)
+
+	for r in ta:
+
+		if r.id_deduc_id:
+
+			r.id_deduc.deducible = r.id_deduc.deducible.encode('ascii','ignore')
+
+			r.id_deduc.deducible = r.id_deduc.deducible.encode('ascii','replace')
+
+		r.value = r.value.encode('ascii','ignore')
+
+		r.value = r.value.encode('ascii','replace')
+
+
+		data = r.id_cob_id,'|',r.id_deduc.deducible,'|',r.programa.program,'|',r.tipo.clase,'|',r.value
 
 
 		#data = t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,marca,modelo,categoria,t.origen,t.ubicacion,t.anio,t.value
@@ -1584,6 +1625,8 @@ def tasascsv(request,aseguradora):
 		modelo=None
 		categoria=None
 		marca=None
+
+
 
 
 		if t.riesgo_id:
@@ -1643,7 +1686,7 @@ def tasascsv(request,aseguradora):
 			categoria=t.categoria.categoria
 
 
-		data = t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,marca,modelo,categoria,t.origen,t.ubicacion,t.anio,t.value
+		data = t.id_aseg.name_asegurad,t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,marca,modelo,categoria,t.origen,t.ubicacion,t.anio,t.value
 
 		# datos = str(data).encode('ascii','ignore')
 
@@ -2132,6 +2175,8 @@ def asegprogram(request,aseguradora,modelo,uso,marca,tipo,precio):
 
 
 	aseg = ProgAseg.objects.filter(id_aseg_id=aseguradora).values('id_prog','id_prog__program').order_by('id_prog__program')
+
+	print 'modelo,marca,tipo',modelo,marca,tipo
 
 	tiponame = AutoValor.objects.get(id_modelo_id=modelo,id_marca_id=marca,id_tipo_id=tipo).id_tipo.clase
 
@@ -3610,9 +3655,7 @@ def cobertura(request,orden_id,uso,anio,modalidad,programa,modelo):
 	
 		riesgomapfre = RiesgAseg.objects.get(aseguradora_id=4,id_model_id=modelo).id_riesg__tipo_riesgo
 	
-	if RiesgAseg.objects.filter(aseguradora_id=5,id_model_id=modelo):
 
-		riesgorimac = RiesgAseg.objects.get(aseguradora_id=5,id_model_id=modelo).id_riesg__tipo_riesgo
 
 	cobertura = Cobertura.objects.all().values('id_cobert','descripcion').order_by('id_cobert')
 
@@ -3623,111 +3666,37 @@ def cobertura(request,orden_id,uso,anio,modalidad,programa,modelo):
 
 	for i in range(len(cobertura)):
 
-		cobertura[0]['rimac'] = 'Valor Pactado'
-		cobertura[1]['rimac'] = 'Valor Pactado'
-		cobertura[2]['rimac'] = 'Valor Pactado'
-		cobertura[3]['rimac'] = 'US$ 150 000'
-		cobertura[4]['rimac'] = 'US$ 80000 x Vehiculo'
-		cobertura[5]['rimac'] = 'Max 5 ocupantes'
-		cobertura[6]['rimac'] = 'US$ 20 000'
-		cobertura[7]['rimac'] = 'US$ 4 000'
-		cobertura[8]['rimac'] = 'US$ 2 000'
-		cobertura[9]['rimac'] = 'No Aplica'
-		cobertura[10]['rimac'] = 'US$ 1000'
-		cobertura[11]['rimac'] = 'US$ 1500'
-		cobertura[12]['rimac'] = 'Persona Juridica o Endoso al Banco'
-		cobertura[13]['rimac'] = 'US$ 50000'
-		cobertura[14]['rimac'] = 'Valor Pactado'
-		cobertura[15]['rimac'] = 'US$ 10000'
-		cobertura[16]['rimac'] = 'Si cubre'
-		cobertura[17]['rimac'] = 'No aplica'
-		break
-
-	for i in range(len(cobertura)):
-		
-		cobertura[0]['positiva'] = 'Valor Asegurado'
-		cobertura[1]['positiva'] = 'Valor Asegurado'
-		cobertura[2]['positiva'] = 'Valor Asegurado'
-		cobertura[3]['positiva'] = 'US$ 150 000'
-		cobertura[4]['positiva'] = 'US$ 50000 x Vehiculo'
-		cobertura[5]['positiva'] = 'Max 5 ocupantes'
-		cobertura[6]['positiva'] = 'US$ 20 000'
-		cobertura[7]['positiva'] = 'US$ 4 000'
-		cobertura[8]['positiva'] = 'US$ 1 000'
-		cobertura[9]['positiva'] = 'No Aplica'
-		cobertura[10]['positiva'] = 'US$ 1 000'
-		cobertura[11]['positiva'] = 'Dentro del valor del vehiculo'
-		cobertura[12]['positiva'] = 'Endoso al Banco'
-		cobertura[13]['positiva'] = 'US$ 50000'
-		cobertura[14]['positiva'] = 'Valor Asegurado'
-		cobertura[15]['positiva'] = 'US$ 10000'
-		cobertura[16]['positiva'] = 'Si cubre'
-		cobertura[17]['positiva'] = 'No aplica'
-		break
-
-	for i in range(len(cobertura)):
-		
-		cobertura[0]['mapfre'] = 'Valor Pactado (Hasta 120% del valor comercial)'
-		cobertura[1]['mapfre'] = 'Valor Pactado (Hasta 120% del valor comercial)'
-		cobertura[2]['mapfre'] = 'Valor Pactado (Hasta 120% del valor comercial)'
-		cobertura[3]['mapfre'] = 'US$ 150 000'
-		cobertura[4]['mapfre'] = 'US$ 50000 x Vehiculo'
-		cobertura[5]['mapfre'] = 'Max 5 ocupantes'
-		cobertura[6]['mapfre'] = 'US$ 20 000'
-		cobertura[7]['mapfre'] = 'US$ 4 000'
-		cobertura[8]['mapfre'] = 'US$ 2 000'
-		cobertura[9]['mapfre'] = 'US$ 10 000 (piloto y copiloto)'
-		cobertura[10]['mapfre'] = 'Originales sin limite, No originales US$ 1000'
-		cobertura[11]['mapfre'] = 'US$ 1500'
-		cobertura[12]['mapfre'] = 'Persona Juridica o Endoso al Banco'
-		cobertura[13]['mapfre'] = 'US$ 50000'
-		cobertura[14]['mapfre'] = 'No Aplica'
-		cobertura[15]['mapfre'] = 'No Aplica'
-		cobertura[16]['mapfre'] = 'Si cubre'
-		cobertura[17]['mapfre'] = 'US$ 500'
-		break
-
-
-
-	for i in range(len(cobertura)):
-
 		cober.append(i)
 
-		if CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=3,id_uso=uso).count()==1:
+		if CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=3).count()==1:
 
 			lista.append(i)
 
-			cobertura[i]['hdi'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=3,id_uso=uso).value
-
-		p = CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=1,id_uso=uso,modalidad_id=modalidad,antigued=20,programa_id=propositiva).values('programa__program','antigued')
+			cobertura[i]['hdi'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=3).value
 			
-		if p.count()==1:
+		if CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=1).count()==1:
 
 			lista.append(i)
 
-			cobertura[i]['positiva'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=1,id_uso=uso,antigued=20,modalidad_id=modalidad,programa_id=propositiva).value
+			cobertura[i]['positiva'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=1).value
 
-		if CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=2,id_uso_id= uso).count()==1:
+		if CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=2).count()==1:
 
 			lista.append(i)
 
-			cobertura[i]['pacifico'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=2,id_uso_id= uso).value
+			cobertura[i]['pacifico'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=2).value
 
-		p = CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=4,id_uso=uso,programa_id=promapfre,tipo_id=tipo).values('programa__program','antigued','id_cob')
-
-		if p.count()==1:
+		if CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=4,programa_id=promapfre).count()==1:
 		
 			lista.append(i)
 
-			cobertura[i]['mapfre'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=4,id_uso=uso,programa_id=promapfre,tipo_id=tipo).value
-
-		p = CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=5,id_uso_id=uso,programa_id=prorimac)
+			cobertura[i]['mapfre'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=4,programa_id=promapfre).value
 		
-		if p.count()==1:
+		if CobertAsegur.objects.filter(id_cob=cobertura[i]['id_cobert'],id_aseg_id=5,programa_id=prorimac).count()==1:
 
 			lista.append(i)
 			
-			cobertura[i]['rimac'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=5,id_uso_id=uso,programa_id=prorimac).value
+			cobertura[i]['rimac'] = CobertAsegur.objects.get(id_cob=cobertura[i]['id_cobert'],id_aseg_id=5,programa_id=prorimac).value
 
 
 	data_dict = ValuesQuerySetToDict(cobertura)

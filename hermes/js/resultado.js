@@ -217,18 +217,15 @@ $scope.items8 = [
 
     $scope.parametros = $routeParams
 
-
-
     $scope.absUrl = $location.absUrl();
 
-    console.log('$scope.riesgo',$scope.riesgo)
+
 
     $scope.model = {}
     $scope.datamodel = {}
 
     $http.get(host+"/programas/").success(function(response) {$scope.programas = response;
-    
-    console.log('Programas',$scope.programas)
+
     $scope.model.programa = $scope.programas[3]
 
     //$scope.programa($scope.model)
@@ -294,12 +291,12 @@ $scope.items8 = [
 
             $scope.cobertura = response;
 
-            $http({
-            url: host+"/recibecoberturas/",
-            data: $scope.cobertura,
-            method: 'POST',
+            // $http({
+            // url: host+"/recibecoberturas/",
+            // data: $scope.cobertura,
+            // method: 'POST',
          
-            })
+            // })
 
         });
 
@@ -307,12 +304,12 @@ $scope.items8 = [
 
             $scope.deducible = response;
 
-              $http({
-            url: host+"/recibededucibles/",
-            data: $scope.deducible,
-            method: 'POST',
+            //   $http({
+            // url: host+"/recibededucibles/",
+            // data: $scope.deducible,
+            // method: 'POST',
          
-            })
+            // })
 
         });
 
@@ -322,16 +319,9 @@ $scope.items8 = [
 
     $scope.programarimac = function (data) {
 
-
-
     $scope.muestradescuento = false
 
     $scope.ri = data.programar.id_prog
-
-
-
-    console.log('$scope.ri',$scope.ri)
-  
 
         $scope.p = $scope.parametros.programa.split('z')
 
@@ -343,12 +333,12 @@ $scope.items8 = [
 
             $scope.cobertura = response;
 
-            $http({
-            url: host+"/recibecoberturas/",
-            data: $scope.cobertura,
-            method: 'POST',
+            // $http({
+            // url: host+"/recibecoberturas/",
+            // data: $scope.cobertura,
+            // method: 'POST',
          
-            })
+            // })
 
         });
 
@@ -364,12 +354,12 @@ $scope.items8 = [
 
         $scope.deducible = response;
 
-          $http({
-            url: host+"/recibededucibles/",
-            data: $scope.deducible,
-            method: 'POST',
+          // $http({
+          //   url: host+"/recibededucibles/",
+          //   data: $scope.deducible,
+          //   method: 'POST',
          
-            })
+          //   })
 
         });
 
@@ -480,29 +470,32 @@ $scope.items8 = [
 
     }
 
-        // $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.programa+'/'+$scope.modelo+"/").success(function(response) {
 
-        //     $scope.cobertura = response;
 
-        //     $http({
-        //     url: host+"/recibecoberturas/",
-        //     data: $scope.cobertura,
-        //     method: 'POST',
+
+        $http.get(host+"/cobertura/"+$scope.order_id+'/'+$scope.uso+'/'+$scope.anio+'/'+$scope.modalidad+'/'+$scope.parametros.programa+'/'+$scope.modelo+"/").success(function(response) {
+
+            $scope.cobertura = response;
+
+            console.log('$scope.cobertura',$scope.cobertura)
+
+            // $http({
+            // url: host+"/recibecoberturas/",
+            // data: $scope.cobertura,
+            // method: 'POST',
          
-        //     })
+            // })
 
-        //     $http({
-        //     url: host+"/pdfx/",
-        //     data: $scope.absUrl,
-        //     method: 'POST',
+            // $http({
+            // url: host+"/pdfx/",
+            // data: $scope.absUrl,
+            // method: 'POST',
          
-        //     }).
-        //     success(function(data) {
+            // }).
+            // success(function(data) {
+            // })
 
-
-        //     })
-
-        // });
+        });
 
 
 
@@ -616,41 +609,41 @@ $scope.items8 = [
 
                 /*Pdf Genera*/
 
-        $scope.pdf = {}
+        // $scope.pdf = {}
 
 
 
-        $scope.pdf.tasahdi = data[0]['tasahdi']
-        $scope.pdf.tasapositiva = data[3]['tasapositiva']
-        $scope.pdf.tasamapfre = data[1]['tasamapfre']
-        $scope.pdf.tasapacifico = data[2]['tasapacifico']
-        $scope.pdf.tasarimac = data[4]['tasarimac']
+        // $scope.pdf.tasahdi = data[0]['tasahdi']
+        // $scope.pdf.tasapositiva = data[3]['tasapositiva']
+        // $scope.pdf.tasamapfre = data[1]['tasamapfre']
+        // $scope.pdf.tasapacifico = data[2]['tasapacifico']
+        // $scope.pdf.tasarimac = data[4]['tasarimac']
 
-        $scope.pdf.hdi = data[0]['hdi']
-        $scope.pdf.positiva = data[3]['positiva']
-        $scope.pdf.mapfre = data[1]['mapfre']
-        $scope.pdf.pacifico = data[2]['pacifico']
-        $scope.pdf.rimac = data[4]['rimac']
+        // $scope.pdf.hdi = data[0]['hdi']
+        // $scope.pdf.positiva = data[3]['positiva']
+        // $scope.pdf.mapfre = data[1]['mapfre']
+        // $scope.pdf.pacifico = data[2]['pacifico']
+        // $scope.pdf.rimac = data[4]['rimac']
 
-        $scope.pdf.phdisubtotal = data[0]['phdisubtotal']
-        $scope.pdf.positivasubtotal = data[3]['positivasubtotal']
-        $scope.pdf.mapfresubtotal = data[1]['mapfresubtotal']
-        $scope.pdf.pacificosubtotal = data[2]['pacificosubtotal']
-        $scope.pdf.rimacsubtotal = data[4]['rimacsubtotal']
+        // $scope.pdf.phdisubtotal = data[0]['phdisubtotal']
+        // $scope.pdf.positivasubtotal = data[3]['positivasubtotal']
+        // $scope.pdf.mapfresubtotal = data[1]['mapfresubtotal']
+        // $scope.pdf.pacificosubtotal = data[2]['pacificosubtotal']
+        // $scope.pdf.rimacsubtotal = data[4]['rimacsubtotal']
 
-        $scope.pdf.phditotal = data[0]['phditotal']
-        $scope.pdf.positivatotal = data[3]['positivatotal']
-        $scope.pdf.mapfretotal = data[1]['mapfretotal']
-        $scope.pdf.pacificototal = data[2]['pacificototal']
-        $scope.pdf.rimactotal = data[4]['rimactotal']
+        // $scope.pdf.phditotal = data[0]['phditotal']
+        // $scope.pdf.positivatotal = data[3]['positivatotal']
+        // $scope.pdf.mapfretotal = data[1]['mapfretotal']
+        // $scope.pdf.pacificototal = data[2]['pacificototal']
+        // $scope.pdf.rimactotal = data[4]['rimactotal']
 
-        $http({
+        // $http({
 
-            url: host+"/recibetasas/",
-            data: $scope.pdf,
-            method: 'POST',
+        //     url: host+"/recibetasas/",
+        //     data: $scope.pdf,
+        //     method: 'POST',
 
-            })
+        //     })
 
     })
 

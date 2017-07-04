@@ -329,24 +329,13 @@ label: 'Provincia'
 
 $scope.selected = $scope.items[0];
 
-
-
-
-
-        $scope.saveContact = function (model,precio,check,ubicP,ubicL) {
-
-
-
-
-
-       console.log('SAVE',model)
+$scope.saveContact = function (model,precio,check,ubicP,ubicL) {
 
        modelo = model.modelo.id_modelo
 
        tipo = model.claseModelo.id_tipo
 
        marca = model.marca.id_marca
-
 
         var todo={
 
@@ -371,7 +360,6 @@ $scope.selected = $scope.items[0];
 
         }
 
-        console.log('check',$scope.model.check)
         
 
         if ($scope.ubicL== 1){
@@ -383,7 +371,6 @@ $scope.selected = $scope.items[0];
 
         }        
 
-        console.log('ubicL',$scope.model.ubicL)
 
         if ($scope.ubicP== 1){
 
@@ -408,53 +395,46 @@ $scope.selected = $scope.items[0];
 
       /// Trae Programas
 
-      console.log('preciooooo',$scope.precio)
 
       $http.get(host+"/asegprogram/"+4+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo+'/'+$scope.precio).success(function(response) {
 
-        console.log('prog4',response)
 
-        $scope.pm = response; $scope.pm = $scope.pm[0].id_prog
+        $scope.pm = response; 
+
+        if($scope.pm.length==0){
+
+            $scope.pm=666
+
+        }
+        else{
+
+            $scope.pm = $scope.pm[0].id_prog
+        }
 
         $http.get(host+"/asegprogram/"+5+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo+'/'+$scope.precio).success(function(response) {
 
-            console.log(response,'5.....'); 
-            $scope.pr = response; 
-            $scope.pr = $scope.pr[0].id_prog
+                $scope.pr = response; 
 
-            console.log('pm',$scope.pm)
-
-            console.log('pr',$scope.pr)
-
-            if(!$scope.pr){
+                if($scope.pr.length==0){
 
                 $scope.pr=666
-            }
 
-             programita = $scope.pm+'z'+$scope.pr+'z3z'
+                }
+                else{
 
-            console.log(programita)
+                $scope.pr = $scope.pr[0].id_prog
 
-        $location.url('/resultado/'+data+'/'+model.uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/'+programita+'/'+model.modelo.id_modelo+'/'+$scope.precio+'/'+tipo+'/'+marca)
-            
+                }
 
+                programita = $scope.pm+'z'+$scope.pr+'z3z'
 
+                $location.url('/resultado/'+data+'/'+model.uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/'+programita+'/'+model.modelo.id_modelo+'/'+$scope.precio+'/'+tipo+'/'+marca)
+
+               });
         });
 
+    })
 
-
-
-
-    });
-     
-      
-
-       
-
-      })
-
-
-        
     };
 
 
