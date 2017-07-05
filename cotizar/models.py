@@ -103,6 +103,14 @@ class AutoValor(models.Model):
         managed = False
         db_table = 'auto_valor'
 
+    def display_genre(self):
+        """
+        Creates a string for the Genre. This is required to display genre in Admin.
+        """
+        return ', '.join([ genre.name for genre in self.genre.all()[:3] ])
+    
+    display_genre.short_description = 'Genre'
+
 
 class Categorias(models.Model):
     id_categ = models.AutoField(primary_key=True)
@@ -303,6 +311,9 @@ class Marca(models.Model):
     class Meta:
         managed = False
         db_table = 'marca'
+
+
+
 
 
 class Modalidad(models.Model):

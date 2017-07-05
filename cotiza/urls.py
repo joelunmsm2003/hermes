@@ -4,12 +4,14 @@ from django.conf.urls import patterns
 from cotizar.views import *
 
 
+from django.conf.urls import url
+from django.contrib import admin
 
 
-urlpatterns = patterns('',
+urlpatterns = [
 
     url(r'^api-token-auth/', 'jwt_auth.views.obtain_jwt_token'),
-
+    url(r'^admin/', admin.site.urls),
     url(r'^perfil/$', Perfil.as_view()),
     url(r'^riesgocsv/(\d+)', 'cotizar.views.riesgocsv'),
     url(r'^riesgosubir/(\d+)', 'cotizar.views.riesgosubir'),
@@ -33,13 +35,12 @@ urlpatterns = patterns('',
     url(r'^claseModelo/(\d+)/', 'cotizar.views.claseModelo'),
     url(r'^cotiSave/', 'cotizar.views.cotiSave'),
     url(r'^datosfiltro/(\d+)/', 'cotizar.views.datosfiltro'),
-    url(r'^postin/', 'cotizar.views.postin'),
+    # url(r'^postin/', 'cotizar.views.postin'),
     url(r'^cobertura/(\w+)/(\w+)/(\w+)/(\w+)/(\w+)/(\w+)/', 'cotizar.views.cobertura'),
     url(r'^deducible/(\w+)/(\w+)/(\w+)/(\w+)/(\w+)/(\w+)/', 'cotizar.views.deducible'),
     url(r'^servic/', 'cotizar.views.servic'),
     url(r'^servicio/(\d+)/', 'cotizar.views.servicio'),
-    url(r'^financ/', 'cotizar.views.financ'),
-    url(r'^finanfac/', 'cotizar.views.finanfac'),
+    # url(r'^financ/', 'cotizar.views.financ'),
     url(r'^financiamiento/(\d+)/', 'cotizar.views.financiamiento'),
     url(r'^aseguradoras/', 'cotizar.views.aseguradoras'),
     url(r'^coberturas/', 'cotizar.views.coberturas'),
@@ -150,7 +151,4 @@ urlpatterns = patterns('',
 
 
 
-
-
-
-)
+]

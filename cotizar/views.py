@@ -1565,7 +1565,7 @@ def coberturacsv(request,aseguradora):
 
 
 @csrf_exempt
-def deducible(request,aseguradora):
+def deduciblecsv(request,aseguradora):
 
 	ta = DeducAsegur.objects.filter(id_aseg=aseguradora)
 
@@ -1592,7 +1592,44 @@ def deducible(request,aseguradora):
 		r.value = r.value.encode('ascii','replace')
 
 
-		data = r.id_cob_id,'|',r.id_deduc.deducible,'|',r.programa.program,'|',r.tipo.clase,'|',r.value
+		data = r.id_deduc_id,'|',r.id_deduc.deducible,'|',r.programa.program,'|',r.tipo.clase,'|',r.riesgo.tipo_riesgo,'|',r.value
+
+
+		#data = t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,marca,modelo,categoria,t.origen,t.ubicacion,t.anio,t.value
+
+		writer.writerow(data)
+
+	return response
+
+@csrf_exempt
+def serviciocsv(request,aseguradora):
+
+	ta = ServicAsegur.objects.filter(id_aseg=aseguradora)
+
+	response = HttpResponse(content_type='text/xls')
+
+	response['Content-Disposition'] = 'attachment; filename="Coberturas.csv"'
+
+	writer = csv.writer(response)
+
+	data = 'Cobertura','Programa'
+
+	writer.writerow(data)
+
+	for r in ta:
+
+		if r.id_serv_id:
+
+			r.id_serv.services = r.id_serv.services.encode('ascii','ignore')
+
+			r.id_serv.services = r.id_serv.services.encode('ascii','replace')
+
+		r.value = r.value.encode('ascii','ignore')
+
+		r.value = r.value.encode('ascii','replace')
+
+
+		data = r.id_serv_id,'|',r.id_serv.services,'|',r.id_program.program,'|',r.tipo.clase,'|',r.value
 
 
 		#data = t.id_aseg.name_asegurad,programa,riesgo,uso,tipo,marca,modelo,categoria,t.origen,t.ubicacion,t.anio,t.value

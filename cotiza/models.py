@@ -114,6 +114,9 @@ class AutoValor(models.Model):
         managed = False
         db_table = 'auto_valor'
 
+    def __unicode__(self):
+       return self.id_marca.name_marca
+
 
 
 
