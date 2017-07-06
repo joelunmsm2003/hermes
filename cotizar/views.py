@@ -1454,7 +1454,7 @@ def gpscsv(request,aseguradora):
 @csrf_exempt
 def riesgocsv(request,aseguradora):
 
-	ri = RiesgAseg.objects.filter(aseguradora=aseguradora)[:200]
+	ri = RiesgAseg.objects.filter(aseguradora=aseguradora)
 
 	#values('id_model_id','id_model__id_modelo__name_model','id_model__id_marca__name_marca','id_riesg__tipo_riesgo')
 
@@ -3139,8 +3139,6 @@ def primaneta(request,descuento):
 
 			tasa = None
 
-
-
 			if TasaAsegur.objects.filter(id_aseg_id=2,anio=int(anio),riesgo_id=riesgopacifico).count()>0:
 
 				tasa = TasaAsegur.objects.get(id_aseg_id=2,anio=int(anio),riesgo_id=riesgopacifico)
@@ -3221,8 +3219,6 @@ def primaneta(request,descuento):
 
 				tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),id_uso__uso=usoname,programa_id=programamapfre,origen__isnull=True)
 
-
-
 				if origenname == 'Chino':
 
 					tasa = TasaAsegur.objects.get(id_aseg_id=4,anio=int(anio),origen='Chino',id_uso__uso=usoname,programa_id=programamapfre)
@@ -3293,8 +3289,6 @@ def primaneta(request,descuento):
 
 				aseguradora[i]['idriesgomapfre'] = riesgomapfre
 
-
-
 			else:
 
 				aseguradora[i]['mapfre']='No Aplica'
@@ -3302,8 +3296,6 @@ def primaneta(request,descuento):
 		if int(aseguradora[i]['id_asegurad']) == 5:
 
 			tasa = None
-
-
 
 			if int(programarimac) == 2: # Corporativa Rimac
 
@@ -3322,8 +3314,6 @@ def primaneta(request,descuento):
 					tasa = None
 
 			if int(programarimac) == 25: # Corporativa Rimac comision 12.5
-
-				
 
 				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),riesgo_id=riesgorimac,programa_id=programarimac)
 
@@ -3358,11 +3348,11 @@ def primaneta(request,descuento):
 
 				tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase=tiponame,programa_id=programarimac)
 
-			if int(programarimac) == 11:
+			if int(programarimac) == 11: # Programa taxi urbano
 
-				if tiponame =='Autos':
+				if tiponame =='Auto':
 
-					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase='Autos',programa_id=programarimac)
+					tasa = TasaAsegur.objects.get(id_aseg_id=5,anio=int(anio),tipo__clase='Auto',programa_id=programarimac)
 
 				if 'Yaris' in modelname:
 

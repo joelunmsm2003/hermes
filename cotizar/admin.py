@@ -24,7 +24,9 @@ class AutoValorAdmin(admin.ModelAdmin):
 	list_filter = (
 		('id_marca', RelatedOnlyFieldListFilter),
 	)
+	list_editable = ('traccion',)
 	admin_order_field = ('id_marca',)
+	search_fields = ('traccion',)
 
 	def get_marca(self, obj):
 		return obj.id_marca.name_marca

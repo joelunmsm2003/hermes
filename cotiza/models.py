@@ -114,8 +114,10 @@ class AutoValor(models.Model):
         managed = False
         db_table = 'auto_valor'
 
-    def __unicode__(self):
-       return self.id_marca.name_marca
+    def __str__(self):
+        return self.id_marca.name_marca
+
+
 
 
 
@@ -284,11 +286,15 @@ class Financiamiento(models.Model):
 
 class Marca(models.Model):
     id_marca = models.IntegerField(primary_key=True)
-    name_marca = models.CharField(max_length=20)
+    name_marca = models.CharField(max_length=20,help_text="Nombre de marca",verbose_name="Nombre del Tipo")
 
     class Meta:
         managed = False
         db_table = 'marca'
+        verbose_name = "Tipo de Persona"
+
+    def __str__(self):
+        return self.name_marca
 
 
 class Modalidad(models.Model):
