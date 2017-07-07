@@ -396,6 +396,9 @@ $scope.saveContact = function (model,precio,check,ubicP,ubicL) {
       /// Trae Programas
 
 
+
+
+
       $http.get(host+"/asegprogram/"+4+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo+'/'+$scope.precio).success(function(response) {
 
 
@@ -426,9 +429,30 @@ $scope.saveContact = function (model,precio,check,ubicP,ubicL) {
 
                 }
 
-                programita = $scope.pm+'z'+$scope.pr+'z3z'
+
+                   $http.get(host+"/asegprogram/"+1+"/"+model.modelo.id_modelo+'/'+model.uso+'/'+marca+'/'+tipo+'/'+$scope.precio).success(function(response) {
+
+
+                    $scope.pp = response; 
+
+                    if($scope.pp.length==0){
+
+                        $scope.pp=666
+
+                    }
+                    else{
+
+                        $scope.pp= $scope.pp[0].id_prog
+                    }
+
+                programita = $scope.pm+'z'+$scope.pr+'z'+$scope.pp+'z9'
+
+                console.log('programita................................',programita)
 
                 $location.url('/resultado/'+data+'/'+model.uso+'/'+model.anio.id_anio+'/'+model.modalidad.id_modalidad+'/'+programita+'/'+model.modelo.id_modelo+'/'+$scope.precio+'/'+tipo+'/'+marca)
+
+               });
+
 
                });
         });
